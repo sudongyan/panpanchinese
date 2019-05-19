@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>{$Think.lang.my_index_14}</title>
+		<link href="__STATIC__/css/aui.css" rel="stylesheet" />
+		<link href="__STATIC__/css/style.css" rel="stylesheet" /> {block name="css"}{/block}
+		<style>
+			#timelist .aui-btn {
+				margin-bottom: 0.2rem;
+			}
+			
+			.aui-bar-btn-item {
+				border-color: #9981b4;
+			}
+			
+			.aui-bar-btn-item.aui-active {
+				background-color: #9981b4;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="aui-bar aui-bar-nav">
+			<a class="aui-pull-left aui-btn" onclick="javascript:history.back(-1);">
+				<span class="aui-iconfont aui-icon-left"></span>
+			</a>
+			<div class="aui-title">{$Think.lang.teacher_index_45}</div>
+		</header>
+		<form class="aui-content-padded aui-margin-b-15" method="post">
+			<input type="hidden" name="id" value="{$id}" />
+			<ul class="aui-list aui-form-list aui-media-list aui-margin-b-15">
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label">
+							{$Think.lang.teacher_index_46}
+						</div>
+						<div class="aui-list-item-input">
+							{$Curriculum.thetime}
+						</div>
+					</div>
+				</li>
+			</ul>
+			<ul class="aui-list aui-form-list aui-media-list">
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label">
+							{$Think.lang.my_index_31}
+						</div>
+						<div class="aui-list-item-input">
+							<select onchange="thecourse(this.value)">
+								<option value="0">{$Think.lang.teacher_index_47}</option>
+								{volist name="CourseType" id="vo"}
+								<option value="{$vo.id}">{if $Think.cookie.think_var == 'ko-kr'}{$vo.name_ko}{elseif $Think.cookie.think_var == 'zh-cn' /}{$vo.name}{elseif $Think.cookie.think_var == 'en-us' /}{$vo.name_en}{/if}</option>
+								{/volist}
+							</select>
+						</div>
+                   		<div class="aui-list-item-label-icon">
+                        		<i class="aui-iconfont aui-icon-right"></i>
+                    		</div>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label">
+							{$Think.lang.my_index_32}
+						</div>
+						<div class="aui-list-item-input">
+							<select name="course" id="course" onchange="theperiod(this.value)">
+							</select>
+						</div>
+                   		<div class="aui-list-item-label-icon">
+                        		<i class="aui-iconfont aui-icon-right"></i>
+                    		</div>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label">
+							{$Think.lang.teacher_index_48}
+						</div> 
+						<div class="aui-list-item-input">
+							<select name="class" id="period">
+							</select>
+						</div>
+                   		<div class="aui-list-item-label-icon">
+                        		<i class="aui-iconfont aui-icon-right"></i>
+                    		</div>
+					</div>
+				</li>
+        			<li class="aui-list-item">
+					<div class="aui-list-item-label">
+						{$Think.lang.teacher_index_49}
+					</div>
+        			</li>
+        			{volist name="demand" id="vo"}
+				<li class="aui-list-item">
+            			<div class="aui-list-item-inner">
+                			<label><input class="aui-checkbox" type="checkbox" name="demand" value="{$vo.id}"> {if $Think.cookie.think_var == 'ko-kr'}{$vo.info_ko}{else /}{$vo.info_en}{/if}</label>
+            			</div>
+        			</li>
+            		{/volist}
+				<li class="aui-list-item" style="text-align: center;">
+                			<h6 style="color: blue;padding-top: 0.5rem;padding-bottom: 0.5rem;">{$Think.lang.teacher_index_50}<br />{$Think.lang.teacher_index_51}</h6>
+        			</li>
+			</ul>
+			<p>
+				<button type="button" class="aui-btn aui-btn-purple aui-btn-block" onclick="enroll();" style="margin-top: 1rem;">{$Think.lang.teacher_index_52}</button>
+			</p>
+		</form>
+		<section class="aui-content-padded">
+			<div class="aui-card-list">
+				<div class="aui-card-list-header">
+					{$Think.lang.teacher_index_53}
+				</div>
+				<div class="aui-hr"></div>
+				<div class="aui-card-list-content-padded">
+					<ul style="list-style-position: outside;">
+						<li style="list-style-type:disc;margin-left: 1rem;">{$Think.lang.teacher_index_54}</li>
+						<li style="list-style-type:disc;margin-left: 1rem;padding-top : 11px;">{$Think.lang.teacher_index_55}</li>
+						<li style="list-style-type:disc;margin-left: 1rem;color: blue;padding-top : 11px;">{$Think.lang.teacher_index_56}</li>
+						<li style="list-style-type:none;margin-left: 1rem;color: blue;padding-top : 11px;">{$Think.lang.teacher_index_57}</li>
+					</ul>
+				</div>
+			</div>
+		</section>
+		<script src="__STATIC__/js/jquery-1.10.2.js"></script>
+		<script src="__STATIC__/js/aui-dialog.js"></script>
+		<script src="__STATIC__/js/aui-toast.js"></script>
+		<script>
+			var toast = new auiToast();
+			var dialog = new auiDialog();
+			{volist name="CourseType" id="vo" key="k"}
+			{if $k == 1}
+			 var courseTypeId = {$vo.id};
+			{/if}
+			{/volist}
+			window.onload = function() {
+				thecourse(0);
+			}
+
+			function thecourse(type) {
+				if(type == '0'){
+					document.getElementById("course").innerHTML = '<option value="0">{$Think.lang.teacher_index_58}</option>';
+					document.getElementById("period").innerHTML = '<option value="0">{$Think.lang.teacher_index_59}</option>';
+				}else{
+				$.getJSON("{:url('teacher/course')}" + "?type=" + type, function(result) {
+					data = result.data;
+					document.getElementById("course").innerHTML = '<option value="0">{$Think.lang.teacher_index_58}</option>';
+					document.getElementById("period").innerHTML = '';
+					for(var n = 0; n < data.length; n++) {
+						document.getElementById("course").innerHTML += '<option value="' + data[n].id + '" data="' + data[n].period + '">' + data[n].name_ko + '</option>';
+						if(n == 0) {
+							theperiod(data[n].id);
+						}
+					}
+				});
+				}
+			}
+
+			function theperiod(type) {
+				$.getJSON("{:url('teacher/period')}" + "?type=" + type, function(result) {
+					data = result.data;
+					console.log(JSON.stringify(data));
+					document.getElementById("period").innerHTML = '<option value="0">{$Think.lang.teacher_index_60}</option>';
+					for(var n = 0; n < data.length; n++) {
+						document.getElementById("period").innerHTML += '<option value="' + data[n].number + '" data="' + data[n].number + '">' + data[n].number + '.' + data[n].name_ko + '</option>';
+					}
+				});
+			}
+			
+			function enroll(){
+				var course = document.getElementById("course").value;
+				var theclass = document.getElementById("period").value;
+				if(course == 0 || theclass == 0){
+					dialog.alert({
+						title: "{$Think.lang.web_common_17}",
+						msg: '{$Think.lang.teacher_index_61}',
+						buttons: ['{$Think.lang.web_common_18}']
+					});
+					return;
+				}
+				var arr = document.getElementsByName("demand");
+				var demand = '';
+				for(i=0;i<arr.length;i++){
+					if(arr[i].checked){
+						demand = demand + ',' + arr[i].value;
+					}
+				}
+				dialog.alert({
+					title: "{$Think.lang.web_common_17}",
+					msg: '{$Think.lang.teacher_index_62}',
+					buttons: ['{$Think.lang.teacher_index_63}','{$Think.lang.my_index_55}']
+				}, function(ret) {
+					if(ret.buttonIndex == 1){
+						toast.loading({
+		                    title:"loading"
+		                });
+						$.ajax({
+							type: "POST",
+							url: "{:url('teacher/enroll')}",
+							data: {
+								id: {$id},
+								course:course,
+								class:theclass,
+								demand:demand
+							},
+							datatype: "json",
+							success: function(result) {
+								toast.hide();
+								if(result.data == 1) {
+									dialog.alert({
+										title: "{$Think.lang.web_common_17}",
+										msg: '{$Think.lang.teacher_index_64}',
+										buttons: ['{$Think.lang.web_common_18}']
+									}, function(ret) {
+										location.href='{:url('my/index')}';
+									})
+								} else {
+									dialog.alert({
+										title: "{$Think.lang.web_common_17}",
+										msg: '{$Think.lang.teacher_index_65}<br>{$Think.lang.teacher_index_66}',
+										buttons: ['{$Think.lang.web_common_18}']
+									}, function(ret) {
+										location.href='{:url('my/index')}';
+									})
+								}
+							},
+							error: function() {
+								alert("error");
+							}
+						});
+					}
+				});
+			}
+		</script>		<!-- Global site tag (gtag.js) - Google Ads: 789908941 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-789908941"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-789908941');
+</script>
+<script>
+  gtag('event', 'page_view', {
+    'send_to': 'AW-789908941',
+    'user_id': 'replace with value'
+  });
+</script>
+	</body>
+
+</html>

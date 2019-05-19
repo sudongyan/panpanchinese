@@ -1,0 +1,174 @@
+﻿{extend name="Base:common" /}{block name="css"}
+<link href="__STATIC__/css/bootstrap-datetimepicker.min.css" rel="stylesheet" /> {/block}{block name="body"}
+<div class="header">
+	<h1 class="page-header">
+		预约管理
+    		<small>备注要求管理</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li>
+			<a href="{:url('index/index')}">首页</a>
+		</li>
+		<li>
+			<a href="{:url('order/index')}">预约管理</a>
+		</li>
+		<li class="active">备注要求管理</li>
+	</ol>
+
+</div>
+<div id="page-inner">
+	<div class="row">
+		<div class="col-md-12">
+			<!-- Advanced Tables -->
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-lg-12"> 
+							<button type="button" class="btn btn-danger pull-right" data-toggle="modal" data-target="#addPeriod">新增备注要求</button>
+						</div>
+					</div>
+					<!-- /input-group -->
+				</div>
+				<div class="panel-body">
+					<div class="table-responsive">
+						<table class="table table-striped table-bordered table-hover">
+							<thead>
+								<tr>
+									<th>中文要求</th>
+									<th>英文要求</th>
+									<th>韩文要求</th>
+									<th width="70">操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								{volist name="list" id="vo"}
+								<tr>
+									<td class="center">
+										{$vo.info_cn}
+									</td>
+									<td class="center">
+										{$vo.info_en}
+									</td>
+									<td class="center">
+										{$vo.info_ko}
+									</td>
+									<td class="center">
+										{if condition="($Think.session.order eq 1) OR ($Think.session.id eq 1)"}
+										<div class="btn-group-vertical" role="group" aria-label="...">
+											<button type="button" onclick="del({$vo.id})" class="btn btn-danger">删除</button>
+										</div>
+										{/if}
+									</td>
+								</tr>
+								{/volist}
+							</tbody>
+						</table>
+					</div>
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="box" id="box"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--End Advanced Tables -->
+		</div>
+	</div>
+</div>
+<div id="addPeriod" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title">新增备注要求</h4>
+      </div>
+      <div class="modal-body">
+      	<div class="form-group">
+     	   <input type="text" class="form-control" id="addPeriodName_cn" placeholder="中文要求">
+        </div>
+      	<div class="form-group">
+     	   <input type="text" class="form-control" id="addPeriodName_en" placeholder="英文要求">
+        </div>
+      	<div class="form-group">
+     	   <input type="text" class="form-control" id="addPeriodName_ko" placeholder="韩文要求">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" onclick="addPeriod()">保存</button>
+      </div>
+    </div>
+  </div>
+</div>
+{/block} {block name="script"}
+<script src="__STATIC__/js/bootstrap-datetimepicker.min.js"></script>
+<script src="__STATIC__/js/bootstrap-datetimepicker.zh-CN.js"></script>
+<script>
+	var setTotalCount = {$total};
+	var p = {$p};
+	$('#box').paging({
+		initPageNo: {$p}, // 初始页码
+		totalPages: {$pageNum}, //总页数
+		totalCount: '共' + setTotalCount + '条数据', // 条目总数
+		slideSpeed: 300, // 缓动速度。单位毫秒
+		jump: false, //是否支持跳转
+		callback: function(page) { // 回调函数
+			if(page != p) {
+				window.location.replace("{:url('order/demand')}" + '?p=' + page);
+			}
+		}
+	})
+</script>
+<script>
+	//新增课程
+	function addPeriod() {
+		var info_cn = $('#addPeriodName_cn').val();
+		var info_en = $('#addPeriodName_en').val();
+		var info_ko = $('#addPeriodName_ko').val();
+		if(info_cn.length < 1||info_en.length < 1||info_ko.length < 1){
+			alert('请正确输入备注要求');
+			return false;
+		}
+		info = '是否新增?';
+		if(confirm(info)) {
+			$.ajax({
+				type: "POST",
+				url: "{:url('order/add_demand')}",
+				data: {
+					info_cn: info_cn,
+					info_en: info_en,
+					info_ko: info_ko
+				},
+				success: function(result) {
+					$('#addPeriod').modal('hide');
+					if(result == 1) {
+						location.reload();
+					} else {
+						alert('未知错误');
+					}
+				}
+			});
+		}
+	}
+	//删除课程
+	function del(id) {
+		info = '是否删除?';
+		if(confirm(info)) {
+			$.ajax({
+				type: "POST",
+				url: "{:url('order/del_demand')}",
+				data: {
+					id: id
+				},
+				success: function(result) {
+					if(result == 1) {
+						location.reload();
+					} else {
+						alert('发生错误');
+					}
+				}
+			});
+		}
+	}
+</script>
+{/block}

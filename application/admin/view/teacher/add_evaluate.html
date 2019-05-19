@@ -1,0 +1,168 @@
+﻿{extend name="Base:common" /} {block name="body"}
+
+<div class="header">
+	<h1 class="page-header">
+		老师管理
+    			<small>添加评价</small>
+                       </h1>
+	<ol class="breadcrumb">
+		<li>
+			<a href="{:url('index/index')}">首页</a>
+		</li>
+		<li>
+			<a href="{:url('teacher/index')}">老师管理</a>
+		</li>
+		<li class="active">添加评价</li>
+	</ol>
+
+</div>
+<div id="page-inner">
+	<div class="row">
+		<form class="col-md-12" method="post">
+			<input type="hidden" name="teacher_id" value="{$teacher.id}" />
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<div class="card-title">
+						<div class="title">添加评价</div>
+					</div>
+				</div>
+				<div class="panel-body">
+					<div class="form-horizontal" style="margin-bottom: 200px;">
+						<label class="col-sm-2 control-label">头像</label>
+						<div class="col-sm-10">
+							<div id="container">
+								<a class="btn btn-default btn-lg " id="pickfiles" href="#">
+									<i class="glyphicon glyphicon-plus"></i>
+									<span>选择图片</span>
+								</a> jpg格式
+							</div><br />
+							<div>
+								<div class="col-sm-4">
+									<div id="img">
+										<img class="img-responsive" width="100" height="100" src="__STATIC__/img/avatar.jpg " />
+									</div>
+									<input id="cover" type="hidden" name="student_avatar" value="__STATIC__/img/avatar.jpg" />
+									<div id="img-progress">
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-horizontal">
+						<div class="form-group">
+							<label class="col-sm-2 control-label">学员昵称</label>
+							<div class="col-sm-4">
+								<input type="text" name="student_nickName" class="form-control" required="required">
+							</div>
+						</div>
+					</div>
+					<div class="form-horizontal">
+						<div class="form-group">
+							<label class="col-sm-2 control-label">学员评分</label>
+							<div class="col-sm-4">
+								<select name="score" class="form-control">
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="form-horizontal">
+						<div class="form-group">
+							<label class="col-sm-2 control-label">学员评价</label>
+							<div class="col-sm-4">
+								<textarea class="form-control" name="information" rows="5"></textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<button type="submit" class="btn btn-danger pull-right">添加评价</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+{/block} {block name="script"}
+<script src="__STATIC__/Plupload/moxie.js"></script>
+<script src="__STATIC__/Plupload/plupload.dev.js"></script>
+<script src="__STATIC__/Plupload/i18n/zh_CN.js"></script>
+<script src="__STATIC__/js/qiniu.min.js"></script>
+<script>
+	var domain = "http://img.panpanchinese.cn/";
+	//引入Plupload 、qiniu.js后
+	var uploader = Qiniu.uploader({
+		runtimes: 'html5,flash,html4', //上传模式,依次退化
+		browse_button: 'pickfiles', //上传选择的点选按钮，**必需**
+		uptoken_url: "{:url('image/gettoken')}", //Ajax请求upToken的Url，**强烈建议设置**（服务端提供）
+		// uptoken : '', //若未指定uptoken_url,则必须指定 uptoken ,uptoken由其他程序生成
+		unique_names: true, // 默认 false，key为文件名。若开启该选项，SDK为自动生成上传成功后的key（文件名）。
+		// save_key: true,   // 默认 false。若在服务端生成uptoken的上传策略中指定了 `sava_key`，则开启，SDK会忽略对key的处理
+		domain: 'http://img.panpanchinese.cn/', //bucket 域名，下载资源时用到，**必需**
+		get_new_uptoken: true, //设置上传文件的时候是否每次都重新获取新的token
+		container: 'container', //上传区域DOM ID，默认是browser_button的父元素，
+		max_file_size: '100mb', //最大文件体积限制
+		multi_selection: false,
+		mime_types: [{
+			title: "Image files",
+			extensions: "jpg"
+		}],
+		flash_swf_url: '__STATIC__/Plupload/Moxie.swf', //引入flash,相对路径
+		max_retries: 3, //上传失败最大重试次数
+		dragdrop: true, //开启可拖曳上传
+		drop_element: 'container', //拖曳上传区域元素的ID，拖曳文件或文件夹后可触发上传
+		chunk_size: '4mb', //分块上传时，每片的体积
+		auto_start: true, //选择文件后自动上传，若关闭需要自己绑定事件触发上传
+		init: {
+			'FilesAdded': function(up, files) {
+				plupload.each(files, function(file) {
+					// 文件添加进队列后,处理相关的事情
+				});
+			},
+			'BeforeUpload': function(up, file) {
+				// 每个文件上传前,处理相关的事情
+			},
+			'UploadProgress': function(up, file) {
+				var total = up.total;
+				$('#img-progress').html('<div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="' + total.percent + '" aria-valuemin="0" aria-valuemax="100" style="width: ' + total.percent + '%"></div></div>');
+				// 每个文件上传时,处理相关的事情
+			},
+			'FileUploaded': function(up, file, info) {
+				// 每个文件上传成功后,处理相关的事情
+				// 其中 info.response 是文件上传成功后，服务端返回的json，形式如
+				// {
+				//    "hash": "Fh8xVqod2MQ1mocfI4S4KpRL6D98",
+				//    "key": "gogopher.jpg"
+				//  }
+				// 参考http://developer.qiniu.com/docs/v6/api/overview/up/response/simple-response.html
+				var domain = up.getOption('domain');
+				var res = JSON.parse(info.response);
+				document.getElementById("img").innerHTML =
+					'<img id="img" class="img-responsive" width="100" height="100" src="' + domain + res.key + '?imageView2/1/w/200/h/200/interlace/1" />';
+				$('#cover').val(domain + res.key + '?imageView2/1/w/200/h/200/interlace/1');
+				$('#img-progress').html('');
+			},
+			'Error': function(up, err, errTip) {
+				//上传出错时,处理相关的事情
+			},
+			'UploadComplete': function() {
+				//队列文件处理完毕后,处理相关的事情
+			},
+			'Key': function(up, file) {
+				// 若想在前端对每个文件的key进行个性化处理，可以配置该函数
+				// 该配置必须要在 unique_names: false , save_key: false 时才生效
+
+				var key = "";
+				// do something with key here
+				return key
+			}
+		}
+	});
+</script>
+{/block}

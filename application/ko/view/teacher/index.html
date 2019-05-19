@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>{$Think.lang.my_index_14}</title>
+		<link href="__STATIC__/css/aui.css" rel="stylesheet" />
+		<link href="__STATIC__/css/style.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="__STATIC__/css/iconfont.css" />
+		<style>
+			.aui-bar-nav .aui-bar-btn-item {
+				border-color: #ffffff;
+				color: #ffffff;
+			}
+			
+			.aui-bar-nav.aui-bar-light .aui-bar-btn-item {
+				border-color: #ffffff;
+			}
+			
+			.aui-bar-nav.aui-bar-light .aui-bar-btn-item.aui-active {
+				background-color: #ffffff;
+				color: #9981b4;
+			}
+		</style>
+		{block name="css"}{/block}
+	</head>
+
+	<body>
+		<header id="header1" class="aui-bar aui-bar-nav aui-bar-light">
+			<!--
+			<a class="aui-pull-left aui-btn" onclick="location.href='{:url('teacher/thedate')}'">
+				<i class="aui-iconfont iconfont icon-shaixuan" style="color: #FFF;"></i>
+			</a>
+			-->
+			<div class="aui-title">
+				<div class="aui-bar aui-bar-btn">
+					<div class="aui-bar-btn-item aui-active">{$Think.lang.teacher_index_72}</div>
+					<div class="aui-bar-btn-item" onclick="index2()">{$Think.lang.teacher_index_73}</div>
+				</div>
+			</div>
+			<a class="aui-pull-right aui-btn aui-btn-outlined" style="border-color: #fff;display: none;" onclick="location.href='{:url('teacher/filter')}'">
+				<span style="color: #FFF;">{$Think.lang.teacher_index_11}</span>
+			</a>
+			<a class="aui-pull-right aui-btn" onclick="thesearch(1);">
+				<i class="aui-iconfont aui-icon-search" style="color: #FFF;"></i>
+			</a>
+			
+		</header>
+		<header id="header2" class="aui-bar aui-bar-nav aui-bar-light" style="display: none;">
+			<div class="aui-title" style="left:0.8rem; right: 4rem;">
+				<form class="aui-searchbar" id="search" style="background-color: #9981b4;" method="post" action="{:url('teacher/index')}">
+					<div class="aui-searchbar-input aui-border-radius">
+						<i class="aui-iconfont aui-icon-search"></i>
+						<input name="search" type="search" placeholder="{$Think.lang.teacher_index_13}" id="search-input">
+						<div class="aui-searchbar-clear-btn">
+							<i class="aui-iconfont aui-icon-close"></i>
+						</div>
+					</div>
+					<div class="aui-searchbar-btn" tapmode>取消</div>
+				</form>
+			</div>
+			<a class="aui-pull-right aui-btn aui-btn-outlined" style="border-color: #fff;display: none;" onclick="location.href='{:url('teacher/filter')}'">
+				<span style="color: #FFF;">{$Think.lang.teacher_index_11}</span>
+			</a>
+			<a class="aui-pull-right aui-btn" onclick="thesearch(0);">
+				<i class="aui-iconfont aui-icon-close" style="color: #FFF;"></i>
+			</a>
+		</header>
+		<div class="aui-bar aui-bar-btn aui-bar-btn-full" style="background-color: #ffffff;">
+			<div class="aui-bar-btn-item" style="border-color: #9981b4;" onclick="location.href='{:url('teacher/thedate')}'">{$Think.lang.teacher_index_3}</div>
+			<!--
+			<div class="aui-bar-btn-item" style="border-color: #9981b4;" onclick="location.href='{:url('teacher/timelist')}?order=asc'">시작시간</div>
+			<div class="aui-bar-btn-item" style="border-color: #9981b4;" onclick="location.href='{:url('teacher/timelist')}?order=desc'">마감시간</div>
+			-->
+			<div class="aui-bar-btn-item" style="border-color: #9981b4;" onclick="location.href='{:url('teacher/thetag')}'">{$Think.lang.teacher_index_7}</div>
+		</div>
+		{volist name="list" id="vo"}
+		<div class="aui-content-padded aui-margin-b-5" onclick="teacherinfo({$vo.id});">
+			<ul class="aui-list aui-media-list">
+				<li class="aui-list-item">
+					<div class="aui-media-list-item-inner">
+						<div class="aui-list-item-media" style="width: 3.5rem;">
+							<img src="{$vo.avatar}">
+						</div>
+						<div class="aui-list-item-inner">
+							<div class="aui-list-item-text">
+								<div class="aui-list-item-title" style="color: #000;">{$vo.nickName}</div>
+							</div>
+							<div class="aui-list-item-text aui-pull-left">
+								<span style="width:4rem;">
+								{for start="0" end="5"}
+								{if ($vo.score > $i) AND ($vo.score >= $i+1)}
+								<i class="aui-iconfont iconfont icon-iconfontxingxing" style="color: #ffba00;margin-left: -2px;margin-right: -2px;"></i>
+								{elseif $vo.score > $i /}
+								<i class="aui-iconfont iconfont icon-iconfontxingxing" style="background-image: -webkit-gradient(linear,0 50%,100% 50% , color-stop(0.4, #ffba00), color-stop(0.60, #cbcbcb));-webkit-background-clip: text;-webkit-text-fill-color: transparent; margin-left: -2px;margin-right: -2px;"></i>	
+								{else /}
+								<i class="aui-iconfont iconfont icon-iconfontxingxing" style="color: #cbcbcb;margin-left: -2px;margin-right: -2px;"></i> 
+								{/if}
+								{/for}
+								</span>
+								<span style="margin-left: 0.1rem;">{$vo.score}</span>
+							</div>
+							<div class="aui-pull-right" style="margin-top: -0.4rem;">
+								<button class="aui-btn aui-btn-purple aui-btn-sm">{$Think.lang.teacher_index_8}</button>
+							</div>
+						</div>
+					</div>
+					<div class="aui-info" style="padding-top:0">
+						<div class="aui-info-item aui-ellipsis-1">
+							{$vo.taglist}
+						</div>
+					</div>
+					<div class="aui-info" style="padding-top:0">
+						<div class="aui-info-item aui-ellipsis-1" style="color: #000;">
+							{$vo.introduction}
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		{/volist}
+		<div style="width: 100%;height: 50px;"></div>
+		<footer class="aui-bar aui-bar-tab" id="footer" style="border-top:1px solid #e2e2e2;">
+			<div class="aui-bar-tab-item aui-active" onclick="location.href='{:url('my/index')}'" tapmode>
+				<div class="aui-bar-tab-label"><img style="height: 2rem;margin:auto;" src="__STATIC__/img/tab-1-1{if $Think.cookie.think_var == 'zh-cn' /}-cn{elseif $Think.cookie.think_var == 'en-us' /}-en{/if}.png"></div>
+			</div>
+			<div class="aui-bar-tab-item" onclick="location.href='{:url('teacher/index')}'" tapmode>
+				<div class="aui-bar-tab-label"><img style="height: 2rem;margin:auto;" src="__STATIC__/img/tab-2-2{if $Think.cookie.think_var == 'zh-cn' /}-cn{elseif $Think.cookie.think_var == 'en-us' /}-en{/if}.png"></div>
+			</div>
+			<div class="aui-bar-tab-item" onclick="location.href='{:url('course/index')}'" tapmode>
+				<div class="aui-bar-tab-label"><img style="height: 2rem;margin:auto;" src="__STATIC__/img/tab-3-1{if $Think.cookie.think_var == 'zh-cn' /}-cn{elseif $Think.cookie.think_var == 'en-us' /}-en{/if}.png"></div>
+			</div>
+			<div class="aui-bar-tab-item" onclick="location.href='https://panpanchinese.com/order'" tapmode>
+				<div class="aui-bar-tab-label"><img style="height: 2rem;margin:auto;" src="__STATIC__/img/tab-4-1{if $Think.cookie.think_var == 'zh-cn' /}-cn{elseif $Think.cookie.think_var == 'en-us' /}-en{/if}.png"></div>
+			</div>
+		</footer>
+	</body>
+	<script src="__STATIC__/js/jquery-1.10.2.js"></script>
+	<script src="__STATIC__/js/aui-dialog.js"></script>
+	<script>
+		var dialog = new auiDialog();
+		function teacherinfo(id) {
+			var url = window.location.href;
+			if(url.indexOf('/teacher/enroll_time') != -1) {
+		$.getJSON("{:url('teacher/enroll_validate')}" + "?id=" + id, function(result) {
+			var data = result.data;
+			if(data == 1) {
+				location.href = "{:url('teacher/enroll')}?id=" + id;
+			} else if(data == 2) {
+				dialog.alert({
+					title: "{$Think.lang.web_common_17}",
+					msg: '{$Think.lang.teacher_index_30}<br>{$Think.lang.teacher_index_31}',
+					buttons: ['{$Think.lang.web_common_18}']
+				})
+			} else if(data == 3) {
+				dialog.alert({
+					title: "{$Think.lang.web_common_17}",
+					msg: '{$Think.lang.teacher_index_32}<br>{$Think.lang.teacher_index_33}',
+					buttons: ['{$Think.lang.web_common_18}']
+				})
+			} else if(data == 4) {
+				dialog.alert({
+					title: "{$Think.lang.web_common_17}",
+					msg: '{$Think.lang.teacher_index_34}<br>{$Think.lang.teacher_index_35}',
+					buttons: ['{$Think.lang.web_common_18}']
+				})
+			} else if(data == 5) {
+				dialog.alert({
+					title: "{$Think.lang.web_common_17}",
+					msg: '{$Think.lang.teacher_index_36}<br>{$Think.lang.teacher_index_37}',
+					buttons: ['{$Think.lang.web_common_18}']
+				})
+			}
+		});
+			} else {
+				var zone = new Date().getTimezoneOffset() / 60;
+				if(zone != 0) {
+					zone = zone - (zone * 2);
+				}
+				location.href = '{:url('teacher/info')}?tid=' + id + '&thetimezone=' + zone;
+			}
+
+		}
+
+		function index2() {
+			var zone = new Date().getTimezoneOffset() / 60;
+			if(zone != 0) {
+				zone = zone - (zone * 2);
+			}
+			location.href = '{:url('teacher/index2')}?thetimezone=' + zone;
+		}
+		
+		function thesearch(id){ 
+			if(id == 0){
+				document.getElementById("header1").style.display = 'block';
+				document.getElementById("header2").style.display = 'none';
+			}else{
+				document.getElementById("header1").style.display = 'none';
+				document.getElementById("header2").style.display = 'block';
+			}
+		}
+	</script>
+		<!-- Global site tag (gtag.js) - Google Ads: 789908941 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-789908941"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-789908941');
+</script>
+<script>
+  gtag('event', 'page_view', {
+    'send_to': 'AW-789908941',
+    'user_id': 'replace with value'
+  });
+</script>
+</html>

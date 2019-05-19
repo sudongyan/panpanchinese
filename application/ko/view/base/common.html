@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+		<title>{block name="title"}panpanchinese{/block}</title>
+		<!-- Bootstrap -->
+		<link href="__STATIC__/css/bootstrap.min.css" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="__STATIC__/css/iconfont.css" />
+		<!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+		<!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+		<!--[if lt IE 9]>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+		<style>
+			html,
+			body {
+				background-color: #CDCDCD;
+			}
+			
+			.navbar-default {
+				background-color: #ffffff;
+			}
+			
+			.navbar-default .navbar-nav>.active>a,
+			.navbar-default .navbar-nav>.active>a:focus,
+			.navbar-default .navbar-nav>.active>a:hover {
+				color: #a888bb;
+				background-color: #ffffff
+			}
+			
+			.btn-purple {
+				color: #fff;
+				background-color: #9981b4;
+				border-color: #9981b4
+			}
+			
+			.btn-purple.active,
+			.btn-purple.focus,
+			.btn-purple:active,
+			.btn-purple:focus,
+			.btn-purple:hover,
+			.open>.dropdown-toggle.btn-purple {
+				color: #fff;
+				background-color: #7d58a6;
+				border-color: #7d58a6
+			}
+			
+			.btn-purple.active,
+			.btn-purple:active,
+			.open>.dropdown-toggle.btn-purple {
+				background-image: none
+			}
+			
+			.btn-purple.disabled,
+			.btn-purple.disabled.active,
+			.btn-purple.disabled.focus,
+			.btn-purple.disabled:active,
+			.btn-purple.disabled:focus,
+			.btn-purple.disabled:hover,
+			.btn-purple[disabled],
+			.btn-purple[disabled].active,
+			.btn-purple[disabled].focus,
+			.btn-purple[disabled]:active,
+			.btn-purple[disabled]:focus,
+			.btn-purple[disabled]:hover,
+			fieldset[disabled] .btn-purple,
+			fieldset[disabled] .btn-purple.active,
+			fieldset[disabled] .btn-purple.focus,
+			fieldset[disabled] .btn-purple:active,
+			fieldset[disabled] .btn-purple:focus,
+			fieldset[disabled] .btn-purple:hover {
+				background-color: #d9534f;
+				border-color: #d43f3a
+			}
+			
+			.btn-purple .badge {
+				color: #d9534f;
+				background-color: #fff
+			}
+footer {
+	background-color: #333333;
+	bottom: 0;
+	left: 0;
+	color: #FFFFFF;
+	margin-top: 80px;
+	padding-top: 30px;
+	padding-bottom: 30px;
+}
+
+footer ul {
+	color: #ffffff;
+	font-size: 12px;
+}
+		</style>
+		{block name="css"}{/block}
+	</head>
+
+	<body>
+		<nav id="thehead" class="navbar navbar-default visible-lg-block visible-md-block">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+					<a class="navbar-brand" href="/">
+						<img style="height: 44px;margin-top: -13px;" src="__STATIC__/img/web_logo.png">
+					</a>
+				</div>
+				<div id="navbar" class="collapse navbar-collapse">
+					<ul class="nav navbar-nav">
+						{if $Think.session.ko_id != null }
+						<li id="my-menu">
+							<a href="{:url('my/index')}">{$Think.lang.web_common_1}</a>
+						</li>
+						{else /}
+						<li id="my-menu">
+							<a href="" data-toggle="modal" data-target="#login">{$Think.lang.web_common_1}</a>
+						</li>
+						{/if}
+						<li id="teacher-menu">
+							<a href="{:url('teacher/index')}">{$Think.lang.web_common_2}</a>
+						</li>
+						<li id="course-menu">
+							<a href="{:url('course/index')}">{$Think.lang.web_common_3}</a>
+						</li>
+						<li id="price-menu">
+							<a href="https://panpanchinese.com/order">{$Think.lang.web_common_4}</a>
+						</li>
+						<!--
+        					<li class="dropdown">
+          					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="__STATIC__/img/lang_{if $Think.cookie.think_var == 'ko-kr'}ko{elseif $Think.cookie.think_var == 'zh-cn'}cn{elseif $Think.cookie.think_var == 'en-us'/}en{else/}ko{/if}.png" height="15" width="15" style="margin-top: -3px;"> {$Think.lang.web_common_24} <span class="caret"></span></a>
+         					<ul class="dropdown-menu">
+            						<li><a onclick="langtype(0)"><img src="__STATIC__/img/lang_cn.png" height="15" width="15" style="margin-top: -3px;"> 中文</a></li>
+            						<li><a onclick="langtype(1)"><img src="__STATIC__/img/lang_en.png" height="15" width="15" style="margin-top: -3px;"> English</a></li>
+            						<li><a onclick="langtype(2)"><img src="__STATIC__/img/lang_ko.png" height="15" width="15" style="margin-top: -3px;"> 한국어</a></li>
+          					</ul>
+        					</li>
+                        -->
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						{if $Think.session.ko_id != null }
+						<li>
+							<a><img style="height: 35px;margin-top: -10px;margin-bottom: -10px;" class="img-circle" src="{$Think.session.ko_avatar}"></a>
+						</li>
+						<li>
+							<a>{$Think.session.ko_nickName}</a>
+						</li>
+						<li>
+							<a href="{:url('my/web_out')}">{$Think.lang.web_common_5}</a>
+						</li>
+						{else /}
+						<li>
+							<a href="" data-toggle="modal" data-target="#signup">{$Think.lang.web_common_6}</a>
+						</li>
+						<li>
+							<a href="" data-toggle="modal" data-target="#login">{$Think.lang.web_common_7}</a>
+						</li>
+						{/if}
+						<li>
+							<a href="" data-toggle="modal" data-target="#wechat">{$Think.lang.web_common_13}</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		{block name="body"}{/block}
+		
+<footer class="container-fluid visible-lg-block visible-md-block">
+	<div class="container">
+		<ul class="list-unstyled">
+			<li>{$Think.lang.web_common_19}</li>
+			<li>{$Think.lang.web_common_20}</li>
+			<li style="margin-top: 10px;">{$Think.lang.web_common_21}</li>
+			<li style="margin-top: 10px;">{$Think.lang.web_common_22}</li>
+			<li style="margin-top: 10px;">{$Think.lang.web_common_23}</li>
+			<li style="margin-top: 10px;">Copyright ⓒ PanPanchinese All Rights Reserved</li>
+		</ul>
+	</div>
+</footer>
+		<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content" style="margin-top: 150px;">
+					<div class="modal-body">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<div class="center-block text-center" style="max-width: 400px;">
+							<h1>{$Think.lang.web_common_7}</h1>
+							<hr />
+							<div class="form-group">
+								<input id="login_account" type="text" name="account" class="form-control" placeholder="{$Think.lang.web_common_8}" required="required">
+							</div>
+							<div class="form-group">
+								<input id="login_password" type="password" name="password" class="form-control" placeholder="{$Think.lang.web_common_9}" required="required">
+							</div>
+							<button type="button" class="btn btn-purple btn-lg btn-block" onclick="login()">{$Think.lang.web_common_7}</button>
+							<div style="margin-top: 10px;margin-bottom: 40px;">
+								<div class="pull-left">{$Think.lang.web_common_10}</div>
+								<div class="pull-right">
+									<a id="signup-switch" href="javascript:;">{$Think.lang.web_common_6}»</a>
+								</div>
+								<br />
+								<div style="text-align: center;margin-top: 3rem;">
+									{$Think.lang.web_common_11_1} {$Think.lang.web_common_11_2}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="signup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content" style="margin-top: 100px;">
+					<div class="modal-body">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<div class="center-block text-center" style="max-width: 400px;">
+							<h1>{$Think.lang.web_common_6}</h1>
+							<hr />
+							<div class="form-group">
+								<input id="signup_nickName" type="text" name="nickName" class="form-control" placeholder="{$Think.lang.my_index_36}" required="required">
+							</div>
+							<div class="form-group">
+								<input id="signup_wx" type="text" name="wx" class="form-control" placeholder="{$Think.lang.my_index_37}" required="required">
+								<p class="help-block"><a class="pull-right" href="http://panpanchinese.com/wechat" target="_blank"><p>{$Think.lang.my_index_38}</p></a><p class="pull-right">/</p><a class="pull-right" onclick="wx()"><p>{$Think.lang.my_index_39}</p></a></p>
+								<p class="help-block pull-right">{$Think.lang.my_index_40}</p>
+							</div>
+							<div class="form-group">
+								<input id="signup_phone" type="number" name="phone" class="form-control" placeholder="{$Think.lang.my_index_41}" required="required">
+							</div>
+							<div class="form-group">
+								<input id="signup_account" type="text" name="account" class="form-control" placeholder="{$Think.lang.my_index_42}" required="required">
+							</div>
+							<div class="form-group">
+								<input id="signup_password" type="password" name="password" class="form-control" placeholder="{$Think.lang.my_index_43}" required="required">
+							</div>
+							<button type="button" class="btn btn-purple btn-lg btn-block" onclick="signup()">{$Think.lang.web_common_6}</button>
+							<div style="margin-top: 10px;margin-bottom: 40px;">
+								<div class="pull-right">
+									<a id="login-switch" href="javascript:;">{$Think.lang.web_common_7}»</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="wechat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog modal-sm" role="document" style="width: 400px;">
+				<div class="modal-content" style="margin-top: 100px;">
+					<div class="modal-body">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<div class="center-block text-center">
+							<h1>{$Think.lang.web_common_13}</h1>
+							<hr />
+							<img src="__STATIC__/img/qrcode.png" class="img-responsive" style="margin: 0 auto;">
+							<p>{$Think.lang.web_common_14}</p>
+							<a href="http://panpanchinese.com/wechat" target="_blank"><p>{$Think.lang.my_index_38}</p></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="wx" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog modal-sm" role="document" style="width: 400px;">
+				<div class="modal-content" style="margin-top: 100px;">
+					<div class="modal-body">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<div class="center-block text-center">
+							<img src="__STATIC__/img/wx-id.png" class="img-responsive" style="margin: 0 auto;">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+		<script src="__STATIC__/js/jquery-3.3.1.min.js"></script>
+		<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+		<script src="__STATIC__/js/bootstrap.min.js"></script>
+		{block name="script"}{/block}
+		<!--去掉按钮或链接点击边框-->
+		<script type="text/javascript">
+			$("a,button,input:submit,input:button").focus(function() {
+				this.blur()
+			});
+		</script>
+		<script>
+			$(function() {
+				//导航选中
+				var url = window.location.href;
+				if(url.indexOf('/teacher') != -1) {
+					$('#teacher-menu').addClass('active');
+				} else if(url.indexOf('/my') != -1) {
+					$('#my-menu').addClass('active');
+				} else if(url.indexOf('/course') != -1) {
+					$('#course-menu').addClass('active');
+				} else if(url.indexOf('/price') != -1) {
+					$('#price-menu').addClass('active');
+				} else {
+					$('#index-menu').addClass('active-menu');
+				}
+			});
+		</script>
+		<!--注册/登录切换-->
+		<script>
+			$("#login-switch").click(function() {
+				$('#signup').modal('hide');
+				$('#login').modal('show');
+			});
+			$("#signup-switch").click(function() {
+				$('#login').modal('hide');
+				$('#signup').modal('show');
+			});
+		</script>
+		<script>
+			function login() {
+				$.ajax({
+					type: "POST",
+					url: "{:url('my/web_login')}", //路径 
+					data: {
+						"account": $('#login_account').val(),
+						"password": $('#login_password').val()
+					},
+					success: function(res) { //返回数据根据结果进行相应的处理 
+						if(res.result) {
+							window.location.reload();
+						} else {
+							alert(res.msg);
+						}
+					}
+				});
+			}
+			
+			function signup(){
+				var nickName = $('#signup_nickName').val();
+				var wx = $('#signup_wx').val();
+				var phone = $('#signup_phone').val();
+				var account = $('#signup_account').val();
+				var thepassword = $('#signup_password').val();
+				if(nickName == ""||wx == "" ||phone == "" ||account == ""||thepassword == ""){
+					alert('{$Think.lang.web_common_15}');
+					return false;
+				}
+				$.ajax({
+					type: "POST",
+					url: "{:url('my/web_signup')}", //路径 
+					data: {
+						"nickName": $('#signup_nickName').val(),
+						"wx": $('#signup_wx').val(),
+						"phone": $('#signup_phone').val(),
+						"account": $('#signup_account').val(),
+						"password": $('#signup_password').val()
+					},
+					success: function(res) { //返回数据根据结果进行相应的处理 
+						if(res.result) {
+							alert('{$Think.lang.web_common_16}');
+							location.href='{:url('my/index')}?new=1';
+						} else {
+							alert(res.msg);
+						}
+					}
+				});
+			}
+			
+			function wx(){
+				$('#wx').modal('show');
+				/*
+				if($('#signup_wx').val() == ''){
+					alert('请填写微信号');
+					return false;
+				}
+				$.ajax({
+					type: "POST",
+					url: "{:url('my/validate_wx')}", //路径 
+					data: {
+						"wx": $('#signup_wx').val()
+					},
+					success: function(res) { //返回数据根据结果进行相应的处理 
+						if(res.result) {
+							if(res.data == 0){
+								alert('微信号可使用');
+							}else{
+								alert('微信号已被占用');
+							}
+						} else {
+							alert(res.msg);
+						}
+					}
+				});
+				*/
+			}
+			
+			function langtype(type){
+				if(type == 0){
+					document.cookie="think_var=zh-cn;path=/;";
+				}else if(type == 1){
+					document.cookie="think_var=en-us;path=/;";
+				}else{
+					document.cookie="think_var=ko-kr;path=/;";
+				}
+				window.location.reload();
+			}
+		</script>
+		<!-- 扩展JS -->
+		<!--页尾高度适配-->
+		<script>
+			var windowsH = $(window).height();
+			var bodyH = $(document.body).outerHeight(true);
+			var h = windowsH - bodyH;
+			console.log(h);
+			if(h > 0) {
+				$("footer").css("margin-top", h + 80);
+			}
+		</script>
+			
+		<!-- Global site tag (gtag.js) - Google Ads: 789908941 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-789908941"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-789908941');
+</script>
+<script>
+  gtag('event', 'page_view', {
+    'send_to': 'AW-789908941',
+    'user_id': 'replace with value'
+  });
+</script>
+
+	</body>
+
+</html>

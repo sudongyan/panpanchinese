@@ -1,0 +1,403 @@
+﻿{extend name="Base:common" /} {block name="body"}
+<link href="__STATIC__/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+<div class="header">
+	<h1 class="page-header">
+		套餐管理
+	</h1>
+	<ol class="breadcrumb">
+		<li>
+			<a href="{:url('index/index')}">首页</a>
+		</li>
+		<li>
+			<a href="{:url('price/index')}">套餐管理</a>
+		</li>
+		<li class="active">优惠券管理</li>
+	</ol>
+ 
+</div>
+<div id="page-inner">
+	<div class="row">
+		<div class="col-md-12">
+			<!-- Advanced Tables -->
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-lg-12"> 
+							<button type="button" class="btn btn-danger pull-right" data-toggle="modal" data-target="#addCoupon">新增优惠券</button>
+						</div>
+					</div>
+					<!-- /input-group -->
+				</div>
+				<div class="panel-body">
+					<div class="table-responsive">
+						<table class="table table-striped table-bordered table-hover">
+							<thead>
+								<tr>
+									<th>ID</th>
+									<th>名称</th>
+									<th>优惠金额</th>
+									<th>最小金额</th>
+									<th>优惠码</th>
+									<th>截止日期</th>
+									<th>订单数</th>
+									<th>状态</th>
+									<th>创建日期</th>
+									{if condition="($Think.session.course eq 1) OR ($Think.session.id eq 1)"}
+									<th width="70">管理</th>
+									{/if}
+								</tr>
+							</thead>
+							<tbody>
+								{volist name="list" id="vo"}
+								<tr>
+									<td>{$vo.id}</td>
+									<td>{$vo.name}</td>
+									<td class="center">{$vo.money}韩元<br />{$vo.cny_money}人民币<br />{$vo.usd_money}美元</td>
+									<td class="center">{$vo.min_money}韩元<br />{$vo.min_cny_money}人民币<br />{$vo.min_usd_money}美元</td>
+									<td class="center">{$vo.code}</td>
+									<td class="center">{$vo.end_time}</td>
+									<td class="center">{$vo.order_num}</td>
+									<td class="center">{if condition="$vo.state == 1"}开启{else /}关闭{/if}</td>
+									<td class="center">{$vo.create_time}</td>
+									{if condition="($Think.session.course eq 1) OR ($Think.session.id eq 1)"}
+									<td class="center">
+										<div class="btn-group-vertical" role="group" aria-label="...">
+											<button type="button" onclick="editCoupon('{$vo.id}','{$vo.name}','{$vo.end_time}','{$vo.money}','{$vo.min_money}','{$vo.cny_money}','{$vo.min_cny_money}','{$vo.usd_money}','{$vo.min_usd_money}','{$vo.code}')" class="btn btn-danger">编辑</button>
+											{if condition="$vo.state == 1"}
+											<button type="button" onclick="on_off({$vo.id})" class="btn btn-danger">关闭</button>
+											{else /}
+											<button type="button" onclick="on_off({$vo.id})" class="btn btn-danger">开启</button>
+											{/if}
+										</div>
+									</td>
+									{/if}
+								</tr>
+								{/volist}
+							</tbody>
+						</table>
+					</div>
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="box" id="box"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--End Advanced Tables -->
+		</div>
+	</div>
+</div>
+<div id="addCoupon" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title">新增优惠券</h4>
+      </div>
+      <div class="modal-body">
+      	<div class="form-horizontal">
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">名称</label>
+    				<div class="col-sm-9">
+      				<input type="text" class="form-control" id="name" placeholder="名称">
+    				</div>
+  			</div>
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">截止时间</label>
+    				<div class="col-sm-9">
+      				<input type="text" class="form-control" id="end_time" placeholder="截止时间" autocomplete="off">
+    				</div>
+  			</div>
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">优惠额度</label>
+    				<div class="col-sm-9">
+      				<input type="number" class="form-control" id="money" placeholder="优惠额度">
+    				</div>
+  			</div>
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">最小费用</label>
+    				<div class="col-sm-9">
+      				<input type="number" class="form-control" id="min_money" placeholder="最小费用">
+    				</div>
+  			</div>
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">CNY优惠额度</label>
+    				<div class="col-sm-9">
+      				<input type="number" class="form-control" id="cny_money" placeholder="CNY优惠额度">
+    				</div>
+  			</div>
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">CNY最小费用</label>
+    				<div class="col-sm-9">
+      				<input type="number" class="form-control" id="min_cny_money" placeholder="CNY最小费用">
+    				</div>
+  			</div>
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">USD优惠额度</label>
+    				<div class="col-sm-9">
+      				<input type="number" class="form-control" id="usd_money" placeholder="USD优惠额度">
+    				</div>
+  			</div>
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">USD最小费用</label>
+    				<div class="col-sm-9">
+      				<input type="number" class="form-control" id="min_usd_money" placeholder="USD最小费用">
+    				</div>
+  			</div>
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">优惠码</label>
+    				<div class="col-sm-9">
+      				<input type="text" class="form-control" id="code" placeholder="优惠码">
+    				</div>
+  			</div>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" onclick="addCoupon()">保存</button> 
+      </div>
+    </div>
+  </div>
+</div>
+<div id="editCoupon" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title">修改优惠券</h4>
+      </div>
+      <div class="modal-body">
+      	<div class="form-horizontal">
+      		<input type="hidden" id="editId" />
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">名称</label>
+    				<div class="col-sm-9">
+      				<input type="text" class="form-control" id="editName" placeholder="名称">
+    				</div>
+  			</div>
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">截止时间</label>
+    				<div class="col-sm-9">
+      				<input type="text" class="form-control" id="editEnd_time" placeholder="截止时间" autocomplete="off">
+    				</div>
+  			</div>
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">优惠额度</label>
+    				<div class="col-sm-9">
+      				<input type="number" class="form-control" id="editMoney" placeholder="优惠额度">
+    				</div>
+  			</div>
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">最小费用</label>
+    				<div class="col-sm-9">
+      				<input type="number" class="form-control" id="editMin_money" placeholder="最小费用">
+    				</div>
+  			</div>
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">CNY优惠额度</label>
+    				<div class="col-sm-9">
+      				<input type="number" class="form-control" id="editCny_money" placeholder="CNY优惠额度">
+    				</div>
+  			</div>
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">CNY最小费用</label>
+    				<div class="col-sm-9">
+      				<input type="number" class="form-control" id="editMin_cny_money" placeholder="CNY最小费用">
+    				</div>
+  			</div>
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">USD优惠额度</label>
+    				<div class="col-sm-9">
+      				<input type="number" class="form-control" id="editUsd_money" placeholder="USD优惠额度">
+    				</div>
+  			</div>
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">USD最小费用</label>
+    				<div class="col-sm-9">
+      				<input type="number" class="form-control" id="editMin_usd_money" placeholder="USD最小费用">
+    				</div>
+  			</div>
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">优惠码</label>
+    				<div class="col-sm-9">
+      				<input type="text" class="form-control" id="editCode" placeholder="优惠码">
+    				</div>
+  			</div>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" onclick="update()">保存</button> 
+      </div>
+    </div>
+  </div>
+</div>
+{/block} {block name="script"}
+<script src="__STATIC__/js/bootstrap-datetimepicker.min.js"></script>
+<script src="__STATIC__/js/bootstrap-datetimepicker.zh-CN.js"></script>
+<script>
+	var setTotalCount = {$total};
+	var p = {$p};
+	$('#box').paging({
+		initPageNo: {$p}, // 初始页码
+		totalPages: {$pageNum}, //总页数
+		totalCount: '共' + setTotalCount + '条数据', // 条目总数
+		slideSpeed: 300, // 缓动速度。单位毫秒
+		jump: false, //是否支持跳转
+		callback: function(page) { // 回调函数
+			if(page != p) {
+				window.location.replace("{:url('price/coupon')}" + '?p=' + page);
+			}
+		}
+	})
+</script>
+<script>
+	//新增套餐
+	function addCoupon() {
+		var name = $('#name').val();
+		var end_time = $('#end_time').val();
+		var money = $('#money').val();
+		var min_money = $('#min_money').val();
+		var cny_money = $('#cny_money').val();
+		var min_cny_money = $('#min_cny_money').val();
+		var usd_money = $('#usd_money').val();
+		var min_usd_money = $('#min_usd_money').val();
+		var code = $('#code').val();
+		var type="^[0-9]*[1-9][0-9]*$";
+		var re = new RegExp(type);
+		if(name.length < 1||code.length < 1){
+			alert('请正确输入');
+			return false;
+		}else if(end_time.length < 1){
+			alert('请正确输入截止时间');
+			return false;
+		}else if(money.length < 1 && money.match(re)==null&&min_money.length < 1 && min_money.match(re)==null&&cny_money.length < 1 && cny_money.match(re)==null&&min_cny_money.length < 1 && min_cny_money.match(re)==null&&usd_money.length < 1 && usd_money.match(re)==null&&min_usd_money.length < 1 && min_usd_money.match(re)==null){
+			alert('请正确输入费用');
+			return false;
+		}
+		info = '是否新增?';
+		if(confirm(info)) {
+			$.ajax({
+				type: "POST",
+				url: "{:url('price/add_coupon')}",
+				data: {
+					name: name,
+					end_time: end_time,
+					money: money,
+					min_money: min_money,
+					cny_money: cny_money,
+					min_cny_money: min_cny_money,
+					usd_money: usd_money,
+					min_usd_money: min_usd_money,
+					code: code
+				},
+				success: function(result) {
+					$('#addCoupon').modal('hide');
+					if(result == 1) {
+						location.reload();
+					} else {
+						alert('发生错误');
+					}
+				}
+			});
+		}
+	}
+	
+	function on_off(id){
+		$.ajax({
+				type: "POST",
+				url: "{:url('price/on_off_coupon')}",
+				data: {
+					id: id
+				},
+				success: function(result) {
+					if(result == 1) {
+						location.reload();
+					} else {
+						alert('发生错误');
+					}
+				}
+			});
+	}
+	
+	//更新
+	function editCoupon(id,name,end_time,money,min_money,cny_money,min_cny_money,usd_money,min_usd_money,code) {
+		$('#editId').val(id);
+		$("#editName").val(name);
+		$("#editEnd_time").val(end_time);
+		$("#editMoney").val(money);
+		$("#editMin_money").val(min_money);
+		$("#editCny_money").val(cny_money);
+		$("#editMin_cny_money").val(min_cny_money);
+		$("#editUsd_money").val(usd_money);
+		$("#editMin_usd_money").val(min_usd_money);
+		$("#editCode").val(code);
+		$('#editCoupon').modal('show');
+	}
+	
+	
+	//编辑代金券
+	function update() {
+		var id = $('#editId').val();
+		var name = $('#editName').val();
+		var end_time = $('#editEnd_time').val();
+		var money = $('#editMoney').val();
+		var min_money = $('#editMin_money').val();
+		var cny_money = $('#editCny_money').val();
+		var min_cny_money = $('#editMin_cny_money').val();
+		var usd_money = $('#editUsd_money').val();
+		var min_usd_money = $('#editMin_usd_money').val();
+		var code = $('#editCode').val();
+		var type="^[0-9]*[1-9][0-9]*$";
+		var re = new RegExp(type);
+		if(name.length < 1||code.length < 1){
+			alert('请正确输入');
+			return false;
+		}else if(end_time.length < 1){
+			alert('请正确输入截止时间');
+			return false;
+		}else if(money.length < 1 && money.match(re)==null&&min_money.length < 1 && min_money.match(re)==null&&cny_money.length < 1 && cny_money.match(re)==null&&min_cny_money.length < 1 && min_cny_money.match(re)==null&&usd_money.length < 1 && usd_money.match(re)==null&&min_usd_money.length < 1 && min_usd_money.match(re)==null){
+			alert('请正确输入费用');
+			return false;
+		}
+		info = '是否编辑?';
+		if(confirm(info)) {
+			$.ajax({
+				type: "POST",
+				url: "{:url('price/edit_coupon')}",
+				data: {
+					id: id,
+					name: name,
+					end_time: end_time,
+					money: money,
+					min_money: min_money,
+					cny_money: cny_money,
+					min_cny_money: min_cny_money,
+					usd_money: usd_money,
+					min_usd_money: min_usd_money,
+					code: code
+				},
+				success: function(result) {
+					$('#editCoupon').modal('hide');
+					if(result == 1) {
+						location.reload();
+					} else {
+						alert('发生错误');
+					}
+				}
+			});
+		}
+	}
+	
+	$('#end_time').datetimepicker({
+		language: 'zh-CN',
+		format: 'yyyy-mm-dd hh:ii',
+		startDate: new Date()
+	});
+	$('#editEnd_time').datetimepicker({
+		language: 'zh-CN',
+		format: 'yyyy-mm-dd hh:ii',
+		startDate: new Date()
+	});
+</script>
+{/block}

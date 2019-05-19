@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>学员评价</title>
+		<link href="__STATIC__/css/aui.css" rel="stylesheet" />
+		<link href="__STATIC__/css/style.css" rel="stylesheet" /> {block name="css"}{/block}
+	</head>
+
+	<body>
+		<header class="aui-bar aui-bar-nav">
+			<a class="aui-pull-left aui-btn" onclick="javascript:history.back(-1);">
+				<span class="aui-iconfont aui-icon-left"></span>
+			</a>
+			<div class="aui-title">学员评价</div>
+		</header>
+		<div class="aui-content aui-margin-b-15">
+			<ul class="aui-list aui-media-list" id="list">
+				{volist name="list" id="vo"}
+				<li class="aui-list-item">
+					<div class="aui-media-list-item-inner">
+						<div class="aui-list-item-media">
+							<img src="{$vo.avatar}">
+						</div>
+						<div class="aui-list-item-inner">
+							<div class="aui-list-item-text">
+								<div class="aui-list-item-title">{$vo.nickName}</div>
+							</div>
+							<div class="aui-list-item-text">
+								{$vo.information}
+							</div>
+						</div>
+					</div>
+				</li>
+				{/volist}
+			</ul>
+		</div>
+		<script src="__STATIC__/js/jquery-1.10.2.js"></script>
+		<script src="__STATIC__/js/aui-scroll.js"></script>
+		<script>
+			var p = 1;
+			var s = 1;
+			var scroll = new auiScroll({
+				listen: true, //是否监听滚动高度，开启后将实时返回滚动高度
+				distance: 200 //判断到达底部的距离，isToBottom为true
+			}, function(ret) {
+				if(ret.isToBottom == true && s == 1) {
+					p++;
+					$.getJSON("{:url('my/evaluate_list')}" + "?p=" + p, function(result) {
+						data = result.data;
+						if(data.length < 20){
+							s = 0;
+						}
+						for(var n = 0; n < data.length; n++) {
+							document.getElementById("list").innerHTML +=
+								'<li class="aui-list-item"><div class="aui-media-list-item-inner"><div class="aui-list-item-media">' +
+								'<img src="' + data[n].avatar + '">' +
+								'</div><div class="aui-list-item-inner"><div class="aui-list-item-text">' +
+								'<div class="aui-list-item-title">' + data[n].nickName + '</div>' +
+								'</div><div class="aui-list-item-text">' +
+								+data[n].information +
+								'</div></div></div></li>';
+						}
+					});
+				}
+			});
+		</script>		<!-- Global site tag (gtag.js) - Google Ads: 789908941 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-789908941"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-789908941');
+</script>
+<script>
+  gtag('event', 'page_view', {
+    'send_to': 'AW-789908941',
+    'user_id': 'replace with value'
+  });
+</script>
+	</body>
+
+</html>

@@ -1,0 +1,1049 @@
+{extend name="base:common" /}  {block name="css"}
+<style>
+	table td {
+		border: solid #d6d6d6;
+		border-width: 0px 1px 1px 0px;
+		padding: 0px;
+		width: 12.5%;
+	}/*dialog*/
+.aui-dialog {
+	width: 33.5rem;
+	text-align: center;
+	position: fixed;
+	z-index: 999;
+	left: 50%;
+	margin-left: -16.75rem;
+	margin-top: 0;
+	top: 45%;
+	border-radius: 0.3rem;
+	border: 2px solid #dddddd;
+	opacity: 0;
+	background-color: #ffffff;
+	-webkit-transform: translate3d(0, 0, 0) scale(1.2);
+          	transform: translate3d(0, 0, 0) scale(1.2);
+ 	-webkit-transition-property: -webkit-transform, opacity;
+          	transition-property: transform, opacity;
+    /*display: none;*/
+}
+.aui-dialog-header {
+    padding: 0.5rem 0.75rem 0 0.75rem;
+    text-align: center;
+    font-size: 1.5em;
+    color: #212121;
+}
+.aui-dialog-body {
+    padding: 0.75rem;
+    overflow: hidden;
+    font-size: 1.1em;
+    color: #757575;
+}
+.aui-dialog-body input {
+	border: 1px solid #dddddd;
+	height: 1.8rem;
+	line-height: 1.8rem;
+	min-height: 1.8rem;
+	padding-left: 0.25rem;
+	padding-right: 0.25rem;
+}
+.aui-dialog-footer {
+    position: relative;
+    font-size: 1em;
+    border-top: 1px solid #dddddd;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: center;
+	-webkit-justify-content: center;
+			justify-content: center;
+}
+.aui-dialog-btn {
+	position: relative;
+	display: block;
+    width: 100%;
+	padding: 0 0.25rem;
+	height: 3rem;
+	font-size: 1.5rem;
+	line-height: 3rem;
+	text-align: center;
+	color: #0894ec;
+	border-right: 1px solid #dddddd;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	-webkit-box-sizing: border-box;
+			box-sizing: border-box;
+	-webkit-box-flex: 1;
+			box-flex: 1;
+}
+.aui-dialog-btn:last-child {
+	border-right: none;
+}
+.aui-dialog.aui-dialog-in {
+	opacity: 1;
+	-webkit-transition-duration: 300ms;
+	      transition-duration: 300ms;
+	-webkit-transform: translate3d(0, 0, 0) scale(1);
+	      transform: translate3d(0, 0, 0) scale(1);
+}
+.aui-dialog.aui-dialog-out {
+	opacity: 0;
+	-webkit-transition-duration: 300ms;
+	      transition-duration: 300ms;
+	-webkit-transform: translate3d(0, 0, 0) scale(0.815);
+	      transform: translate3d(0, 0, 0) scale(0.815);
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5) {
+    .aui-dialog-footer {
+		border: none;
+        background-size: 100% 1px;
+		background-repeat: no-repeat;
+		background-position: top;
+        background-image: linear-gradient(0,#dddddd,#dddddd 50%,transparent 50%);
+        background-image: -webkit-linear-gradient(90deg,#dddddd,#dddddd 50%,transparent 50%);
+	}
+	.aui-dialog-btn {
+		border: none;
+        background-image: -webkit-linear-gradient(0deg, #dddddd, #dddddd 50%, transparent 50%);
+        background-image: linear-gradient(270deg, #dddddd, #dddddd 50%, transparent 50%);
+        background-size: 1px 100%;
+        background-repeat: no-repeat;
+        background-position: right;
+	}
+	.aui-dialog-btn:last-child {
+		border: none;
+        background-size: 0 100%;
+	}
+	.aui-dialog-body input {
+        border: none;
+        background-image: -webkit-linear-gradient(270deg, #dddddd, #dddddd 50%, transparent 50%), -webkit-linear-gradient(180deg, #dddddd, #dddddd 50%, transparent 50%), -webkit-linear-gradient(90deg, #dddddd, #dddddd 50%, transparent 50%), -webkit-linear-gradient(0, #dddddd, #dddddd 50%, transparent 50%);
+        background-image: linear-gradient(180deg, #dddddd, #dddddd 50%, transparent 50%), linear-gradient(270deg, #dddddd, #dddddd 50%, transparent 50%), linear-gradient(0deg, #dddddd, #dddddd 50%, transparent 50%), linear-gradient(90deg, #dddddd, #dddddd 50%, transparent 50%);
+        background-size: 100% 1px, 1px 100%, 100% 1px, 1px 100%;
+        background-repeat: no-repeat;
+        background-position: top, right top, bottom, left top;
+    }
+}/*toast*/
+.aui-toast {
+	background: rgba(0, 0, 0, 0.7);
+	text-align: center;
+	border-radius: 0.25rem;
+	color: #ffffff;
+	position: fixed;
+	z-index: 3;
+	top: 45%;
+	left: 50%;
+	width: 7.5em;
+	min-height: 6em;
+	margin-left: -3.75em;
+	margin-top: -4rem;
+	display: none;
+}
+.aui-toast .aui-iconfont {
+	margin-top: 0.2rem;
+	display: block;
+	font-size: 2.6rem;
+}
+.aui-toast-content {
+  margin: 0 0 0.75rem;
+}
+.aui-toast-loading {
+    background-color: #ffffff;
+    border-radius: 100%;
+    margin: 0.75rem 0;
+    -webkit-animation-fill-mode: both;
+        	animation-fill-mode: both;
+    border: 2px solid #ffffff;
+    border-bottom-color: transparent;
+    height: 2.25rem;
+    width: 2.25rem;
+    background: transparent !important;
+    display: inline-block;
+    -webkit-animation: rotate 1s 0s linear infinite;
+        	animation: rotate 1s 0s linear infinite;
+}
+</style>
+{/block}{block name="body"}
+<div class="container-fluid" style="background-color: #ffffff;margin-top: -20px;margin-bottom: 20px;">
+	<div class="container" style="padding-top: 10px;padding-bottom: 10px;">
+		<button type="button" class="btn btn-default btn-lg" onclick="location.href='{:url('teacher/index')}'">{$Think.lang.teacher_index_1}</button>
+		<button type="button" class="btn btn-purple btn-lg">{$Think.lang.teacher_index_2}</button>
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-md-8">
+			<div class="panel panel-default">
+				<div class="panel-heading" style="text-align: center; height: 60px;">
+					<span class="glyphicon glyphicon-circle-arrow-left pull-left" style="font-size: 30px;color: #9981b4;margin-top: 5px;" aria-hidden="true" onclick="left();"></span>
+					<div class="center-block">
+						<span id="theweek">{$day.a} —— {$day.g}</span>
+						<h6 class="center-block" style="color: #9D9D9D;margin-top: 3px;">{$Think.lang.teacher_index_14}</h6>
+					</div>
+					<span class="glyphicon glyphicon-circle-arrow-right pull-right" style="font-size: 30px;color: #9981b4;margin-top: -40px;" aria-hidden="true" onclick="right();"></span>
+				</div>
+				<div id="inlogin" class="alert alert-danger" style="background-color: #ff5e5e;color: #ffffff;text-align: center;" role="alert">{$Think.lang.teacher_index_15}<br />{$Think.lang.teacher_index_16}</div>
+				<div id="tableHead" class="panel-body" style="padding: 0px;">
+					<table style="width: 100%;text-align: center;">
+						<tbody>
+							<tr style="color: #ffffff;background-color:#9981b4;">
+								<td>TIME</td>
+								<td>{$Think.lang.week_1}
+									<div id="daydate-0"></div>
+								</td>
+								<td>{$Think.lang.week_2}
+									<div id="daydate-1"></div>
+								</td>
+								<td>{$Think.lang.week_3}
+									<div id="daydate-2"></div>
+								</td>
+								<td>{$Think.lang.week_4}
+									<div id="daydate-3"></div>
+								</td>
+								<td>{$Think.lang.week_5}
+									<div id="daydate-4"></div>
+								</td>
+								<td>{$Think.lang.week_6}
+									<div id="daydate-5"></div>
+								</td>
+								<td>{$Think.lang.week_0}
+									<div id="daydate-6"></div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="panel-body pre-scrollable" style="max-height: 500px;padding: 0px;">
+					<table style="width: 100%;text-align: center;">
+						<tbody>
+							<tr>
+								<td rowspan="2">0{$Think.lang.teacher_index_9}</td>
+								<td id="a0">&nbsp;</td>
+								<td id="b0">&nbsp;</td>
+								<td id="c0">&nbsp;</td>
+								<td id="d0">&nbsp;</td>
+								<td id="e0">&nbsp;</td>
+								<td id="f0">&nbsp;</td>
+								<td id="g0">&nbsp;</td>
+							</tr>
+							<tr>
+								<td id="a1">&nbsp;</td>
+								<td id="b1">&nbsp;</td>
+								<td id="c1">&nbsp;</td>
+								<td id="d1">&nbsp;</td>
+								<td id="e1">&nbsp;</td>
+								<td id="f1">&nbsp;</td>
+								<td id="g1">&nbsp;</td>
+							</tr>
+							<tr>
+								<td rowspan="2">1{$Think.lang.teacher_index_9}</td>
+								<td id="a2">&nbsp;</td>
+								<td id="b2">&nbsp;</td>
+								<td id="c2">&nbsp;</td>
+								<td id="d2">&nbsp;</td>
+								<td id="e2">&nbsp;</td>
+								<td id="f2">&nbsp;</td>
+								<td id="g2">&nbsp;</td>
+							</tr>
+							<tr>
+								<td id="a3">&nbsp;</td>
+								<td id="b3">&nbsp;</td>
+								<td id="c3">&nbsp;</td>
+								<td id="d3">&nbsp;</td>
+								<td id="e3">&nbsp;</td>
+								<td id="f3">&nbsp;</td>
+								<td id="g3">&nbsp;</td>
+							</tr>
+							<tr>
+								<td rowspan="2">2{$Think.lang.teacher_index_9}</td>
+								<td id="a4">&nbsp;</td>
+								<td id="b4">&nbsp;</td>
+								<td id="c4">&nbsp;</td>
+								<td id="d4">&nbsp;</td>
+								<td id="e4">&nbsp;</td>
+								<td id="f4">&nbsp;</td>
+								<td id="g4">&nbsp;</td>
+							</tr>
+							<tr>
+								<td id="a5">&nbsp;</td>
+								<td id="b5">&nbsp;</td>
+								<td id="c5">&nbsp;</td>
+								<td id="d5">&nbsp;</td>
+								<td id="e5">&nbsp;</td>
+								<td id="f5">&nbsp;</td>
+								<td id="g5">&nbsp;</td>
+							</tr>
+							<tr>
+								<td rowspan="2">3{$Think.lang.teacher_index_9}</td>
+								<td id="a6">&nbsp;</td>
+								<td id="b6">&nbsp;</td>
+								<td id="c6">&nbsp;</td>
+								<td id="d6">&nbsp;</td>
+								<td id="e6">&nbsp;</td>
+								<td id="f6">&nbsp;</td>
+								<td id="g6">&nbsp;</td>
+							</tr>
+							<tr>
+								<td id="a7">&nbsp;</td>
+								<td id="b7">&nbsp;</td>
+								<td id="c7">&nbsp;</td>
+								<td id="d7">&nbsp;</td>
+								<td id="e7">&nbsp;</td>
+								<td id="f7">&nbsp;</td>
+								<td id="g7">&nbsp;</td>
+							</tr>
+							<tr>
+								<td rowspan="2">4{$Think.lang.teacher_index_9}</td>
+								<td id="a8">&nbsp;</td>
+								<td id="b8">&nbsp;</td>
+								<td id="c8">&nbsp;</td>
+								<td id="d8">&nbsp;</td>
+								<td id="e8">&nbsp;</td>
+								<td id="f8">&nbsp;</td>
+								<td id="g8">&nbsp;</td>
+							</tr>
+							<tr>
+								<td id="a9">&nbsp;</td>
+								<td id="b9">&nbsp;</td>
+								<td id="c9">&nbsp;</td>
+								<td id="d9">&nbsp;</td>
+								<td id="e9">&nbsp;</td>
+								<td id="f9">&nbsp;</td>
+								<td id="g9">&nbsp;</td>
+							</tr>
+							<tr>
+								<td rowspan="2">5{$Think.lang.teacher_index_9}</td>
+								<td id="a10">&nbsp;</td>
+								<td id="b10">&nbsp;</td>
+								<td id="c10">&nbsp;</td>
+								<td id="d10">&nbsp;</td>
+								<td id="e10">&nbsp;</td>
+								<td id="f10">&nbsp;</td>
+								<td id="g10">&nbsp;</td>
+							</tr>
+							<tr>
+								<td id="a11">&nbsp;</td>
+								<td id="b11">&nbsp;</td>
+								<td id="c11">&nbsp;</td>
+								<td id="d11">&nbsp;</td>
+								<td id="e11">&nbsp;</td>
+								<td id="f11">&nbsp;</td>
+								<td id="g11">&nbsp;</td>
+							</tr>
+							<tr>
+								<td rowspan="2">6{$Think.lang.teacher_index_9}</td>
+								<td id="a12">&nbsp;</td>
+								<td id="b12">&nbsp;</td>
+								<td id="c12">&nbsp;</td>
+								<td id="d12">&nbsp;</td>
+								<td id="e12">&nbsp;</td>
+								<td id="f12">&nbsp;</td>
+								<td id="g12">&nbsp;</td>
+							</tr>
+							<tr>
+								<td id="a13">&nbsp;</td>
+								<td id="b13">&nbsp;</td>
+								<td id="c13">&nbsp;</td>
+								<td id="d13">&nbsp;</td>
+								<td id="e13">&nbsp;</td>
+								<td id="f13">&nbsp;</td>
+								<td id="g13">&nbsp;</td>
+							</tr>
+							<tr>
+								<td rowspan="2">7{$Think.lang.teacher_index_9}</td>
+								<td id="a14">&nbsp;</td>
+								<td id="b14">&nbsp;</td>
+								<td id="c14">&nbsp;</td>
+								<td id="d14">&nbsp;</td>
+								<td id="e14">&nbsp;</td>
+								<td id="f14">&nbsp;</td>
+								<td id="g14">&nbsp;</td>
+							</tr>
+							<tr>
+								<td id="a15">&nbsp;</td>
+								<td id="b15">&nbsp;</td>
+								<td id="c15">&nbsp;</td>
+								<td id="d15">&nbsp;</td>
+								<td id="e15">&nbsp;</td>
+								<td id="f15">&nbsp;</td>
+								<td id="g15">&nbsp;</td>
+							</tr>
+							<tr>
+								<td rowspan="2">8{$Think.lang.teacher_index_9}</td>
+								<td id="a16">&nbsp;</td>
+								<td id="b16">&nbsp;</td>
+								<td id="c16">&nbsp;</td>
+								<td id="d16">&nbsp;</td>
+								<td id="e16">&nbsp;</td>
+								<td id="f16">&nbsp;</td>
+								<td id="g16">&nbsp;</td>
+							</tr>
+							<tr>
+								<td id="a17">&nbsp;</td>
+								<td id="b17">&nbsp;</td>
+								<td id="c17">&nbsp;</td>
+								<td id="d17">&nbsp;</td>
+								<td id="e17">&nbsp;</td>
+								<td id="f17">&nbsp;</td>
+								<td id="g17">&nbsp;</td>
+							</tr>
+							<tr class="opentr" style="display: none;">
+								<td rowspan="2">9{$Think.lang.teacher_index_9}</td>
+								<td id="a18">&nbsp;</td>
+								<td id="b18">&nbsp;</td>
+								<td id="c18">&nbsp;</td>
+								<td id="d18">&nbsp;</td>
+								<td id="e18">&nbsp;</td>
+								<td id="f18">&nbsp;</td>
+								<td id="g18">&nbsp;</td>
+							</tr>
+							<tr class="opentr" style="display: none;">
+								<td id="a19">&nbsp;</td>
+								<td id="b19">&nbsp;</td>
+								<td id="c19">&nbsp;</td>
+								<td id="d19">&nbsp;</td>
+								<td id="e19">&nbsp;</td>
+								<td id="f19">&nbsp;</td>
+								<td id="g19">&nbsp;</td>
+							</tr>
+							<tr class="opentr" style="display: none;">
+								<td rowspan="2">10{$Think.lang.teacher_index_9}</td>
+								<td id="a20">&nbsp;</td>
+								<td id="b20">&nbsp;</td>
+								<td id="c20">&nbsp;</td>
+								<td id="d20">&nbsp;</td>
+								<td id="e20">&nbsp;</td>
+								<td id="f20">&nbsp;</td>
+								<td id="g20">&nbsp;</td>
+							</tr>
+							<tr class="opentr" style="display: none;">
+								<td id="a21">&nbsp;</td>
+								<td id="b21">&nbsp;</td>
+								<td id="c21">&nbsp;</td>
+								<td id="d21">&nbsp;</td>
+								<td id="e21">&nbsp;</td>
+								<td id="f21">&nbsp;</td>
+								<td id="g21">&nbsp;</td>
+							</tr>
+							<tr class="opentr" style="display: none;">
+								<td rowspan="2">11{$Think.lang.teacher_index_9}</td>
+								<td id="a22">&nbsp;</td>
+								<td id="b22">&nbsp;</td>
+								<td id="c22">&nbsp;</td>
+								<td id="d22">&nbsp;</td>
+								<td id="e22">&nbsp;</td>
+								<td id="f22">&nbsp;</td>
+								<td id="g22">&nbsp;</td>
+							</tr>
+							<tr class="opentr" style="display: none;">
+								<td id="a23">&nbsp;</td>
+								<td id="b23">&nbsp;</td>
+								<td id="c23">&nbsp;</td>
+								<td id="d23">&nbsp;</td>
+								<td id="e23">&nbsp;</td>
+								<td id="f23">&nbsp;</td>
+								<td id="g23">&nbsp;</td>
+							</tr>
+							<tr class="opentr" style="display: none;">
+								<td rowspan="2">12{$Think.lang.teacher_index_9}</td>
+								<td id="a24">&nbsp;</td>
+								<td id="b24">&nbsp;</td>
+								<td id="c24">&nbsp;</td>
+								<td id="d24">&nbsp;</td>
+								<td id="e24">&nbsp;</td>
+								<td id="f24">&nbsp;</td>
+								<td id="g24">&nbsp;</td>
+							</tr>
+							<tr class="opentr" style="display: none;">
+								<td id="a25">&nbsp;</td>
+								<td id="b25">&nbsp;</td>
+								<td id="c25">&nbsp;</td>
+								<td id="d25">&nbsp;</td>
+								<td id="e25">&nbsp;</td>
+								<td id="f25">&nbsp;</td>
+								<td id="g25">&nbsp;</td>
+							</tr>
+							<tr class="opentr" style="display: none;">
+								<td rowspan="2">13{$Think.lang.teacher_index_9}</td>
+								<td id="a26">&nbsp;</td>
+								<td id="b26">&nbsp;</td>
+								<td id="c26">&nbsp;</td>
+								<td id="d26">&nbsp;</td>
+								<td id="e26">&nbsp;</td>
+								<td id="f26">&nbsp;</td>
+								<td id="g26">&nbsp;</td>
+							</tr>
+							<tr class="opentr" style="display: none;">
+								<td id="a27">&nbsp;</td>
+								<td id="b27">&nbsp;</td>
+								<td id="c27">&nbsp;</td>
+								<td id="d27">&nbsp;</td>
+								<td id="e27">&nbsp;</td>
+								<td id="f27">&nbsp;</td>
+								<td id="g27">&nbsp;</td>
+							</tr>
+							<tr class="opentr" style="display: none;">
+								<td rowspan="2">14{$Think.lang.teacher_index_9}</td>
+								<td id="a28">&nbsp;</td>
+								<td id="b28">&nbsp;</td>
+								<td id="c28">&nbsp;</td>
+								<td id="d28">&nbsp;</td>
+								<td id="e28">&nbsp;</td>
+								<td id="f28">&nbsp;</td>
+								<td id="g28">&nbsp;</td>
+							</tr>
+							<tr class="opentr" style="display: none;">
+								<td id="a29">&nbsp;</td>
+								<td id="b29">&nbsp;</td>
+								<td id="c29">&nbsp;</td>
+								<td id="d29">&nbsp;</td>
+								<td id="e29">&nbsp;</td>
+								<td id="f29">&nbsp;</td>
+								<td id="g29">&nbsp;</td>
+							</tr>
+							<tr class="opentr" style="display: none;">
+								<td rowspan="2">15{$Think.lang.teacher_index_9}</td>
+								<td id="a30">&nbsp;</td>
+								<td id="b30">&nbsp;</td>
+								<td id="c30">&nbsp;</td>
+								<td id="d30">&nbsp;</td>
+								<td id="e30">&nbsp;</td>
+								<td id="f30">&nbsp;</td>
+								<td id="g30">&nbsp;</td>
+							</tr>
+							<tr class="opentr" style="display: none;">
+								<td id="a31">&nbsp;</td>
+								<td id="b31">&nbsp;</td>
+								<td id="c31">&nbsp;</td>
+								<td id="d31">&nbsp;</td>
+								<td id="e31">&nbsp;</td>
+								<td id="f31">&nbsp;</td>
+								<td id="g31">&nbsp;</td>
+							</tr>
+							<tr class="opentr" style="display: none;">
+								<td rowspan="2">16{$Think.lang.teacher_index_9}</td>
+								<td id="a32">&nbsp;</td>
+								<td id="b32">&nbsp;</td>
+								<td id="c32">&nbsp;</td>
+								<td id="d32">&nbsp;</td>
+								<td id="e32">&nbsp;</td>
+								<td id="f32">&nbsp;</td>
+								<td id="g32">&nbsp;</td>
+							</tr>
+							<tr class="opentr" style="display: none;">
+								<td id="a33">&nbsp;</td>
+								<td id="b33">&nbsp;</td>
+								<td id="c33">&nbsp;</td>
+								<td id="d33">&nbsp;</td>
+								<td id="e33">&nbsp;</td>
+								<td id="f33">&nbsp;</td>
+								<td id="g33">&nbsp;</td>
+							</tr>
+							<tr class="opentr" style="display: none;">
+								<td rowspan="2">17{$Think.lang.teacher_index_9}</td>
+								<td id="a34">&nbsp;</td>
+								<td id="b34">&nbsp;</td>
+								<td id="c34">&nbsp;</td>
+								<td id="d34">&nbsp;</td>
+								<td id="e34">&nbsp;</td>
+								<td id="f34">&nbsp;</td>
+								<td id="g34">&nbsp;</td>
+							</tr>
+							<tr class="opentr" style="display: none;">
+								<td id="a35">&nbsp;</td>
+								<td id="b35">&nbsp;</td>
+								<td id="c35">&nbsp;</td>
+								<td id="d35">&nbsp;</td>
+								<td id="e35">&nbsp;</td>
+								<td id="f35">&nbsp;</td>
+								<td id="g35">&nbsp;</td>
+							</tr>
+							<tr class="opentr" style="display: none;">
+								<td rowspan="2">18{$Think.lang.teacher_index_9}</td>
+								<td id="a36">&nbsp;</td>
+								<td id="b36">&nbsp;</td>
+								<td id="c36">&nbsp;</td>
+								<td id="d36">&nbsp;</td>
+								<td id="e36">&nbsp;</td>
+								<td id="f36">&nbsp;</td>
+								<td id="g36">&nbsp;</td>
+							</tr>
+							<tr class="opentr" style="display: none;">
+								<td id="a37">&nbsp;</td>
+								<td id="b37">&nbsp;</td>
+								<td id="c37">&nbsp;</td>
+								<td id="d37">&nbsp;</td>
+								<td id="e37">&nbsp;</td>
+								<td id="f37">&nbsp;</td>
+								<td id="g37">&nbsp;</td>
+							</tr>
+							<tr class="opentr" style="display: none;">
+								<td rowspan="2">19{$Think.lang.teacher_index_9}</td>
+								<td id="a38">&nbsp;</td>
+								<td id="b38">&nbsp;</td>
+								<td id="c38">&nbsp;</td>
+								<td id="d38">&nbsp;</td>
+								<td id="e38">&nbsp;</td>
+								<td id="f38">&nbsp;</td>
+								<td id="g38">&nbsp;</td>
+							</tr>
+							<tr class="opentr" style="display: none;">
+								<td id="a39">&nbsp;</td>
+								<td id="b39">&nbsp;</td>
+								<td id="c39">&nbsp;</td>
+								<td id="d39">&nbsp;</td>
+								<td id="e39">&nbsp;</td>
+								<td id="f39">&nbsp;</td>
+								<td id="g39">&nbsp;</td>
+							</tr>
+							<tr class="opentr" style="display: none;">
+								<td rowspan="2">20{$Think.lang.teacher_index_9}</td>
+								<td id="a40">&nbsp;</td>
+								<td id="b40">&nbsp;</td>
+								<td id="c40">&nbsp;</td>
+								<td id="d40">&nbsp;</td>
+								<td id="e40">&nbsp;</td>
+								<td id="f40">&nbsp;</td>
+								<td id="g40">&nbsp;</td>
+							</tr>
+							<tr class="opentr" style="display: none;">
+								<td id="a41">&nbsp;</td>
+								<td id="b41">&nbsp;</td>
+								<td id="c41">&nbsp;</td>
+								<td id="d41">&nbsp;</td>
+								<td id="e41">&nbsp;</td>
+								<td id="f41">&nbsp;</td>
+								<td id="g41">&nbsp;</td>
+							</tr>
+							<tr class="opentr" style="display: none;">
+								<td rowspan="2">21{$Think.lang.teacher_index_9}</td>
+								<td id="a42">&nbsp;</td>
+								<td id="b42">&nbsp;</td>
+								<td id="c42">&nbsp;</td>
+								<td id="d42">&nbsp;</td>
+								<td id="e42">&nbsp;</td>
+								<td id="f42">&nbsp;</td>
+								<td id="g42">&nbsp;</td>
+							</tr>
+							<tr class="opentr" style="display: none;">
+								<td id="a43">&nbsp;</td>
+								<td id="b43">&nbsp;</td>
+								<td id="c43">&nbsp;</td>
+								<td id="d43">&nbsp;</td>
+								<td id="e43">&nbsp;</td>
+								<td id="f43">&nbsp;</td>
+								<td id="g43">&nbsp;</td>
+							</tr>
+							<tr class="opentr" style="display: none;">
+								<td rowspan="2">22{$Think.lang.teacher_index_9}</td>
+								<td id="a44">&nbsp;</td>
+								<td id="b44">&nbsp;</td>
+								<td id="c44">&nbsp;</td>
+								<td id="d44">&nbsp;</td>
+								<td id="e44">&nbsp;</td>
+								<td id="f44">&nbsp;</td>
+								<td id="g44">&nbsp;</td>
+							</tr>
+							<tr class="opentr" style="display: none;">
+								<td id="a45">&nbsp;</td>
+								<td id="b45">&nbsp;</td>
+								<td id="c45">&nbsp;</td>
+								<td id="d45">&nbsp;</td>
+								<td id="e45">&nbsp;</td>
+								<td id="f45">&nbsp;</td>
+								<td id="g45">&nbsp;</td>
+							</tr>
+							<tr class="opentr" style="display: none;">
+								<td rowspan="2">23{$Think.lang.teacher_index_9}</td>
+								<td id="a46">&nbsp;</td>
+								<td id="b46">&nbsp;</td>
+								<td id="c46">&nbsp;</td>
+								<td id="d46">&nbsp;</td>
+								<td id="e46">&nbsp;</td>
+								<td id="f46">&nbsp;</td>
+								<td id="g46">&nbsp;</td>
+							</tr>
+							<tr class="opentr" style="display: none;">
+								<td id="a47">&nbsp;</td>
+								<td id="b47">&nbsp;</td>
+								<td id="c47">&nbsp;</td>
+								<td id="d47">&nbsp;</td>
+								<td id="e47">&nbsp;</td>
+								<td id="f47">&nbsp;</td>
+								<td id="g47">&nbsp;</td>
+							</tr>
+						</tbody>
+					</table>
+					<button id="open-button" type="button" class="btn btn-purple btn-lg btn-block" onclick="opentr();">{$Think.lang.teacher_index_10}</button>
+				</div>
+			</div>
+		</div>
+		<div id="teacherlist" class="col-md-4">
+		</div>
+	</div>
+</div>
+{/block} {block name="script"}
+		<script src="__STATIC__/js/aui-dialog.js"></script>
+		<script src="__STATIC__/js/aui-toast.js"></script>
+		
+	<script>
+		function teacherinfo(id) {
+			var zone = new Date().getTimezoneOffset() / 60;
+			if(zone != 0){
+				zone = zone - (zone * 2);
+			}
+			location.href = '{:url('teacher/info')}?tid=' + id + '&thetimezone=' + zone;
+		}
+	</script>
+	<script>
+	var dialog = new auiDialog();
+	var toast;
+	var nowday;
+	var nowtime;
+	window.onload = function() {
+		nowday = '{$nowday}';
+		nowtime = '{$nowtime}';
+		newupdate(nowday);
+		document.getElementById("tableHead").style.width = (document.getElementById("tableHead").offsetWidth - getScrollWidth()) + 'px';
+		
+		{if $Think.session.ko_id != null }
+		$('#inlogin').css('display','none');
+		{else}
+		$('#login').modal('show');
+		{/if}
+	}
+	var daylist = [];
+	{volist name="day" id="vo"}
+	daylist.push('{$vo}');
+	{/volist}
+
+	function newupdate() {
+		var theweek = [];
+		for(var i = 0; i < daylist.length; i++) {
+			var thedatename = daylist[i].replace(/-/g, '/');
+			$('#daydate-' + i).css('font-size','12px');
+			$('#daydate-' + i).html(thedatename.substr(thedatename.length - 5));
+			switch(i) {
+				case 0:
+					theweek[i] = 'a';
+					break;
+				case 1:
+					theweek[i] = 'b';
+					break;
+				case 2:
+					theweek[i] = 'c';
+					break;
+				case 3:
+					theweek[i] = 'd';
+					break;
+				case 4:
+					theweek[i] = 'e';
+					break;
+				case 5:
+					theweek[i] = 'f';
+					break;
+				case 6:
+					theweek[i] = 'g';
+					break;
+			}
+			var theday = daylist[i];
+			if(new Date(nowday.replace(/-/g, '/')).getTime() > new Date(theday.replace(/-/g, '/')).getTime()) {
+				for(var z = 0; z < 48; z++) {
+					document.getElementById(theweek[i] + z).style.backgroundColor = '#E4E4E4';
+				}
+			}
+			if(new Date(nowday.replace(/-/g, '/')).getTime() == new Date(theday.replace(/-/g, '/')).getTime()) {
+				var thenowtime1 = new Date(nowtime.replace(/-/g, '/')).getHours();
+				var thenowtime2 = new Date(nowtime.replace(/-/g, '/')).getMinutes();
+				var thenum = thenowtime1 * 2;
+				if(thenowtime2 < 30) {
+					thenum++;
+				} else {
+					thenum = thenum + 2;
+				}
+				for(var z = 0; z < thenum + 1; z++) {
+					$('#' + theweek[i] + z).css('background-color','#E4E4E4');
+				}
+			}
+			$.ajaxSetup({
+				async: false
+			});
+			var zone = new Date().getTimezoneOffset() / 60;
+			if(zone != 0){
+				zone = zone - (zone * 2);
+			}
+			$.getJSON("{:url('teacher/curriculum_all')}" + "?&date=" + theday + '&thetimezone=' + zone, function(result) {
+				data = result.data;
+				for(var w = 0; w <= 47; w++) {
+					var cur_num_all = 0;
+					var cur_num_me = 0;
+					var cur_num_notme = 0;
+					var theid = theweek[i] + w;
+					var thecur_time = 0;
+					for(var n = 0; n < data.length; n++) {
+						if(data[n].number == w){
+							cur_num_all++;
+							if(data[n].number == w && data[n].uid != 0 && data[n].uid == data[n].student_id){
+								cur_num_me++;
+							}
+							if(data[n].number == w && data[n].uid != 0 && data[n].uid != data[n].student_id && data[n].student_id != 0){
+								cur_num_notme++;
+							}
+							thecur_time = data[n].time;
+						}
+					}
+					if($('#' + theid).css('background-color') == 'rgba(0, 0, 0, 0)'||$('#' + theid).css('background-color') == 'transparent'){
+						if(cur_num_all != 0 && cur_num_me > 0){
+							document.getElementById(theid).style.backgroundColor = '#dae3fb';
+							document.getElementById(theid).innerHTML = '{$Think.lang.teacher_index_25}';
+							document.getElementById(theid).style.color = '#000000';
+						}else if(cur_num_all != 0 && cur_num_all - cur_num_notme == 0){
+							document.getElementById(theid).style.backgroundColor = '#E4E4E4';
+							document.getElementById(theid).innerHTML = '{$Think.lang.teacher_index_43}';
+							document.getElementById(theid).style.color = '#000000';
+						}else if(cur_num_all - cur_num_notme > 0){
+							document.getElementById(theid).style.backgroundColor = '#dae3fb';
+							$("#" + theid).attr("onclick", 'enroll(' + thecur_time + ',\''+ theid +'\')');
+						}
+					}else if($('#' + theid).css('background-color') == 'rgb(228, 228, 228)'){
+						 if(cur_num_all != 0 && cur_num_all - cur_num_notme == 0){
+							document.getElementById(theid).innerHTML = '{$Think.lang.teacher_index_43}';
+							document.getElementById(theid).style.color = '#000000';
+						}
+					}
+				}
+			});
+		}
+	}
+
+	function opentr() {
+		$(".opentr").css("display", "table-row");
+		$("#open-button").css("display", "none");
+	}
+
+	function left() {
+		var now = new Date();
+		var date = new Date(Date.parse(daylist[0]) - 7 * 24 * 3600 * 1000);
+		var year = date.getFullYear();
+		var month = date.getMonth() + 1;
+		if(month < 10) {
+			month = '0' + month;
+		}
+		var day = date.getDate();
+		if(day < 10) {
+			day = '0' + day;
+		}
+		var theday = year + '-' + month + '-' + day;
+		if(Date.parse(daylist[0]) <= Date.parse(nowday)) {
+			alert('{$Think.lang.teacher_index_27}');
+		} else {
+			daylist[0] = theday;
+			daylist[1] = dateAdd(daylist[0]);
+			daylist[2] = dateAdd(daylist[1]);
+			daylist[3] = dateAdd(daylist[2]);
+			daylist[4] = dateAdd(daylist[3]);
+			daylist[5] = dateAdd(daylist[4]);
+			daylist[6] = dateAdd(daylist[5]);
+			document.getElementById("theweek").innerHTML = daylist[0] + ' —— ' + daylist[6];
+			updateDate();
+		}
+	}
+
+	function right() {
+		if(Date.parse(nowday) < Date.parse(daylist[5])){
+			alert('{$Think.lang.teacher_index_28} \r\n{$Think.lang.teacher_index_29}');
+			return false;
+		}
+		var now = new Date();
+		var date = new Date(Date.parse(daylist[6]) + 1 * 24 * 3600 * 1000);
+		var year = date.getFullYear();
+		var month = date.getMonth() + 1;
+		if(month < 10) {
+			month = '0' + month;
+		}
+		var day = date.getDate();
+		if(day < 10) {
+			day = '0' + day;
+		}
+		daylist[0] = year + '-' + month + '-' + day;
+		daylist[1] = dateAdd(daylist[0]);
+		daylist[2] = dateAdd(daylist[1]);
+		daylist[3] = dateAdd(daylist[2]);
+		daylist[4] = dateAdd(daylist[3]);
+		daylist[5] = dateAdd(daylist[4]);
+		daylist[6] = dateAdd(daylist[5]);
+		document.getElementById("theweek").innerHTML = daylist[0] + ' —— ' + daylist[6];
+		updateDate();
+	}
+
+	function updateDate() {
+		for(var i = 0; i < daylist.length; i++) {
+			var theweek;
+			switch(i) {
+				case 0:
+					theweek = 'a';
+					break;
+				case 1:
+					theweek = 'b';
+					break;
+				case 2:
+					theweek = 'c';
+					break;
+				case 3:
+					theweek = 'd';
+					break;
+				case 4:
+					theweek = 'e';
+					break;
+				case 5:
+					theweek = 'f';
+					break;
+				case 6:
+					theweek = 'g';
+					break;
+			}
+			for(var z = 0; z < 48; z++) {
+				document.getElementById(theweek + z).style.backgroundColor = '';
+				$("#" + theweek + z).removeAttr("onclick");
+				$("#" + theweek + z + '-div').css('border','0px');
+				$("#" + theweek + z).html('&nbsp;');
+			}
+			var theday = daylist[i];
+			if(new Date(nowday.replace(/-/g, '/')).getTime() > new Date(theday.replace(/-/g, '/')).getTime()) {
+				for(var z = 0; z < 48; z++) {
+					$('#' + theweek + z).css('background-color','#E4E4E4');
+				}
+			}
+			if(new Date(nowday.replace(/-/g, '/')).getTime() == new Date(theday.replace(/-/g, '/')).getTime()) {
+				var thenowtime1 = new Date(nowtime).getHours();
+				var thenowtime2 = new Date(nowtime).getMinutes();
+				var thenum = thenowtime1 * 2;
+				if(thenowtime2 < 30) {
+					thenum++;
+				} else {
+					thenum = thenum + 2;
+				}
+				for(var z = 0; z < thenum + 1; z++) {
+					$('#' + theweek + z).css('background-color','#E4E4E4');
+				}
+			}
+		}
+		newupdate();
+	}
+
+	function dateAdd(startDate) {
+		startDate = new Date(startDate);
+		startDate = +startDate + 1000 * 60 * 60 * 24;
+		startDate = new Date(startDate);
+		var addmonth = (startDate.getMonth() + 1);
+		if(addmonth < 10) {
+			addmonth = '0' + addmonth;
+		}
+		var addday = startDate.getDate();
+		if(addday < 10) {
+			addday = '0' + addday;
+		}
+		var nextStartDate = startDate.getFullYear() + "-" + addmonth + "-" + addday;
+		return nextStartDate;
+	}
+
+	function enroll(time,theid) {
+		if(document.getElementById(theid).innerHTML == '{$Think.lang.teacher_index_25}'){
+			return false;
+		}
+		for(var i = 0; i < daylist.length; i++) {
+			var theweek;
+			switch(i) {
+				case 0:
+					theweek = 'a';
+					break;
+				case 1:
+					theweek = 'b';
+					break;
+				case 2:
+					theweek = 'c';
+					break;
+				case 3:
+					theweek = 'd';
+					break;
+				case 4:
+					theweek = 'e';
+					break;
+				case 5:
+					theweek = 'f';
+					break;
+				case 6:
+					theweek = 'g';
+					break;
+			}
+			for(var z = 0; z < 48; z++) {
+				$("#" + theweek + z + '-div').css('border','0px');
+			}
+		}
+		document.getElementById(theid).style.padding = 0;
+		document.getElementById(theid).innerHTML = '<div id="' + theid + '-div" style="width: 100%;height: ' + $("#" + theid).outerHeight(true) + 'px;"></div>';
+		var theborder = $('#' + theid + '-div').css('border');
+		$('#' + theid + '-div').css('box-sizing','border-box');
+		$('#' + theid + '-div').css('border','5px solid #9981b4');
+		document.getElementById("teacherlist").innerHTML = '';
+		$.getJSON("{:url('teacher/enroll_time')}" + "?time=" + time, function(result) {
+			var data = result.data;
+			for(var n = 0; n < data.length; n++) {
+				var html = 
+					'<div class="panel panel-default" style="height: 190px;"><div class="panel-body"><div class="media"><div class="media-left">' +
+					'<img class="media-object img-circle" src="'+ data[n].teacher_avatar +'" style="width: 50px;height: 50px;">'+
+					'</div><div class="media-body">'+
+					'<button type="button" class="btn btn-purple pull-right" onclick="theenroll('+ data[n].id +');">수업 예약</button>'+
+					'<h5 class="media-heading">'+ data[n].teacher_nickName +'</h5>'+
+					'<span class="glyphicon glyphicon-star" aria-hidden="true"></span> '+ data[n].teacher_score +
+					'</div></div><hr />'+
+					'<div style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"><strong>'+ data[n].teacher_taglist +'</strong></div>'+
+					'<div style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">'+ data[n].teacher_introduction +'</div>'+
+					'</div></div>';
+				document.getElementById("teacherlist").innerHTML += html;
+			}
+		});
+	}
+	
+	function theenroll(id){
+		$.getJSON("{:url('teacher/enroll_validate')}" + "?id=" + id, function(result) {
+			var data = result.data;
+			if(data == 1) {
+				location.href = "{:url('teacher/enroll')}?id=" + id;
+			} else if(data == 2) {
+				dialog.alert({
+					title: "{$Think.lang.web_common_17}",
+					msg: '{$Think.lang.teacher_index_30}<br>{$Think.lang.teacher_index_31}',
+					buttons: ['{$Think.lang.web_common_18}']
+				})
+			} else if(data == 3) {
+				dialog.alert({
+					title: "{$Think.lang.web_common_17}",
+					msg: '{$Think.lang.teacher_index_32}<br>{$Think.lang.teacher_index_33}',
+					buttons: ['{$Think.lang.web_common_18}']
+				})
+			} else if(data == 4) {
+				dialog.alert({
+					title: "{$Think.lang.web_common_17}",
+					msg: '{$Think.lang.teacher_index_34}<br>{$Think.lang.teacher_index_35}',
+					buttons: ['{$Think.lang.web_common_18}']
+				})
+			} else if(data == 5) {
+				dialog.alert({
+					title: "{$Think.lang.web_common_17}",
+					msg: '{$Think.lang.teacher_index_36}<br>{$Think.lang.teacher_index_37}',
+					buttons: ['{$Think.lang.web_common_18}']
+				})
+			}
+		});
+	}
+	
+	function getScrollWidth() {
+		var noScroll, scroll, oDiv = document.createElement("DIV");
+		oDiv.style.cssText = "position:absolute; top:-1000px; width:100px; height:100px; overflow:hidden;";
+		noScroll = document.body.appendChild(oDiv).clientWidth;
+		oDiv.style.overflowY = "scroll";
+		scroll = oDiv.clientWidth;
+		document.body.removeChild(oDiv);
+		return noScroll-scroll;
+	}
+</script>
+{/block}

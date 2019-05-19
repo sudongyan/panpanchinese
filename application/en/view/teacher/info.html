@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>预约上课</title>
+		<link href="__STATIC__/css/aui.css" rel="stylesheet" />
+		<link href="__STATIC__/css/style.css" rel="stylesheet" />
+    		<link rel="stylesheet" type="text/css" href="__STATIC__/css/iconfont.css" />
+    		{block name="css"}{/block}
+		<style>
+			#timelist .aui-btn {
+				margin-bottom: 0.2rem;
+			}
+			
+			.aui-bar-btn-item {
+				border-color: #9981b4;
+			}
+			.aui-bar-btn-item.aui-active {
+    				background-color: #9981b4;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="aui-bar aui-bar-nav">
+			<a class="aui-pull-left aui-btn" onclick="javascript:history.back(-1);">
+				<span class="aui-iconfont aui-icon-left"></span>
+			</a>
+			<div class="aui-title">{$teacher.nickName}</div>
+		</header>
+		<div class="aui-content aui-margin-b-15">
+			<ul class="aui-list aui-media-list">
+				<li class="aui-list-item">
+					<div class="aui-media-list-item-inner">
+						<div class="aui-list-item-media">
+							<img src="{$teacher.avatar}">
+						</div>
+						<div class="aui-list-item-inner">
+							<div class="aui-list-item-text">
+								<div class="aui-list-item-title" style="color: #000000;">{$teacher.nickName}</div>
+							</div>
+							<div class="aui-list-item-text">
+								<span style="width:4rem;">
+								{for start="0" end="5"}
+								{if ($teacher.score > $i) AND ($teacher.score >= $i+1)}
+								<i class="aui-iconfont iconfont icon-iconfontxingxing" style="color: #ffba00;margin-left: -2px;margin-right: -2px;"></i>
+								{elseif $teacher.score > $i /}
+								<i class="aui-iconfont iconfont icon-iconfontxingxing" style="background-image: -webkit-gradient(linear,0 50%,100% 50% , color-stop(0.4, #ffba00), color-stop(0.60, #cbcbcb));-webkit-background-clip: text;-webkit-text-fill-color: transparent; margin-left: -2px;margin-right: -2px;"></i>
+								{else /}
+								<i class="aui-iconfont iconfont icon-iconfontxingxing" style="color: #cbcbcb;margin-left: -2px;margin-right: -2px;"></i> 
+								{/if}
+								{/for}
+								</span>
+							</div>
+							<div class="aui-list-item-text">
+								{$teacher.score} 分 {$teacher.evaluate_num} 评论
+							</div>
+						</div>
+					</div>
+					<div class="aui-info" style="padding-top:0">
+						<div class="aui-info-item">
+							{$teacher.introduction}
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<section class="aui-content">
+			<div class="aui-card-list">
+				<div class="aui-card-list-footer">
+					<div><i class="aui-iconfont aui-icon-left" onclick="left();"></i></div>
+					<div id="theweek">{$day.a} —— {$day.g}</div>
+					<div><i class="aui-iconfont aui-icon-right" onclick="right();"></i></div>
+				</div>
+				<div class="aui-card-list-content-padded">
+					<div id="date" class="aui-bar aui-bar-btn" style="width:100%;">
+						<div id="day1" class="aui-bar-btn-item">周一</div>
+						<div class="aui-bar-btn-item">周二</div>
+						<div class="aui-bar-btn-item">周三</div>
+						<div class="aui-bar-btn-item">周四</div>
+						<div class="aui-bar-btn-item">周五</div>
+						<div class="aui-bar-btn-item">周六</div>
+						<div class="aui-bar-btn-item">周日</div>
+					</div>
+					<br />
+					<div id="timelist" style="text-align:center;width:100%;height: 6rem;">
+					</div>
+					<br />
+				</div>
+			</div>
+		</section>
+		<section class="aui-content">
+			<div class="aui-card-list">
+				<div class="aui-card-list-header">
+					Class booking guidance
+				</div>
+				<div class="aui-hr"></div>
+				<div class="aui-card-list-content-padded">
+					<ul style="list-style-position: outside;">
+						<li style="list-style-type:disc;margin-left: 1rem;">Cancellation is possible up to 2 hours before class.</li>
+						<li style="list-style-type:disc;margin-left: 1rem;">Class can be booked up to 3 times a day.</li>
+						<li style="list-style-type:disc;margin-left: 1rem;">If the class is canceled by the teacher the credit will be returned.</li>
+						<li style="list-style-type:disc;margin-left: 1rem;">If you are not contacted at the scheduled class time, please contact our Customer Center.</li>
+					</ul>
+				</div>
+			</div>
+		</section>
+		<section class="aui-content">
+			<div class="aui-card-list">
+				<div class="aui-card-list-header">
+					<span>学员评价&nbsp;&nbsp;&nbsp;&nbsp;<em style="font-size: 0.5rem;color: #737373;">{$teacher.score} 分 {$teacher.evaluate_num} 评论</em></span>
+				</div>
+			</div>
+		</section>
+		<div class="aui-content" style="margin-top: -0.8rem;">
+			<ul id="list" class="aui-list aui-media-list">
+				{volist name="evaluatelist" id="vo"}
+				<li class="aui-list-item">
+					<div class="aui-media-list-item-inner">
+						<div class="aui-list-item-media" style="width: 3.5rem;">
+							<img src="{$vo.avatar}">
+						</div>
+						<div class="aui-list-item-inner">
+							<div class="aui-list-item-text">
+								<div class="aui-list-item-title" style="color: #000000;">{$vo.nickName}</div>
+							</div>
+							<div class="aui-list-item-text" style="width: 3rem;margin-top: -5px;">
+								{for start="0" end="5"}
+								{if $vo.score > $i}
+								<i class="aui-iconfont iconfont icon-iconfontxingxing" style="color: #ffba00;"></i> 
+								{else /}
+								<i class="aui-iconfont iconfont icon-iconfontxingxing" style="color: #cbcbcb;"></i> 
+								{/if}
+								{/for}
+							</div>
+							<div class="aui-list-item-text">
+								{$vo.information}
+							</div>
+						</div>
+					</div>
+				</li>
+				{/volist}
+			</ul>
+		</div>
+		<script src="__STATIC__/js/jquery-1.10.2.js"></script>
+		<script src="__STATIC__/js/aui-tab.js"></script>
+		<script src="__STATIC__/js/aui-scroll.js"></script>
+		<script src="__STATIC__/js/aui-dialog.js"></script>
+		<script type="text/javascript">
+			var toast;
+			var nowday;
+			var dialog = new auiDialog();
+			window.onload = function(){
+				nowday = '{$nowday}';
+                update(nowday);
+            } 
+			var daylist = [];
+			{volist name="day" id="vo"}
+				daylist.push('{$vo}');
+			{/volist}
+			var tab = new auiTab({
+				element: document.getElementById("date"),
+				index: {$nowweek},
+				repeatClick: true
+			}, function(ret) {
+				if(Date.parse(daylist[ret.index-1]) < Date.parse(nowday)){
+					document.getElementById("timelist").innerHTML = '禁止预约之前时间';
+				}else{
+					update(daylist[ret.index-1]);
+				}
+			});
+			
+			function update (thedate){
+					$.getJSON("{:url('teacher/curriculum')}" + "?tid={$teacher.id}&date=" + thedate, function(result) {
+						data = result.data;
+						document.getElementById("timelist").innerHTML = '';
+						for(var n = 0; n < data.length; n++) {
+							document.getElementById("timelist").innerHTML += 
+							'<div class="aui-col-5">'+
+							'<div class="aui-btn aui-btn-purple" onclick="enroll(' + data[n].id + ')">' + data[n].interval + '</div>'+
+							'</div>';
+						}
+						if(data.length == 0){
+							document.getElementById("timelist").innerHTML = '当日无预约时间'; 
+						}
+					});
+			}
+			
+			function left(){
+				var now = new Date();
+				var date = new Date(Date.parse(daylist[0]) - 7 * 24 * 3600 * 1000);
+				var year = date.getFullYear();
+				var month = date.getMonth() + 1;
+				if(month < 10){
+					month = '0' + month;
+				}
+				var day = date.getDate();
+				if(day < 10){
+					day = '0' + day;
+				}
+				var theday = year + '-' + month + '-' + day;
+				if(Date.parse(daylist[0]) <= Date.parse(nowday)){
+					alert('禁止选择之前日期');
+				}else{
+					daylist[0] = theday;
+					daylist[1] = dateAdd(daylist[0]);
+					daylist[2] = dateAdd(daylist[1]);
+					daylist[3] = dateAdd(daylist[2]);
+					daylist[4] = dateAdd(daylist[3]);
+					daylist[5] = dateAdd(daylist[4]);
+					daylist[6] = dateAdd(daylist[5]);
+					document.getElementById("theweek").innerHTML = daylist[0] + ' —— ' + daylist[6];
+					document.getElementById("day1").click();
+				}
+			}
+			
+			function right(){
+					var now = new Date();
+					var date = new Date(Date.parse(daylist[6]) + 1 * 24 * 3600 * 1000);
+					var year = date.getFullYear();
+					var month = date.getMonth() + 1;
+					if(month < 10){
+						month = '0' + month;
+					}
+					var day = date.getDate();
+					if(day < 10){
+						day = '0' + day;
+					}
+					daylist[0] = year + '-' + month + '-' + day;
+					daylist[1] = dateAdd(daylist[0]);
+					daylist[2] = dateAdd(daylist[1]);
+					daylist[3] = dateAdd(daylist[2]);
+					daylist[4] = dateAdd(daylist[3]);
+					daylist[5] = dateAdd(daylist[4]);
+					daylist[6] = dateAdd(daylist[5]);
+					document.getElementById("theweek").innerHTML = daylist[0] + ' —— ' + daylist[6];
+					document.getElementById("day1").click();
+			}
+			
+			function dateAdd(startDate) {
+				startDate = new Date(startDate);
+				startDate = +startDate + 1000*60*60*24;
+				startDate = new Date(startDate);
+				var addmonth = (startDate.getMonth()+1);
+				if(addmonth < 10){
+					addmonth = '0' + addmonth;
+				}
+				var addday = startDate.getDate();
+				if(addday < 10){
+					addday = '0' + addday;
+				}
+				var nextStartDate = startDate.getFullYear()+"-"+addmonth+"-"+addday;
+				return nextStartDate;
+			}
+			
+			function enroll(id){
+					$.getJSON("{:url('teacher/enroll_validate')}" + "?id=" + id, function(result) {
+						var data = result.data;
+						if(data == 1){
+							location.href = "{:url('teacher/enroll')}?id=" + id;
+						}else if(data == 2){
+							dialog.alert({
+								title: "알림",
+								msg: '사용 가능한 수강권이 없습니다.<br>수강권 구매 후 예약해주세요.',
+								buttons: ['확인']
+							})
+						}else if(data == 3){
+							dialog.alert({
+								title: "알림",
+								msg: '하루 최대 3회 예약 가능합니다.<br>내일 다시 이용해주세요.',
+								buttons: ['확인']
+							})
+						}else if(data == 4){
+							dialog.alert({
+								title: "알림",
+								msg: '예약 가능한 시간이 지났습니다.<br>(수업 30분 전 까지 예약 가능)',
+								buttons: ['확인']
+							})
+						}else if(data == 5){
+							dialog.alert({
+								title: "알림",
+								msg: '예약이 방금 마감 되었습니다.<br>다른 예약을 해주시기 바랍니다.',
+								buttons: ['확인']
+							})
+						}
+					});
+			}
+		</script>
+		<script>
+			var p = 1;
+			var s = 1;
+			var scroll = new auiScroll({
+				listen: true, //是否监听滚动高度，开启后将实时返回滚动高度
+				distance: 200 //判断到达底部的距离，isToBottom为true
+			}, function(ret) {
+				if(ret.isToBottom == true && s == 1) {
+					p++;
+					$.getJSON("{:url('teacher/evaluate_list')}" + "?p=" + p + "&teacher_id={$teacher.id}", function(result) {
+						data = result.data;
+						if(data.length < 20){
+							s = 0;
+						}
+						for(var n = 0; n < data.length; n++) {
+							document.getElementById("list").innerHTML +=
+							'<li class="aui-list-item"><div class="aui-media-list-item-inner"><div class="aui-list-item-media" style="width: 3.5rem;">'+
+							'<img src="' + data[n].avatar + '">'+
+							'</div><div class="aui-list-item-inner"><div class="aui-list-item-text">'+
+							'<div class="aui-list-item-title" style="color: #000000;">' + data[n].nickName + '</div>'+
+							'</div>'+
+							'<div class="aui-list-item-text" style="width: 3rem;margin-top: -5px;">'+
+							for(var i = 0; i < 5; i++) {
+								if(data[n].score > i){
+									'<i class="aui-iconfont iconfont icon-iconfontxingxing" style="color: #ffba00;"></i>'+
+								}else{
+									'<i class="aui-iconfont iconfont icon-iconfontxingxing" style="color: #cbcbcb;"></i>'+
+								}
+							}
+							'</div>'+
+							'<div class="aui-list-item-text">'+
+							+ data[n].information +
+							'</div></div></div></li>';
+						}
+					});
+				}
+			});
+		</script>
+	</body>
+
+</html>

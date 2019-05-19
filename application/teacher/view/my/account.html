@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>个人中心</title>
+		<link href="__STATIC__/css/aui.css" rel="stylesheet" />
+		<link href="__STATIC__/css/style.css" rel="stylesheet" />
+		<style>
+			html,
+			body {
+				background-color: #ffffff;
+			}
+		</style>
+		{block name="css"}{/block}
+	</head>
+
+	<body>
+		<header class="aui-bar aui-bar-nav">
+			<a class="aui-pull-left aui-btn" onclick="javascript:history.back(-1);">
+				<span class="aui-iconfont aui-icon-left"></span>
+			</a>
+			<div class="aui-title">我的账户</div>
+		</header>
+		<div class="aui-content" align="center" style="margin-top: 1rem;">
+			<img style="width: 70%;" src="__STATIC__/img/teacher.png" />
+		</div>
+		<div class="aui-content-padded">
+			<div class="aui-row-padded">
+				<div class="aui-col-xs-12">
+					<h3>已累计赚取课程券<span class="aui-pull-right">{$Teacher.balance - $Teacher.balanceTY}张</span></h3>
+				</div>
+				<div class="aui-col-xs-12">
+					<h3>已累计赚取试听券<span class="aui-pull-right">{$Teacher.balanceTY}张</span></h3>
+				</div>
+				<div class="aui-col-xs-12">
+					<h3>上次结算 {$Teacher.oldday}<span class="aui-pull-right">{$Teacher.oldsettlement}张</span></h3>
+				</div>
+				<div class="aui-col-xs-12">
+					<h3>本次结算 {$Teacher.day}<span class="aui-pull-right">{$Teacher.settlement}张</span></h3>
+				</div>
+				<div class="aui-hr" style="margin-top: 0.5rem;margin-bottom: 0.5rem;"></div>
+				<div class="aui-col-xs-12">
+					<h3>提现方式<span class="aui-pull-right">每月21号和次月6号</span></h3>
+				</div>
+			</div>
+		</div>
+		<div class="aui-content-padded" style="background-color: #EEEEEE">
+			<div class="aui-content-padded" style="padding-top: 1rem;padding-bottom: 1rem;">
+				<h2>课程券注意事项</h2>
+				<br />
+				<h4 align="left">
+					<ul style="list-style-position: outside;">
+						<li style="list-style-type:disc;margin-left: 1rem;">1张课程券代表1节课，即30分钟/11元的课程。</li>
+						<li style="list-style-type:disc;margin-left: 1rem;">老师取消已经被预约的时扣除1张课程券，不取消无故缺席时扣除5张课程券。</li>
+						<li style="list-style-type:disc;margin-left: 1rem;">学生在上课前2小时不能取消课程，学生缺席时课程券归老师所有。</li>
+						<li style="list-style-type:disc;margin-left: 1rem;">每月21号和次月6号将薪资打入老师驻入申请时留下的账号中</li>
+					</ul>
+				</h4>
+			</div>
+		</div>
+		<script src="__STATIC__/js/jquery-1.10.2.js"></script>
+	</body>
+
+</html>

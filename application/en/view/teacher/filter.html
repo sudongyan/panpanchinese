@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>预约上课</title>
+		<link href="__STATIC__/css/aui.css" rel="stylesheet" />
+		<link href="__STATIC__/css/style.css" rel="stylesheet" /> {block name="css"}{/block}
+		<style>
+			#timelist .aui-btn {
+				margin-bottom: 0.2rem;
+			}
+			
+			.aui-bar-btn-item {
+				border-color: #9981b4;
+			}
+			
+			.aui-bar-btn-item.aui-active {
+				background-color: #9981b4;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="aui-bar aui-bar-nav">
+			<a class="aui-pull-left aui-btn" onclick="javascript:history.back(-1);">
+				<span class="aui-iconfont aui-icon-left"></span>
+			</a>
+			<div class="aui-title">课程筛选</div>
+		</header>
+		<form class="aui-content-padded" method="get">
+			<ul class="aui-list aui-select-list aui-margin-b-15">
+				<li class="aui-list-header">一天中的时间段</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<label><input class="aui-checkbox" type="checkbox" name="time[]" value="13,14,15,16,17,18,19,20,21,22,23,24"> 上午（06:30-12:00）</label>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<label><input class="aui-checkbox" type="checkbox" name="time[]" value="25,26,27,28,29,30,31,32,33,34,35,36"> 下午（12:30-18:00）</label>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<label><input class="aui-checkbox" type="checkbox" name="time[]" value="37,38,39,40,41,42,43,44,45,46,47,0"> 傍晚（18:30-0:00）</label>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<label><input class="aui-checkbox" type="checkbox" name="time[]" value="1,2,3,4,5,6,7,8,9,10,11,12"> 深夜（00:30-06:00）</label>
+					</div>
+				</li>
+			</ul>
+			<ul class="aui-list aui-select-list">
+				<li class="aui-list-header">一星期中的天数</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<label><input class="aui-checkbox" type="checkbox" name="week[]" value="1"> 星期一</label>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<label><input class="aui-checkbox" type="checkbox" name="week[]" value="2"> 星期二</label>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<label><input class="aui-checkbox" type="checkbox" name="week[]" value="3"> 星期三</label>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<label><input class="aui-checkbox" type="checkbox" name="week[]" value="4"> 星期四</label>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<label><input class="aui-checkbox" type="checkbox" name="week[]" value="5"> 星期五</label>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<label><input class="aui-checkbox" type="checkbox" name="week[]" value="6"> 星期六</label>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<label><input class="aui-checkbox" type="checkbox" name="week[]" value="0"> 星期日</label>
+					</div>
+				</li>
+			</ul>
+			<p>
+				<button type="submit" class="aui-btn aui-btn-purple aui-btn-block" style="margin-top: 1rem;">筛选</button>
+			</p>
+		</form>
+	</body>
+
+</html>

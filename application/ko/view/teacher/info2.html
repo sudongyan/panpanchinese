@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>{$Think.lang.teacher_index_8}</title>
+		<link href="__STATIC__/css/aui.css" rel="stylesheet" />
+		<link href="__STATIC__/css/style.css" rel="stylesheet" />
+    		<link rel="stylesheet" type="text/css" href="__STATIC__/css/iconfont.css" />
+    		{block name="css"}{/block}
+		<style>
+			#timelist .aui-btn {
+				margin-bottom: 0.2rem;
+			}
+			
+			.aui-bar-btn-item {
+				border-color: #9981b4;
+			}
+			.aui-bar-btn-item.aui-active {
+    				background-color: #9981b4;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="aui-bar aui-bar-nav">
+			<a class="aui-pull-left aui-btn" onclick="javascript:history.back(-1);">
+				<span class="aui-iconfont aui-icon-left"></span>
+			</a>
+			<div class="aui-title">{$teacher.nickName}</div>
+		</header>
+		<div class="aui-content aui-margin-b-15">
+			<ul class="aui-list aui-media-list">
+				<li class="aui-list-item">
+					<div class="aui-media-list-item-inner">
+						<div class="aui-list-item-media">
+							<img src="{$teacher.avatar}">
+						</div>
+						<div class="aui-list-item-inner">
+							<div class="aui-list-item-text">
+								<div class="aui-list-item-title" style="color: #000000;">{$teacher.nickName}</div>
+								<div class="aui-list-item-right">
+									{if $teacher.mp3 != null}
+									<div id="mp3div" onclick="bf()">
+										<i class="aui-iconfont iconfont icon-bofang1" style="font-size: 27px;"></i>
+									</div>
+									<audio src="{$teacher.mp3}" controls="controls" preload id="mp3" hidden></audio>
+									{/if}
+								</div>
+							</div>
+							<div class="aui-list-item-text">
+								<span style="width:4rem;">
+								{for start="0" end="5"}
+								{if ($teacher.score > $i) AND ($teacher.score >= $i+1)}
+								<i class="aui-iconfont iconfont icon-iconfontxingxing" style="color: #ffba00;margin-left: -2px;margin-right: -2px;"></i>
+								{elseif $teacher.score > $i /}
+								<i class="aui-iconfont iconfont icon-iconfontxingxing" style="background-image: -webkit-gradient(linear,0 50%,100% 50% , color-stop(0.4, #ffba00), color-stop(0.60, #cbcbcb));-webkit-background-clip: text;-webkit-text-fill-color: transparent; margin-left: -2px;margin-right: -2px;"></i>
+								{else /}
+								<i class="aui-iconfont iconfont icon-iconfontxingxing" style="color: #cbcbcb;margin-left: -2px;margin-right: -2px;"></i> 
+								{/if}
+								{/for}
+								</span>
+							</div>
+							<div class="aui-list-item-text">
+								{$Think.lang.teacher_index_12} {$teacher.score} {$Think.lang.teacher_index_23} {$teacher.evaluate_num}{$Think.lang.teacher_index_24}
+							</div>
+						</div>
+					</div>
+				</li>
+			</ul>
+			{if $teacher.mp4 != null}
+			<video src="{$teacher.mp4}" controls="true" controlslist="nodownload" style="width: 100%;"></video>
+			{/if}
+			<ul class="aui-list aui-media-list">
+				<li class="aui-list-item">
+					<div class="aui-info">
+						<div class="aui-info-item">
+							<b>{$teacher.taglist}</b>
+						</div>
+					</div>
+					<div class="aui-info">
+						<div class="aui-info-item">
+							{$teacher.introduction}
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<section class="aui-content">
+			<div class="aui-card-list">
+				<div class="aui-card-list-footer">
+					<div><i class="aui-iconfont aui-icon-left" onclick="left();"></i></div>
+					<div id="theweek">{$day.a} —— {$day.g}</div>
+					<div><i class="aui-iconfont aui-icon-right" onclick="right();"></i></div>
+				</div>
+				<div class="aui-card-list-content-padded">
+					<div id="date" class="aui-bar aui-bar-btn" style="width:100%;">
+						<div id="day1" class="aui-bar-btn-item">{$Think.lang.week_1}</div>
+						<div class="aui-bar-btn-item">{$Think.lang.week_2}</div>
+						<div class="aui-bar-btn-item">{$Think.lang.week_3}</div>
+						<div class="aui-bar-btn-item">{$Think.lang.week_4}</div>
+						<div class="aui-bar-btn-item">{$Think.lang.week_5}</div>
+						<div class="aui-bar-btn-item">{$Think.lang.week_6}</div>
+						<div class="aui-bar-btn-item">{$Think.lang.week_0}</div>
+					</div>
+					<br />
+					<div id="timelist" style="text-align:center;width:100%;height: 6rem;">
+					</div>
+					<br />
+				</div>
+			</div>
+		</section>
+		<section class="aui-content">
+			<div class="aui-card-list">
+				<div class="aui-card-list-header">
+					{$Think.lang.teacher_index_17}
+				</div>
+				<div class="aui-hr"></div>
+				<div class="aui-card-list-content-padded">
+					<ul style="list-style-position: outside;">
+						<li style="list-style-type:disc;margin-left: 1rem;">{$Think.lang.teacher_index_18}</li>
+						<li style="list-style-type:disc;margin-left: 1rem;">{$Think.lang.teacher_index_19}</li>
+						<li style="list-style-type:disc;margin-left: 1rem;">{$Think.lang.teacher_index_20}</li>
+						<li style="list-style-type:disc;margin-left: 1rem;">{$Think.lang.teacher_index_21}</li>
+					</ul>
+				</div>
+			</div>
+		</section>
+		<section class="aui-content">
+			<div class="aui-card-list">
+				<div class="aui-card-list-header">
+					<span>{$Think.lang.teacher_index_22}&nbsp;&nbsp;&nbsp;&nbsp;<em style="font-size: 0.5rem;color: #737373;">{$Think.lang.teacher_index_12} {$teacher.score} {$Think.lang.teacher_index_23} {$teacher.evaluate_num}{$Think.lang.teacher_index_24}</em></span>
+				</div>
+			</div>
+		</section>
+		<div class="aui-content" style="margin-top: -0.8rem;">
+			<ul id="list" class="aui-list aui-media-list">
+				{volist name="evaluatelist" id="vo"}
+				<li class="aui-list-item">
+					<div class="aui-media-list-item-inner">
+						<div class="aui-list-item-media" style="width: 3.5rem;">
+							<img src="{$vo.avatar}">
+						</div>
+						<div class="aui-list-item-inner">
+							<div class="aui-list-item-text">
+								<div class="aui-list-item-title" style="color: #000000;">{$vo.nickName}</div>
+							</div>
+							<div class="aui-list-item-text" style="width: 3rem;margin-top: -5px;">
+								{for start="0" end="5"}
+								{if $vo.score > $i}
+								<i class="aui-iconfont iconfont icon-iconfontxingxing" style="color: #ffba00;"></i> 
+								{else /}
+								<i class="aui-iconfont iconfont icon-iconfontxingxing" style="color: #cbcbcb;"></i> 
+								{/if}
+								{/for}
+							</div>
+							<div class="aui-list-item-text">
+								{$vo.information}
+							</div>
+						</div>
+					</div>
+				</li>
+				{/volist}
+			</ul>
+		</div>
+		<script src="__STATIC__/js/jquery-1.10.2.js"></script>
+		<script src="__STATIC__/js/aui-tab.js"></script>
+		<script src="__STATIC__/js/aui-scroll.js"></script>
+		<script src="__STATIC__/js/aui-dialog.js"></script>
+		<script type="text/javascript">
+			var toast;
+			var nowday;
+			var dialog = new auiDialog();
+			window.onload = function(){
+				nowday = '{$nowday}';
+                update(nowday);
+			{if $Think.session.ko_id == null }	
+				alert('请登陆后查看');
+			{/if}
+            } 
+			var daylist = [];
+			{volist name="day" id="vo"}
+			daylist.push('{$vo}');
+			{/volist}
+			var tab = new auiTab({
+				element: document.getElementById("date"),
+				index: {$nowweek},
+				repeatClick: true
+			}, function(ret) {
+				if(Date.parse(daylist[ret.index-1]) < Date.parse(nowday)){
+					document.getElementById("timelist").innerHTML = '{$Think.lang.teacher_index_38}';
+				}else{
+					update(daylist[ret.index-1]);
+				}
+			});
+			
+			function update (thedate){
+					$.getJSON("{:url('teacher/curriculum')}" + "?tid={$teacher.id}&date=" + thedate, function(result) {
+						data = result.data;
+						document.getElementById("timelist").innerHTML = '';
+						for(var n = 0; n < data.length; n++) {
+							if(data[n].student_id == 0) {
+							document.getElementById("timelist").innerHTML += 
+							'<div class="aui-col-5">'+
+							'<div class="aui-btn aui-btn-purple" onclick="enroll(' + data[n].id + ')">' + data[n].interval + '</div>'+
+							'</div>';
+							}else{
+							document.getElementById("timelist").innerHTML += 
+							'<div class="aui-col-5">'+
+							'<div class="aui-btn aui-btn">' + data[n].interval + '</div>'+
+							'</div>';
+							}
+						}
+						if(data.length == 0){
+							document.getElementById("timelist").innerHTML = '{$Think.lang.teacher_index_39}'; 
+						}
+					});
+			}
+			{if $teacher.mp3 != null}
+			function bf(){
+				var audio = document.getElementById('mp3');
+				if(audio !== null){
+					if(audio.paused){
+						document.getElementById("mp3div").innerHTML ='<i class="aui-iconfont iconfont icon-bofang" style="font-size: 27px;"></i>';
+						audio.play();//audio.play();// 这个就是播放  
+					}else{
+						document.getElementById("mp3div").innerHTML ='<i class="aui-iconfont iconfont icon-bofang1" style="font-size: 27px;"></i>';
+						audio.pause();// 这个就是暂停
+					}
+				}
+			}
+			var aud = document.getElementById("mp3");
+			aud.onended = function() {
+				document.getElementById("mp3div").innerHTML ='<i class="aui-iconfont iconfont icon-bofang1" style="font-size: 27px;"></i>';
+			};
+			{/if}
+			
+			function left(){
+				var now = new Date();
+				var date = new Date(Date.parse(daylist[0]) - 7 * 24 * 3600 * 1000);
+				var year = date.getFullYear();
+				var month = date.getMonth() + 1;
+				if(month < 10){
+					month = '0' + month;
+				}
+				var day = date.getDate();
+				if(day < 10){
+					day = '0' + day;
+				}
+				var theday = year + '-' + month + '-' + day;
+				if(Date.parse(daylist[0]) <= Date.parse(nowday)){
+					alert('{$Think.lang.teacher_index_27}');
+				}else{
+					daylist[0] = theday;
+					daylist[1] = dateAdd(daylist[0]);
+					daylist[2] = dateAdd(daylist[1]);
+					daylist[3] = dateAdd(daylist[2]);
+					daylist[4] = dateAdd(daylist[3]);
+					daylist[5] = dateAdd(daylist[4]);
+					daylist[6] = dateAdd(daylist[5]);
+					document.getElementById("theweek").innerHTML = daylist[0] + ' —— ' + daylist[6];
+					document.getElementById("day1").click();
+				}
+			}
+			
+			function right(){
+		if(Date.parse(nowday) < Date.parse(daylist[5])){
+			dialog.alert({
+				title: "{$Think.lang.web_common_17}",
+				msg: '{$Think.lang.teacher_index_40} <br />{$Think.lang.teacher_index_41} <br />{$Think.lang.teacher_index_42}',
+				buttons: ['{$Think.lang.web_common_18}']
+			})
+			return false;
+		}
+					var now = new Date();
+					var date = new Date(Date.parse(daylist[6]) + 1 * 24 * 3600 * 1000);
+					var year = date.getFullYear();
+					var month = date.getMonth() + 1;
+					if(month < 10){
+						month = '0' + month;
+					}
+					var day = date.getDate();
+					if(day < 10){
+						day = '0' + day;
+					}
+					daylist[0] = year + '-' + month + '-' + day;
+					daylist[1] = dateAdd(daylist[0]);
+					daylist[2] = dateAdd(daylist[1]);
+					daylist[3] = dateAdd(daylist[2]);
+					daylist[4] = dateAdd(daylist[3]);
+					daylist[5] = dateAdd(daylist[4]);
+					daylist[6] = dateAdd(daylist[5]);
+					document.getElementById("theweek").innerHTML = daylist[0] + ' —— ' + daylist[6];
+					document.getElementById("day1").click();
+			}
+			
+			function dateAdd(startDate) {
+				startDate = new Date(startDate);
+				startDate = +startDate + 1000*60*60*24;
+				startDate = new Date(startDate);
+				var addmonth = (startDate.getMonth()+1);
+				if(addmonth < 10){
+					addmonth = '0' + addmonth;
+				}
+				var addday = startDate.getDate();
+				if(addday < 10){
+					addday = '0' + addday;
+				}
+				var nextStartDate = startDate.getFullYear()+"-"+addmonth+"-"+addday;
+				return nextStartDate;
+			}
+			
+			function enroll(id){
+					$.getJSON("{:url('teacher/enroll_validate')}" + "?id=" + id, function(result) {
+						var data = result.data;
+						if(data == 1){
+							location.href = "{:url('teacher/enroll')}?id=" + id;
+						}else if(data == 2){
+							dialog.alert({
+								title: "{$Think.lang.web_common_17}",
+								msg: '{$Think.lang.teacher_index_30}<br>{$Think.lang.teacher_index_31}',
+								buttons: ['{$Think.lang.web_common_18}']
+							})
+						}else if(data == 3){
+							dialog.alert({
+								title: "{$Think.lang.web_common_17}",
+								msg: '{$Think.lang.teacher_index_32}<br>{$Think.lang.teacher_index_33}',
+								buttons: ['{$Think.lang.web_common_18}']
+							})
+						}else if(data == 4){
+							dialog.alert({
+								title: "{$Think.lang.web_common_17}",
+								msg: '{$Think.lang.teacher_index_34}<br>{$Think.lang.teacher_index_35}',
+								buttons: ['{$Think.lang.web_common_18}']
+							})
+						}else if(data == 5){
+							dialog.alert({
+								title: "{$Think.lang.web_common_17}",
+								msg: '{$Think.lang.teacher_index_36}<br>{$Think.lang.teacher_index_37}',
+								buttons: ['{$Think.lang.web_common_18}']
+							})
+						}
+					});
+			}
+		</script>
+		<script>
+			var p = 1;
+			var s = 1;
+			var scroll = new auiScroll({
+				listen: true, //是否监听滚动高度，开启后将实时返回滚动高度
+				distance: 200 //判断到达底部的距离，isToBottom为true
+			}, function(ret) {
+				if(ret.isToBottom == true && s == 1) {
+					p++;
+					$.getJSON("{:url('teacher/evaluate_list')}" + "?p=" + p + "&teacher_id={$teacher.id}", function(result) {
+						data = result.data;
+						if(data.length < 20){
+							s = 0;
+						}
+						for(var n = 0; n < data.length; n++) {
+							document.getElementById("list").innerHTML +=
+							'<li class="aui-list-item"><div class="aui-media-list-item-inner"><div class="aui-list-item-media" style="width: 3.5rem;">'+
+							'<img src="' + data[n].avatar + '">'+
+							'</div><div class="aui-list-item-inner"><div class="aui-list-item-text">'+
+							'<div class="aui-list-item-title" style="color: #000000;">' + data[n].nickName + '</div>'+
+							'</div>'+
+							'<div class="aui-list-item-text" style="width: 3rem;margin-top: -5px;">'+
+							for(var i = 0; i < 5; i++) {
+								if(data[n].score > i){
+									'<i class="aui-iconfont iconfont icon-iconfontxingxing" style="color: #ffba00;"></i>'+
+								}else{
+									'<i class="aui-iconfont iconfont icon-iconfontxingxing" style="color: #cbcbcb;"></i>'+
+								}
+							}
+							'</div>'+
+							'<div class="aui-list-item-text">'+
+							+ data[n].information +
+							'</div></div></div></li>';
+						}
+					});
+				}
+			});
+		</script>		<!-- Global site tag (gtag.js) - Google Ads: 789908941 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-789908941"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-789908941');
+</script>
+<script>
+  gtag('event', 'page_view', {
+    'send_to': 'AW-789908941',
+    'user_id': 'replace with value'
+  });
+</script>
+	</body>
+
+</html>

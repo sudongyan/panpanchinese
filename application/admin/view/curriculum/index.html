@@ -1,0 +1,225 @@
+﻿{extend name="Base:common" /}{block name="css"}
+<link href="__STATIC__/css/bootstrap-datetimepicker.min.css" rel="stylesheet" /> {/block}{block name="body"}
+
+<div class="header">
+	<h1 class="page-header">
+		课程管理
+	{switch name="Request.param.state" }
+    		{case value="1"}<small>已预约</small>{/case}
+    		{case value="0"}<small>未预约</small>{/case}
+    		{default /}
+    		<small>全部</small>
+	{/switch}
+	</h1>
+	<ol class="breadcrumb">
+		<li>
+			<a href="{:url('index/index')}">首页</a>
+		</li>
+		<li class="active">课程管理</li>
+	</ol>
+ 
+</div>
+<div id="page-inner">
+	<div class="row">
+		<div class="col-md-12">
+			<!-- Advanced Tables -->
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-lg-6">
+						</div>
+						<div class="col-lg-6"> 
+							<button type="button" class="btn btn-danger pull-right" data-toggle="modal" data-target="#screen">筛选</button>
+						</div>
+					</div>
+					<!-- /input-group -->
+				</div>
+				<div class="panel-body">
+					<div class="table-responsive">
+						<table class="table table-striped table-bordered table-hover">
+							<thead>
+								<tr>
+									<th>上课时间</th>
+									<th>课程状态</th>
+									<th>老师信息</th>
+									<th>课程信息</th>
+									<th>学生信息</th>
+									<th>订单信息</th>
+								</tr>
+							</thead>
+							<tbody>
+								{volist name="list" id="vo"}
+								<tr>
+									<td>
+										{$vo.interval}
+									</td>
+									<td class="center">
+										{$vo.stateinfo}
+									</td>
+									<td class="center">
+										账号:{$vo.teacher_account}<br />
+										昵称:{$vo.teacher_nickName}<br />
+										微信:{$vo.teacher_wx}
+									</td>
+									<td class="center">
+										{if condition="$vo.state == 0"}
+										————
+										{else/}
+										教材:{$vo.courseType}<br />
+										课程:{$vo.course}&nbsp;&nbsp;第{$vo.class}课
+										{/if}
+									</td>
+									<td class="center">
+										{if condition="$vo.student_id == 0"}
+										————
+										{else/}
+										账号:{$vo.student_account}<br />
+										昵称:{$vo.student_nickName}<br />
+										微信:{$vo.student_wx}
+										{/if}
+									</td>
+									<td class="center">
+										{if condition="$vo.state == 0"}
+										————
+										{else/}
+										订单编号:{$vo.order_id}<br />
+										下单时间:{$vo.order_create_time}<br />
+										订单状态:{$vo.order_stateinfo} 
+										{/if}
+									</td>
+								</tr>
+								{/volist}
+							</tbody>
+						</table>
+					</div>
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="box" id="box"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--End Advanced Tables -->
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="screen" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <form class="modal-content" method="get">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">筛选</h4>
+      </div>
+      <div class="modal-body">
+      <div class="form-horizontal">
+		<div class="form-group">
+			<label class="col-sm-2 control-label">起始日期</label>
+			<div class="col-sm-10">
+				<input type="text" name="stime" class="form-control" id="stime">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">结束日期</label>
+			<div class="col-sm-10">
+				<input type="text" name="etime" class="form-control" id="etime">
+			</div>
+  		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">星期</label>
+			<div class="col-sm-10">
+				<label class="checkbox-inline">
+					<input type="checkbox" name="week[]" value="1"> 周一
+				</label>
+				<label class="checkbox-inline">
+					<input type="checkbox" name="week[]" value="2"> 周二
+				</label>
+				<label class="checkbox-inline">
+					<input type="checkbox" name="week[]" value="3"> 周三
+				</label>
+				<label class="checkbox-inline">
+					<input type="checkbox" name="week[]" value="4"> 周四
+				</label>
+				<label class="checkbox-inline">
+					<input type="checkbox" name="week[]" value="5"> 周五
+				</label>
+				<label class="checkbox-inline">
+					<input type="checkbox" name="week[]" value="6"> 周六
+				</label>
+				<label class="checkbox-inline">
+					<input type="checkbox" name="week[]" value="0"> 周日
+				</label> 
+			</div>
+  		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">时段</label>
+			<div class="col-sm-10">
+				<label class="checkbox-inline">
+					<input type="checkbox" name="time[]" value="1,2,3,4,5,6,7,8,9,10,11,12"> 00:30-06:00
+				</label>
+				<label class="checkbox-inline">
+					<input type="checkbox" name="time[]" value="13,14,15,16,17,18,19,20,21,22,23,24"> 06:30-12:00
+				</label>
+				<label class="checkbox-inline">
+					<input type="checkbox" name="time[]" value="25,26,27,28,29,30,31,32,33,34,35,36"> 12:30-18:00
+				</label>
+				<label class="checkbox-inline">
+					<input type="checkbox" name="time[]" value="37,38,39,40,41,42,43,44,45,46,47,0"> 18:30-0:00
+				</label>
+			</div>
+  		</div>
+	  </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="submit" class="btn btn-primary">确定</button>
+      </div>
+    </form>
+  </div>
+</div>
+{/block} {block name="script"}
+<script src="__STATIC__/js/bootstrap-datetimepicker.min.js"></script>
+<script src="__STATIC__/js/bootstrap-datetimepicker.zh-CN.js"></script>
+<script>
+	$('#stime').datetimepicker({
+		minView: "month",
+		language: 'zh-CN',
+		format: 'yyyy-mm-dd 00:00:00'
+	});
+	$('#etime').datetimepicker({
+		minView: "month",
+		language: 'zh-CN',
+		format: 'yyyy-mm-dd 00:00:00'
+	});
+	var setTotalCount = {$total};
+	var p = {$p};
+	window.onload = function() {
+		if(GetQueryString('search')!=null){
+			$('#search').val(GetQueryString('search'));
+		}
+	}
+	$('#box').paging({
+		initPageNo: {$p}, // 初始页码
+		totalPages: {$pageNum}, //总页数
+		totalCount: '共' + setTotalCount + '条数据', // 条目总数
+		slideSpeed: 300, // 缓动速度。单位毫秒
+		jump: false, //是否支持跳转
+		callback: function(page) { // 回调函数
+			if(page != p) {
+				if(GetQueryString('stime')!=null||GetQueryString('etime')!=null||GetQueryString('week')!=null||GetQueryString('time')!=null){
+					var theinfo = window.location.search;
+					window.location.replace("{:url('curriculum/index')}" + theinfo + '&p=' + page);
+				}else{
+					window.location.replace("{:url('curriculum/index')}" + '?p=' + page + '&state={$state}');
+				}
+			}
+		}
+	})
+	
+	function GetQueryString(key){
+    		var url = window.location.search;
+   		var reg = new RegExp("(^|&)"+ key +"=([^&]*)(&|$)");
+    		var result = url.substr(1).match(reg);
+    		return result ? decodeURIComponent(result[2]) : null;
+	}
+</script>
+{/block}

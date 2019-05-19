@@ -1,0 +1,169 @@
+{extend name="base:common" /}{block name="css"}
+<style>
+	html,
+	body {
+		background-color: #ffffff;
+	}
+	/*dialog*/
+.aui-dialog {
+	width: 33.5rem;
+	text-align: center;
+	position: fixed;
+	z-index: 999;
+	left: 50%;
+	margin-left: -16.75rem;
+	margin-top: 0;
+	top: 45%;
+	border-radius: 0.3rem;
+	border: 2px solid #dddddd;
+	opacity: 0;
+	background-color: #ffffff;
+	-webkit-transform: translate3d(0, 0, 0) scale(1.2);
+          	transform: translate3d(0, 0, 0) scale(1.2);
+ 	-webkit-transition-property: -webkit-transform, opacity;
+          	transition-property: transform, opacity;
+    /*display: none;*/
+}
+.aui-dialog-header {
+    padding: 0.5rem 0.75rem 0 0.75rem;
+    text-align: center;
+    font-size: 1.5em;
+    color: #212121;
+}
+.aui-dialog-body {
+    padding: 0.75rem;
+    overflow: hidden;
+    font-size: 1.1em;
+    color: #757575;
+}
+.aui-dialog-body input {
+	border: 1px solid #dddddd;
+	height: 1.8rem;
+	line-height: 1.8rem;
+	min-height: 1.8rem;
+	padding-left: 0.25rem;
+	padding-right: 0.25rem;
+}
+.aui-dialog-footer {
+    position: relative;
+    font-size: 1em;
+    border-top: 1px solid #dddddd;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: center;
+	-webkit-justify-content: center;
+			justify-content: center;
+}
+.aui-dialog-btn {
+	position: relative;
+	display: block;
+    width: 100%;
+	padding: 0 0.25rem;
+	height: 3rem;
+	font-size: 1.5rem;
+	line-height: 3rem;
+	text-align: center;
+	color: #0894ec;
+	border-right: 1px solid #dddddd;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	-webkit-box-sizing: border-box;
+			box-sizing: border-box;
+	-webkit-box-flex: 1;
+			box-flex: 1;
+}
+.aui-dialog-btn:last-child {
+	border-right: none;
+}
+.aui-dialog.aui-dialog-in {
+	opacity: 1;
+	-webkit-transition-duration: 300ms;
+	      transition-duration: 300ms;
+	-webkit-transform: translate3d(0, 0, 0) scale(1);
+	      transform: translate3d(0, 0, 0) scale(1);
+}
+.aui-dialog.aui-dialog-out {
+	opacity: 0;
+	-webkit-transition-duration: 300ms;
+	      transition-duration: 300ms;
+	-webkit-transform: translate3d(0, 0, 0) scale(0.815);
+	      transform: translate3d(0, 0, 0) scale(0.815);
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5) {
+    .aui-dialog-footer {
+		border: none;
+        background-size: 100% 1px;
+		background-repeat: no-repeat;
+		background-position: top;
+        background-image: linear-gradient(0,#dddddd,#dddddd 50%,transparent 50%);
+        background-image: -webkit-linear-gradient(90deg,#dddddd,#dddddd 50%,transparent 50%);
+	}
+	.aui-dialog-btn {
+		border: none;
+        background-image: -webkit-linear-gradient(0deg, #dddddd, #dddddd 50%, transparent 50%);
+        background-image: linear-gradient(270deg, #dddddd, #dddddd 50%, transparent 50%);
+        background-size: 1px 100%;
+        background-repeat: no-repeat;
+        background-position: right;
+	}
+	.aui-dialog-btn:last-child {
+		border: none;
+        background-size: 0 100%;
+	}
+	.aui-dialog-body input {
+        border: none;
+        background-image: -webkit-linear-gradient(270deg, #dddddd, #dddddd 50%, transparent 50%), -webkit-linear-gradient(180deg, #dddddd, #dddddd 50%, transparent 50%), -webkit-linear-gradient(90deg, #dddddd, #dddddd 50%, transparent 50%), -webkit-linear-gradient(0, #dddddd, #dddddd 50%, transparent 50%);
+        background-image: linear-gradient(180deg, #dddddd, #dddddd 50%, transparent 50%), linear-gradient(270deg, #dddddd, #dddddd 50%, transparent 50%), linear-gradient(0deg, #dddddd, #dddddd 50%, transparent 50%), linear-gradient(90deg, #dddddd, #dddddd 50%, transparent 50%);
+        background-size: 100% 1px, 1px 100%, 100% 1px, 1px 100%;
+        background-repeat: no-repeat;
+        background-position: top, right top, bottom, left top;
+    }
+}
+</style>
+{/block} {block name="body"}
+<div class="container" style="max-width: 800px;">
+	{if $course.img2 != null}
+	<div style="width: 100%;margin-bottom: 30px;"><img src="{$course.img2}" style="width: 100%;"></div>
+	{/if}
+	<table class="table table-striped table-bordered">
+		<thead>
+			<tr>
+				<th width="100"></th>
+				<th>{$Think.lang.course_3}</th>
+			</tr>
+		</thead>
+		<tbody>
+			{volist name="list" id="vo"}
+			<tr>
+				<td style="font-size: 16px;line-height: 35px;">Lesson{$vo.number}</td>
+				<td style="font-size: 16px;line-height: 35px;">
+					{if $vo.show == 0}
+					{if $Think.session.ko_id != null }
+					<a onclick="cz()" style="color: #a4a4a4;">{if $Think.cookie.think_var == 'ko-kr'}{$vo.name_ko}{elseif $Think.cookie.think_var == 'zh-cn' /}{$vo.name_cn}{elseif $Think.cookie.think_var == 'en-us' /}{$vo.name_en}{/if}</a>
+					{else /}
+					<a  href="" data-toggle="modal" data-target="#login" style="color: #a4a4a4;">{if $Think.cookie.think_var == 'ko-kr'}{$vo.name_ko}{elseif $Think.cookie.think_var == 'zh-cn' /}{$vo.name_cn}{elseif $Think.cookie.think_var == 'en-us' /}{$vo.name_en}{/if}</a>
+					{/if}
+					{else /}
+					<a href="{$vo.url}" target="_blank" style="color: #000000;">{if $Think.cookie.think_var == 'ko-kr'}{$vo.name_ko}{elseif $Think.cookie.think_var == 'zh-cn' /}{$vo.name_cn}{elseif $Think.cookie.think_var == 'en-us' /}{$vo.name_en}{/if}</a>
+					{/if}
+				</td>
+			</tr>
+			{/volist}
+		</tbody>
+	</table>
+</div>
+{/block} {block name="script"}
+		<script src="__STATIC__/js/aui-dialog.js"></script>
+		<script>
+			var dialog = new auiDialog();
+			function cz(){
+					dialog.alert({
+						title: "{$Think.lang.web_common_17}",
+						msg: '{$Think.lang.course_4}<br />{$Think.lang.course_5}',
+						buttons: ['{$Think.lang.web_common_18}']
+					})
+			}
+		</script>
+{/block}

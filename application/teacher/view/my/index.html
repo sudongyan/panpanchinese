@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>个人中心</title>
+		<link href="__STATIC__/css/aui.css" rel="stylesheet" />
+		<link href="__STATIC__/css/style.css" rel="stylesheet" /> {block name="css"}{/block}
+	</head>
+
+	<body>
+		<div class="aui-content">
+			<ul class="aui-list aui-media-list">
+				<li class="aui-list-item">
+					<div class="aui-media-list-item-inner">
+						<div class="aui-list-item-media">
+							<img src="{$teacher.avatar}">
+						</div>
+						<div class="aui-list-item-inner">
+							<div class="aui-list-item-text">
+								<div class="aui-list-item-title" style="color: #000;">{$teacher.nickName}</div>
+								<div class="aui-list-item-right" onclick="location.href='{:url('my/edit')}'"><i class="aui-iconfont aui-icon-edit"></i></div>
+							</div>
+							<div class="aui-list-item-text">
+								登录账号:{$teacher.account}
+							</div>
+							<div class="aui-list-item-text">
+								账号状态:{if condition="$teacher.state == 1"}开启中{else /}关闭中{/if}
+							</div>
+						</div>
+					</div>
+					<div class="aui-info" style="padding-top:0">
+						<div class="aui-info-item">
+							{$teacher.introduction}
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="aui-content" style="margin-top: -0.1rem;">
+			<ul class="aui-list aui-list-in">
+				<li class="aui-list-item aui-list-item-middle" onclick="location.href='{:url('my/order')}'">
+					<div class="aui-list-item-inner aui-list-item-arrow">
+						<div class="aui-list-item-title">我的课程</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<section class="aui-grid aui-margin-b-15">
+			<div class="aui-row">
+				<div class="aui-col-xs-4" onclick="location.href='{:url('my/order',['state'=>0])}'">
+					<div class="aui-grid-label aui-text-purple">{$total.a}</div>
+					<div class="aui-grid-label">待开始</div>
+				</div>
+				<div class="aui-col-xs-4" onclick="location.href='{:url('my/order',['state'=>3])}'">
+					<div class="aui-grid-label aui-text-purple">{$total.b}</div>
+					<div class="aui-grid-label">待评价</div>
+				</div>
+				<div class="aui-col-xs-4" onclick="location.href='{:url('my/order',['state'=>1])}'">
+					<div class="aui-grid-label aui-text-purple">{$total.c}</div>
+					<div class="aui-grid-label">已完成</div>
+				</div>
+			</div>
+		</section>
+		<div class="aui-content aui-margin-b-15" onclick="location.href='{:url('my/evaluate')}'">
+			<ul class="aui-list aui-list-in">
+				<li class="aui-list-item aui-list-item-middle">
+					<div class="aui-list-item-inner aui-list-item-arrow">
+						<div class="aui-list-item-title">学员评价</div>
+						<div class="aui-list-item-right">{$teacher.score}星</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="aui-content aui-margin-b-15" onclick="location.href='{:url('my/account')}'">
+			<ul class="aui-list aui-list-in">
+				<li class="aui-list-item aui-list-item-middle">
+					<div class="aui-list-item-inner aui-list-item-arrow">
+						<div class="aui-list-item-title">我的账户</div>
+						<div class="aui-list-item-right"></div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<!--
+		<div class="aui-content aui-margin-b-15" onclick="location.href='{:url('my/timezone')}'">
+			<ul class="aui-list aui-list-in">
+				<li class="aui-list-item aui-list-item-middle">
+					<div class="aui-list-item-inner aui-list-item-arrow">
+						<div class="aui-list-item-title">设置时区</div>
+						<div class="aui-list-item-right">{$timezone}</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+        -->
+		<div class="aui-content aui-margin-b-15" onclick="location.href='{:url('my/password')}'">
+			<ul class="aui-list aui-list-in">
+				<li class="aui-list-item aui-list-item-middle">
+					<div class="aui-list-item-inner aui-list-item-arrow">
+						<div class="aui-list-item-title">账号设置</div>
+						<div class="aui-list-item-right">重置密码</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</body>
+	<script>
+	</script>
+
+</html>

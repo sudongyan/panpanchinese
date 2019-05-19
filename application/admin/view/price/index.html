@@ -1,0 +1,658 @@
+﻿{extend name="Base:common" /} {block name="body"}
+
+<div class="header">
+	<h1 class="page-header">
+		套餐管理
+	</h1>
+	<ol class="breadcrumb">
+		<li>
+			<a href="{:url('index/index')}">首页</a>
+		</li>
+		<li>
+			<a href="{:url('price/index')}">套餐管理</a>
+		</li>
+	</ol>
+ 
+</div>
+<div id="page-inner">
+	<div class="row">
+		<div class="col-md-12">
+			<!-- Advanced Tables -->
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-lg-12"> 
+							<button type="button" class="btn btn-danger pull-right" data-toggle="modal" data-target="#addCourse">新增套餐</button>
+							<button type="button" class="btn btn-danger pull-right" style="margin-right: 10px;" onclick="location.href='{:url('price/coupon')}'">优惠券管理</button>
+						</div>
+					</div>
+					<!-- /input-group -->
+				</div>
+				<div class="panel-body">
+					<div class="table-responsive">
+						<table class="table table-striped table-bordered table-hover">
+							<thead>
+								<tr>
+									<th width="120">套餐封面</th>
+									<th>名称</th>
+									<th>有效时长</th>
+									<th>单月课时</th>
+									<th>上课月数</th>
+									<th>总课时数</th>
+									<th>套餐费用</th>
+									<th>优惠费用</th>
+									<th>支付费用</th>
+									<th>优惠显示</th>
+									<th width="100">教材管理</th>
+								</tr>
+							</thead>
+							<tbody>
+								{volist name="list" id="vo"}
+								<tr>
+									<td class="center"><img class="img-responsive" style="width: 100%;" src="{$vo.cover}" /></td> 
+									<td>{$vo.name}</td>
+									<td class="center">{$vo.day}天</td>
+									<td class="center">{$vo.month}课时/月</td>
+									<td class="center">{$vo.mon}个月</td>
+									<td class="center">{$vo.class}课时</td>
+									<td class="center">{$vo.money}韩元<br />{$vo.cn_money}人民币<br />{$vo.usd_money}美元</td>
+									<td class="center">{$vo.dmoney}韩元<br />{$vo.cn_dmoney}人民币<br />{$vo.usd_dmoney}美元</td>
+									<td class="center">{$vo.money - $vo.dmoney}韩元<br />{php} echo ($vo['cn_money']*100 - $vo['cn_dmoney']*100)/100{/php}人民币<br />{php} echo ($vo['usd_money']*100 - $vo['usd_dmoney']*100)/100{/php}美元</td>
+									<td class="center">{$vo.discount}%</td>
+									<td class="center">
+										{if condition="($Think.session.course eq 1) OR ($Think.session.id eq 1)"}
+										<div class="btn-group-vertical" role="group" aria-label="...">
+											<button type="button" onclick="editCourse('{$vo.id}','{$vo.name}','{$vo.day}','{$vo.mon}','{$vo.class}','{$vo.month}','{$vo.money}','{$vo.dmoney}','{$vo.cn_money}','{$vo.cn_dmoney}','{$vo.usd_money}','{$vo.usd_dmoney}','{$vo.discount}','{$vo.cover}')" class="btn btn-danger">套餐管理</button>
+										</div>
+										{/if}
+									</td>
+								</tr>
+								{/volist}
+							</tbody>
+						</table>
+					</div>
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="box" id="box"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--End Advanced Tables -->
+		</div>
+	</div>
+</div>
+<div id="addCourse" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title">新增套餐</h4>
+      </div>
+      <div class="modal-body">
+      	<div class="row">
+      		<div class="col-md-6">
+					<div class="form-group" style="margin-bottom: 300px;">
+						<div class="col-sm-12">
+							<div id="container">
+								<a class="btn btn-default btn-lg " id="pickfiles" style="width: 100%;" href="#">
+									<i class="glyphicon glyphicon-plus"></i>
+									<span>选择封面图(jpg格式)</span>
+								</a>
+							</div>
+							<br />
+							<small>375X297像素</small>
+							<div>
+								<div class="col-sm-12">
+									<div id="img">
+										<img class="img-responsive" style="width: 100%;" src="__STATIC__/img/avatar.jpg " />
+									</div>
+									<input id="addCover" type="hidden" />
+									<div id="img-progress">
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+		</div>
+		<div class="col-md-6 form-horizontal">
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">名称</label>
+    				<div class="col-sm-9">
+      				<input type="text" class="form-control" id="addName" placeholder="名称">
+    				</div>
+  			</div>
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">时效</label>
+    				<div class="col-sm-9">
+      				<input type="text" class="form-control" id="addDay" placeholder="时效">
+    				</div>
+  			</div>
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">上课月数</label>
+    				<div class="col-sm-9">
+      				<input type="number" class="form-control" id="addMon" placeholder="上课月数">
+    				</div>
+  			</div>
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">月课时</label>
+    				<div class="col-sm-9">
+      				<input type="number" class="form-control" id="addMonth" placeholder="月课时">
+    				</div>
+  			</div>
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">套餐费用</label>
+    				<div class="col-sm-9">
+      				<input type="number" class="form-control" id="addMoney" placeholder="套餐费用">
+    				</div>
+  			</div>
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">优惠费用</label>
+    				<div class="col-sm-9">
+      				<input type="number" class="form-control" id="addDMoney" placeholder="优惠费用">
+    				</div>
+  			</div>
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">套餐CNY费用</label>
+    				<div class="col-sm-9">
+      				<input type="number" class="form-control" id="addCNMoney" placeholder="套餐费用">
+    				</div>
+  			</div>
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">优惠CNY费用</label>
+    				<div class="col-sm-9">
+      				<input type="number" class="form-control" id="addCNDMoney" placeholder="优惠费用">
+    				</div>
+  			</div>
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">USD费用</label>
+    				<div class="col-sm-9">
+      				<input type="number" class="form-control" id="addUSDMoney" placeholder="套餐费用">
+    				</div>
+  			</div>
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">优惠USD</label>
+    				<div class="col-sm-9">
+      				<input type="number" class="form-control" id="addUSDDMoney" placeholder="优惠费用">
+    				</div>
+  			</div>
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">优惠(百分比)</label>
+    				<div class="col-sm-9">
+      				<input type="number" class="form-control" id="addDiscount" placeholder="优惠(百分比)">
+    				</div>
+  			</div>
+		</div>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" onclick="addCourse()">保存</button> 
+      </div>
+    </div>
+  </div>
+</div>
+<div id="editCourse" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title">套餐管理</h4>
+      </div>
+      <div class="modal-body">
+      	<div class="row">
+      		<div class="col-md-6">
+      	<input type="hidden" id="editId" />
+					<div class="form-group" style="margin-bottom: 300px;">
+						<div class="col-sm-12">
+							<div id="container-edit">
+								<a class="btn btn-default btn-lg " id="pickfiles-edit" style="width: 100%;" href="#">
+									<i class="glyphicon glyphicon-plus"></i>
+									<span>选择封面图(jpg格式)</span>
+								</a>
+							</div>
+							<br />
+							<small>375X297像素</small>
+							<div>
+								<div class="col-sm-12">
+									<div id="img-edit">
+										<img class="img-responsive" style="width: 100%;" src="__STATIC__/img/avatar.jpg " />
+									</div>
+									<input id="editCover" type="hidden" />
+									<div id="img-edit-progress">
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+		</div>
+		<div class="col-md-6 form-horizontal">
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">名称</label>
+    				<div class="col-sm-9">
+      				<input type="text" class="form-control" id="editName" placeholder="名称">
+    				</div>
+  			</div>
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">时效</label>
+    				<div class="col-sm-9">
+      				<input type="text" class="form-control" id="editDay" placeholder="时效">
+    				</div>
+  			</div>
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">上课月数</label>
+    				<div class="col-sm-9">
+      				<input type="number" class="form-control" id="editMon" placeholder="上课月数">
+    				</div>
+  			</div>
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">月课时</label>
+    				<div class="col-sm-9">
+      				<input type="number" class="form-control" id="editMonth" placeholder="月课时">
+    				</div>
+  			</div>
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">套餐费用</label>
+    				<div class="col-sm-9">
+      				<input type="number" class="form-control" id="editMoney" placeholder="套餐费用">
+    				</div>
+  			</div>
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">优惠费用</label>
+    				<div class="col-sm-9">
+      				<input type="number" class="form-control" id="editDMoney" placeholder="优惠费用">
+    				</div>
+  			</div>
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">CNY费用</label>
+    				<div class="col-sm-9">
+      				<input type="number" class="form-control" id="editCNMoney" placeholder="套餐费用">
+    				</div>
+  			</div>
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">优惠CNY</label>
+    				<div class="col-sm-9">
+      				<input type="number" class="form-control" id="editCNDMoney" placeholder="优惠费用">
+    				</div>
+  			</div>
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">USD费用</label>
+    				<div class="col-sm-9">
+      				<input type="number" class="form-control" id="editUSDMoney" placeholder="套餐费用">
+    				</div>
+  			</div>
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">优惠USD</label>
+    				<div class="col-sm-9">
+      				<input type="number" class="form-control" id="editUSDDMoney" placeholder="优惠费用">
+    				</div>
+  			</div>
+			<div class="form-group">
+    				<label class="col-sm-3 control-label">优惠(百分比)</label>
+    				<div class="col-sm-9">
+      				<input type="number" class="form-control" id="editDiscount" placeholder="优惠(百分比)">
+    				</div>
+  			</div>
+		</div>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" onclick="update()">保存</button> 
+      </div>
+    </div>
+  </div>
+</div>
+{/block} {block name="script"}
+<script src="__STATIC__/Plupload/moxie.js"></script>
+<script src="__STATIC__/Plupload/plupload.dev.js"></script>
+<script src="__STATIC__/Plupload/i18n/zh_CN.js"></script>
+<script src="__STATIC__/js/qiniu.min.js"></script>
+<script>
+	var setTotalCount = {$total};
+	var p = {$p};
+	$('#box').paging({
+		initPageNo: {$p}, // 初始页码
+		totalPages: {$pageNum}, //总页数
+		totalCount: '共' + setTotalCount + '条数据', // 条目总数
+		slideSpeed: 300, // 缓动速度。单位毫秒
+		jump: false, //是否支持跳转
+		callback: function(page) { // 回调函数
+			if(page != p) {
+				window.location.replace("{:url('price/index')}" + '?p=' + page);
+			}
+		}
+	})
+</script>
+<script>
+	//新增套餐
+	function addCourse() {
+		var name = $('#addName').val();
+		var day = $('#addDay').val();
+		var mon = $('#addMon').val();
+		var month = $('#addMonth').val();
+		var money = $('#addMoney').val();
+		var dmoney = $('#addDMoney').val();
+		var cnmoney = $('#addCNMoney').val();
+		var cndmoney = $('#addCNDMoney').val();
+		var usdmoney = $('#addUSDMoney').val();
+		var usddmoney = $('#addUSDDMoney').val();
+		var discount = $('#addDiscount').val();
+		var cover = $('#addCover').val();
+		var theclass = month * mon;
+		var type="^[0-9]*[1-9][0-9]*$";
+		var re = new RegExp(type);
+		if(name.length < 1){
+			alert('请正确输入教材名称');
+			return false;
+		}else if(day.length < 1 && day.match(re)==null){
+			alert('请正确输入时效');
+			return false;
+		}else if(mon.length < 1 && mon.match(re)==null){
+			alert('请正确输入月数');
+			return false;
+		}else if(theclass.length < 1 && theclass.match(re)==null||month.length < 1 && month.match(re)==null){
+			alert('请正确输入课时');
+			return false;
+		}else if(money.length < 1 && money.match(re)==null){
+			alert('请正确输入费用');
+			return false;
+		}else if(dmoney.length < 1 && dmoney.match(re)==null){
+			alert('请正确输入优惠费用');
+			return false;
+		}else if(cnmoney.length < 1 && cnmoney.match(re)==null){
+			alert('请正确输入费用');
+			return false;
+		}else if(cndmoney.length < 1 && cndmoney.match(re)==null){
+			alert('请正确输入优惠费用');
+			return false;
+		}else if(usdmoney.length < 1 && usdmoney.match(re)==null){
+			alert('请正确输入费用');
+			return false;
+		}else if(usddmoney.length < 1 && usddmoney.match(re)==null){
+			alert('请正确输入优惠费用');
+			return false;
+		}else if(discount.length < 1 && discount.match(re)==null){
+			alert('请正确输入优惠');
+			return false;
+		}
+		info = '是否新增?';
+		if(confirm(info)) {
+			$.ajax({
+				type: "POST",
+				url: "{:url('price/add')}",
+				data: {
+					name: name,
+					day: day,
+					mon: mon,
+					class: theclass,
+					month: month,
+					money: money,
+					dmoney: dmoney,
+					cn_money: cnmoney,
+					cn_dmoney: cndmoney,
+					usd_money: usdmoney,
+					usd_dmoney: usddmoney,
+					discount: discount,
+					cover: cover
+				},
+				success: function(result) {
+					$('#addCourse').modal('hide');
+					if(result == 1) {
+						location.reload();
+					} else {
+						alert('发生错误');
+					}
+				}
+			});
+		}
+	}
+</script>
+<script>
+	//更新
+	function editCourse(id,name,day,mon,theclass,month,money,dmoney,cnmoney,cndmoney,usdmoney,usddmoney,discount,cover) {
+		$('#editId').val(id);
+		$("#editName").val(name);
+		$("#editDay").val(day);
+		$('#editMon').val(mon);
+		$("#editMonth").val(month);
+		$("#editMoney").val(money);
+		$("#editDMoney").val(dmoney);
+		$("#editCNMoney").val(cnmoney);
+		$("#editCNDMoney").val(cndmoney);
+		$("#editUSDMoney").val(cnmoney);
+		$("#editUSDDMoney").val(cndmoney);
+		$("#editDiscount").val(discount);
+		$('#img-edit').html('<img class="img-responsive" style="width: 100%;" src="' + cover + '" />');
+		$("#editCover").val(cover);
+		$('#editCourse').modal('show');
+	}
+</script>
+<script>
+	//确认更新
+	function update() {
+		var id = $('#editId').val();
+		var cover = $('#editCover').val();
+		var name = $("#editName").val();
+		var day = $("#editDay").val();
+		var mon = $('#editMon').val();
+		var month =$("#editMonth").val();
+		var money = $("#editMoney").val();
+		var dmoney = $('#editDMoney').val();
+		var cnmoney = $("#editCNMoney").val();
+		var cndmoney = $('#editCNDMoney').val();
+		var usdmoney = $("#editUSDMoney").val();
+		var usddmoney = $('#editUSDDMoney').val();
+		var discount = $("#editDiscount").val();
+		var theclass = month * mon;
+		var type="^[0-9]*[1-9][0-9]*$";
+		var re = new RegExp(type);
+		if(name.length < 1){
+			alert('请正确输入教材名称');
+			return false;
+		}else if(day.length < 1 && day.match(re)==null){
+			alert('请正确输入时效');
+			return false;
+		}else if(mon.length < 1 && mon.match(re)==null){
+			alert('请正确输入月数');
+			return false;
+		}else if(theclass.length < 1 && theclass.match(re)==null||month.length < 1 && month.match(re)==null){
+			alert('请正确输入课时');
+			return false;
+		}else if(money.length < 1 && money.match(re)==null){
+			alert('请正确输入费用');
+			return false;
+		}else if(dmoney.length < 1 && dmoney.match(re)==null){
+			alert('请正确输入优惠费用');
+			return false;
+		}else if(cnmoney.length < 1 && cnmoney.match(re)==null){
+			alert('请正确输入CNY费用');
+			return false;
+		}else if(cndmoney.length < 1 && cndmoney.match(re)==null){
+			alert('请正确输入优惠CNY费用');
+			return false;
+		}else if(usdmoney.length < 1 && usdmoney.match(re)==null){
+			alert('请正确输入USD费用');
+			return false;
+		}else if(usddmoney.length < 1 && usddmoney.match(re)==null){
+			alert('请正确输入优惠USD费用');
+			return false;
+		}else if(discount.length < 1 && discount.match(re)==null){
+			alert('请正确输入优惠');
+			return false;
+		}
+		info = '是否修改?';
+		if(confirm(info)) {
+			$.ajax({
+				type: "POST",
+				url: "{:url('price/edit')}",
+				data: {
+					id: id,
+					cover: cover,
+					name: name,
+					day: day,
+					mon: mon,
+					class: theclass,
+					month: month,
+					money: money,
+					discount: discount,
+					dmoney: dmoney,
+					cn_money: cnmoney,
+					cn_dmoney: cndmoney,
+					usd_money: usdmoney,
+					usd_dmoney: usddmoney,
+					cover: cover
+				},
+				success: function(result) {
+					$('#editCourse').modal('hide');
+					if(result == 1) {
+						location.reload();
+					} else {
+						alert('发生错误');
+					}
+				}
+			});
+		}
+	}
+	
+	var domain = "http://img.panpanchinese.cn/";
+	//引入Plupload 、qiniu.js后
+	var uploader = Qiniu.uploader({
+		runtimes: 'html5,flash,html4', //上传模式,依次退化
+		browse_button: 'pickfiles', //上传选择的点选按钮，**必需**
+		uptoken_url: "{:url('image/gettoken')}", //Ajax请求upToken的Url，**强烈建议设置**（服务端提供）
+		// uptoken : '', //若未指定uptoken_url,则必须指定 uptoken ,uptoken由其他程序生成
+		unique_names: true, // 默认 false，key为文件名。若开启该选项，SDK为自动生成上传成功后的key（文件名）。
+		// save_key: true,   // 默认 false。若在服务端生成uptoken的上传策略中指定了 `sava_key`，则开启，SDK会忽略对key的处理
+		domain: 'http://img.panpanchinese.cn/', //bucket 域名，下载资源时用到，**必需**
+		get_new_uptoken: true, //设置上传文件的时候是否每次都重新获取新的token
+		container: 'container', //上传区域DOM ID，默认是browser_button的父元素，
+		max_file_size: '100mb', //最大文件体积限制
+		multi_selection: false,
+		mime_types: [{
+			title: "Image files",
+			extensions: "jpg"
+		}],
+		flash_swf_url: '__STATIC__/Plupload/Moxie.swf', //引入flash,相对路径
+		max_retries: 3, //上传失败最大重试次数
+		dragdrop: true, //开启可拖曳上传
+		drop_element: 'container', //拖曳上传区域元素的ID，拖曳文件或文件夹后可触发上传
+		chunk_size: '4mb', //分块上传时，每片的体积
+		auto_start: true, //选择文件后自动上传，若关闭需要自己绑定事件触发上传
+		init: {
+			'FilesAdded': function(up, files) {
+				plupload.each(files, function(file) {
+					// 文件添加进队列后,处理相关的事情
+				});
+			},
+			'BeforeUpload': function(up, file) {
+				// 每个文件上传前,处理相关的事情
+			},
+			'UploadProgress': function(up, file) {
+				var total = up.total;
+				$('#img-progress').html('<div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="' + total.percent + '" aria-valuemin="0" aria-valuemax="100" style="width: ' + total.percent + '%"></div></div>');
+				// 每个文件上传时,处理相关的事情
+			},
+			'FileUploaded': function(up, file, info) {
+				// 每个文件上传成功后,处理相关的事情
+				// 其中 info.response 是文件上传成功后，服务端返回的json，形式如
+				// {
+				//    "hash": "Fh8xVqod2MQ1mocfI4S4KpRL6D98",
+				//    "key": "gogopher.jpg"
+				//  }
+				// 参考http://developer.qiniu.com/docs/v6/api/overview/up/response/simple-response.html
+				var domain = up.getOption('domain');
+				var res = JSON.parse(info.response);
+				document.getElementById("img").innerHTML =
+					'<img class="img-responsive" style="width: 100%;" src="' + domain + res.key + '?imageView2/1/w/375/h/297/interlace/1" />';
+				$('#addCover').val(domain + res.key + '?imageView2/1/w/375/h/297/interlace/1');
+				$('#img-progress').html('');
+			},
+			'Error': function(up, err, errTip) {
+				//上传出错时,处理相关的事情
+			},
+			'UploadComplete': function() {
+				//队列文件处理完毕后,处理相关的事情
+			},
+			'Key': function(up, file) {
+				// 若想在前端对每个文件的key进行个性化处理，可以配置该函数
+				// 该配置必须要在 unique_names: false , save_key: false 时才生效
+
+				var key = "";
+				// do something with key here
+				return key
+			}
+		}
+	});
+	
+	
+	//引入Plupload 、qiniu.js后
+	var uploader = Qiniu.uploader({
+		runtimes: 'html5,flash,html4', //上传模式,依次退化
+		browse_button: 'pickfiles-edit', //上传选择的点选按钮，**必需**
+		uptoken_url: "{:url('image/gettoken')}", //Ajax请求upToken的Url，**强烈建议设置**（服务端提供）
+		// uptoken : '', //若未指定uptoken_url,则必须指定 uptoken ,uptoken由其他程序生成
+		unique_names: true, // 默认 false，key为文件名。若开启该选项，SDK为自动生成上传成功后的key（文件名）。
+		// save_key: true,   // 默认 false。若在服务端生成uptoken的上传策略中指定了 `sava_key`，则开启，SDK会忽略对key的处理
+		domain: 'http://img.panpanchinese.cn/', //bucket 域名，下载资源时用到，**必需**
+		get_new_uptoken: true, //设置上传文件的时候是否每次都重新获取新的token
+		container: 'container-edit', //上传区域DOM ID，默认是browser_button的父元素，
+		max_file_size: '100mb', //最大文件体积限制
+		multi_selection: false,
+		mime_types: [{
+			title: "Image files",
+			extensions: "jpg"
+		}],
+		flash_swf_url: '__STATIC__/Plupload/Moxie.swf', //引入flash,相对路径
+		max_retries: 3, //上传失败最大重试次数
+		dragdrop: true, //开启可拖曳上传
+		drop_element: 'container-edit', //拖曳上传区域元素的ID，拖曳文件或文件夹后可触发上传
+		chunk_size: '4mb', //分块上传时，每片的体积
+		auto_start: true, //选择文件后自动上传，若关闭需要自己绑定事件触发上传
+		init: {
+			'FilesAdded': function(up, files) {
+				plupload.each(files, function(file) {
+					// 文件添加进队列后,处理相关的事情
+				});
+			},
+			'BeforeUpload': function(up, file) {
+				// 每个文件上传前,处理相关的事情
+			},
+			'UploadProgress': function(up, file) {
+				var total = up.total;
+				$('#img-edit-progress').html('<div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="' + total.percent + '" aria-valuemin="0" aria-valuemax="100" style="width: ' + total.percent + '%"></div></div>');
+				// 每个文件上传时,处理相关的事情
+			},
+			'FileUploaded': function(up, file, info) {
+				// 每个文件上传成功后,处理相关的事情
+				// 其中 info.response 是文件上传成功后，服务端返回的json，形式如
+				// {
+				//    "hash": "Fh8xVqod2MQ1mocfI4S4KpRL6D98",
+				//    "key": "gogopher.jpg"
+				//  }
+				// 参考http://developer.qiniu.com/docs/v6/api/overview/up/response/simple-response.html
+				var domain = up.getOption('domain');
+				var res = JSON.parse(info.response);
+				document.getElementById("img-edit").innerHTML =
+					'<img class="img-edit-responsive" style="width: 100%;" src="' + domain + res.key + '?imageView2/1/w/375/h/297/interlace/1" />';
+				$('#editCover').val(domain + res.key + '?imageView2/1/w/375/h/297/interlace/1');
+				$('#img-edit-progress').html('');
+			},
+			'Error': function(up, err, errTip) {
+				//上传出错时,处理相关的事情
+			},
+			'UploadComplete': function() {
+				//队列文件处理完毕后,处理相关的事情
+			},
+			'Key': function(up, file) {
+				// 若想在前端对每个文件的key进行个性化处理，可以配置该函数
+				// 该配置必须要在 unique_names: false , save_key: false 时才生效
+
+				var key = "";
+				// do something with key here
+				return key
+			}
+		}
+	});
+</script>
+{/block}

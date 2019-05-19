@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>预约上课</title>
+		<link href="__STATIC__/css/aui.css" rel="stylesheet" />
+		<link href="__STATIC__/css/style.css" rel="stylesheet" />
+    		<link rel="stylesheet" type="text/css" href="__STATIC__/css/iconfont.css" />
+    		 {block name="css"}{/block}
+	</head>
+
+	<body>
+		<header class="aui-bar aui-bar-nav aui-bar-light">
+			<a class="aui-pull-left aui-btn">
+				<span class="aui-iconfont aui-icon-left" style="color: #FFF;"></span>
+			</a>
+			<div class="aui-title" style="left:2rem; right: 4rem;">
+				<form class="aui-searchbar" id="search" style="background-color: #9981b4;" method="post">
+					<div class="aui-searchbar-input aui-border-radius">
+						<i class="aui-iconfont aui-icon-search"></i>
+						<input name="search" type="search" placeholder="Please fill in your name." id="search-input">
+						<div class="aui-searchbar-clear-btn">
+							<i class="aui-iconfont aui-icon-close"></i>
+						</div>
+					</div>
+					<div class="aui-searchbar-btn" tapmode>取消</div>
+				</form>
+			</div>
+			<a class="aui-pull-right aui-btn aui-btn-outlined" style="border-color: #fff;" onclick="location.href='{:url('teacher/filter')}'">
+				<span style="color: #FFF;">filters</span>
+			</a>
+		</header>
+		{volist name="list" id="vo"}
+		<div class="aui-content-padded aui-margin-b-5" onclick="location.href='{:url('teacher/info',['tid'=>$vo.id])}'">
+			<ul class="aui-list aui-media-list">
+				<li class="aui-list-item">
+					<div class="aui-media-list-item-inner">
+						<div class="aui-list-item-media" style="width: 3.5rem;"> 
+							<img src="{$vo.avatar}">
+						</div>
+						<div class="aui-list-item-inner">
+							<div class="aui-list-item-text">
+								<div class="aui-list-item-title" style="color: #000;">{$vo.nickName}</div>
+							</div>
+							<div class="aui-list-item-text aui-pull-left">
+								<span style="width:4rem;">
+								{for start="0" end="5"}
+								{if ($vo.score > $i) AND ($vo.score >= $i+1)}
+								<i class="aui-iconfont iconfont icon-iconfontxingxing" style="color: #ffba00;margin-left: -2px;margin-right: -2px;"></i>
+								{elseif $vo.score > $i /}
+								<i class="aui-iconfont iconfont icon-iconfontxingxing" style="background-image: -webkit-gradient(linear,0 50%,100% 50% , color-stop(0.4, #ffba00), color-stop(0.60, #cbcbcb));-webkit-background-clip: text;-webkit-text-fill-color: transparent; margin-left: -2px;margin-right: -2px;"></i>
+								{else /}
+								<i class="aui-iconfont iconfont icon-iconfontxingxing" style="color: #cbcbcb;margin-left: -2px;margin-right: -2px;"></i> 
+								{/if}
+								{/for}
+								</span>
+								<span style="margin-left: 0.1rem;">{$vo.score}</span>
+							</div>
+							<div class="aui-pull-right" style="margin-top: -0.4rem;">
+								<button class="aui-btn aui-btn-purple aui-btn-sm">预约课程</button>
+							</div>
+						</div>
+					</div>
+					<div class="aui-info" style="padding-top:0">
+						<div class="aui-info-item aui-ellipsis-1" style="color: #000;">
+							{$vo.introduction}
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		{/volist}
+	</body>
+	<script>
+	</script>
+
+</html>

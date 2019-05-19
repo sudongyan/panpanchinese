@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>{$Think.lang.my_index_62}</title>
+		<link href="__STATIC__/css/aui.css" rel="stylesheet" />
+		<link href="__STATIC__/css/style.css" rel="stylesheet" />
+		<style>
+			html,
+			body {
+				background-color: #ffffff;
+			}
+			
+			.aui-list .aui-list-item {
+				border-radius: 5px;
+				border: 1px solid #cbcbcb;
+				margin-top: 1rem;
+			}
+		</style>
+		{block name="css"}{/block}
+	</head>
+
+	<body>
+		<header class="aui-bar aui-bar-nav">
+			<a class="aui-pull-left aui-btn" onclick="javascript:history.back(-1);">
+				<span class="aui-iconfont aui-icon-left"></span>
+			</a>
+			<div class="aui-title">{$Think.lang.my_index_62}</div>
+		</header>
+		<form class="aui-content-padded aui-margin-b-15" method="post">
+			<ul class="aui-list aui-form-list">
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-input">
+							<select name="time_zone">
+								{volist name="TimezoneList" id="vo"}
+								{if condition="$vo.id == $student.time_zone"}
+								<option value="{$vo.id}" selected="selected">{if $Think.cookie.think_var == 'ko-kr'}{$vo.name_ko}{elseif $Think.cookie.think_var == 'zh-cn' /}{$vo.name_cn}{elseif $Think.cookie.think_var == 'en-us' /}{$vo.name_en}{/if}</option>
+								{else /}
+								<option value="{$vo.id}">{if $Think.cookie.think_var == 'ko-kr'}{$vo.name_ko}{elseif $Think.cookie.think_var == 'zh-cn' /}{$vo.name_cn}{elseif $Think.cookie.think_var == 'en-us' /}{$vo.name_en}{/if}</option>
+								{/if}
+								{/volist}
+							</select>
+						</div>
+					</div>
+				</li>
+			</ul>
+			<p>
+				<button type="submit" class="aui-btn aui-btn-purple aui-btn-block" style="margin-top: 1rem;">{$Think.lang.teacher_index_6}</button>
+			</p>
+		</form>		<!-- Global site tag (gtag.js) - Google Ads: 789908941 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-789908941"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-789908941');
+</script>
+<script>
+  gtag('event', 'page_view', {
+    'send_to': 'AW-789908941',
+    'user_id': 'replace with value'
+  });
+</script>
+	</body>
+
+</html>

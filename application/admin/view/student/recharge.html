@@ -1,0 +1,318 @@
+﻿{extend name="Base:common" /}{block name="css"}
+<link href="__STATIC__/css/bootstrap-datetimepicker.min.css" rel="stylesheet" /> {/block}{block name="body"}
+<div class="header">
+	<h1 class="page-header">
+		学员管理
+    		<small>充值管理</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li>
+			<a href="{:url('index/index')}">首页</a>
+		</li>
+		<li>
+			<a href="{:url('student/index')}">学员管理</a>
+		</li>
+		<li class="active">充值管理</li>
+	</ol>
+
+</div>
+<div id="page-inner">
+	<div class="row">
+		<div class="col-md-12">
+			<!-- Nav tabs -->
+			<ul class="nav nav-tabs">
+				{switch name="Request.param.overdue" } {case value="0"}
+				<li>
+					<a href="{:url('student/recharge')}?id={$user_id}">全部</a>
+				</li>
+				<li class="active">
+					<a href="{:url('student/recharge')}?id={$user_id}&overdue=0">使用中</a>
+				</li>
+				<li>
+					<a href="{:url('student/recharge')}?id={$user_id}&overdue=1">已过期</a>
+				</li>
+				{/case} {case value="1"}
+				<li>
+					<a href="{:url('student/recharge')}?id={$user_id}">全部</a>
+				</li>
+				<li>
+					<a href="{:url('student/recharge')}?id={$user_id}&overdue=0">使用中</a>
+				</li>
+				<li class="active">
+					<a href="{:url('student/recharge')}?id={$user_id}&overdue=1">已过期</a>
+				</li>
+				{/case} {default /}
+				<li class="active">
+					<a href="{:url('student/recharge')}?id={$user_id}">全部</a>
+				</li>
+				<li>
+					<a href="{:url('student/recharge')}?id={$user_id}&overdue=0">使用中</a>
+				</li>
+				<li>
+					<a href="{:url('student/recharge')}?id={$user_id}&overdue=1">已过期</a>
+				</li>
+				{/switch}
+			</ul>
+			<!-- Advanced Tables -->
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-lg-6">
+						</div>
+						<div class="col-lg-6">
+							<button class="btn btn-danger pull-right" type="button" data-toggle="modal" data-target="#addPrice">账户充值</button>
+						</div>
+					</div>
+					<!-- /input-group -->
+				</div>
+				<div class="panel-body">
+					<div class="table-responsive">
+						<table class="table table-striped table-bordered table-hover">
+							<thead>
+								<tr>
+									<th>套餐信息</th>
+									<th>套餐状态</th>
+									<th>课程信息</th>
+									<th>支付信息</th>
+									<th width="100">充值管理</th>
+								</tr>
+							</thead>
+							<tbody>
+								{volist name="list" id="vo"}
+								<tr>
+									<td>
+										名称：{$vo.name}<br />
+										时效：{$vo.month}个月<br />
+										内容：{$vo.class}课时/月<br />
+										费用：{$vo.discount_money}韩元
+									</td>
+									<td>
+										套餐状态：{if condition="$vo.overdue == 0"}使用中{else /}已过期{/if}<br />
+										开始时间：{$vo.payment_time}<br />
+										结束时间：{$vo.end_time}
+									</td>
+									<td>
+										课程：{$vo.all_class}<br />
+										已用课程：{$vo.used_class}<br />
+										剩余课程：{$vo.all_class - $vo.used_class}
+									</td>
+									<td>
+										支付方式：{if condition="$vo.type == 0"}PAYPAL{elseif  condition="$vo.type == 3"/}体验券{else /}转账{/if}<br />
+										下单时间：{$vo.create_time}<br />
+										支付时间：{$vo.payment_time}
+									</td>
+									<td class="center">
+										<button type="button" onclick="updatePrice({$vo.order_id},'{$vo.all_class}','{$vo.used_class}','{$vo.payment_time}','{$vo.end_time}');" class="btn btn-danger">充值/扣款</button>
+									</td>
+								</tr>
+								{/volist}
+							</tbody>
+						</table>
+					</div>
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="box" id="box"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--End Advanced Tables -->
+		</div>
+	</div>
+</div>
+<div id="addPrice" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title">充值套餐</h4>
+      </div>
+      <div class="modal-body">
+		<div class="form-group">
+			<select class="form-control" onchange="theprice(this.value)">
+				<option value="0">请选择 课时/月</option>
+			{volist name="classlist" id="vo"}
+				<option value="{$vo.period}">{$vo.period}课时/每月</option>
+			{/volist}
+			</select>
+		</div>
+		<div class="form-group">
+			<select id="pricelist" class="form-control">
+				<option value="0">请首先选择 课时/月</option>
+			</select>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" onclick="addPrice()">充值</button> 
+      </div>
+    </div>
+  </div>
+</div>
+<div id="editPrice" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title">套餐调整</h4>
+      </div>
+      <input type="hidden" id="edit_id" />
+      <div class="modal-body">
+		<div class="form-group">
+			<label>总课程券</label>
+			<input type="number" class="form-control" id="edit_class" placeholder="总课程券">
+		</div>
+      </div>
+      <div class="modal-body">
+		<div class="form-group">
+			<label>已使用课程券</label>
+			<input type="number" class="form-control" id="editUsed_class" placeholder="已用课程">
+		</div>
+      </div>
+      <div class="modal-body">
+		<div class="form-group">
+			<label>开始时间</label>
+			<input type="text" class="form-control" id="editPayment_time" placeholder="开始时间">
+		</div>
+      </div>
+      <div class="modal-body">
+		<div class="form-group">
+			<label>结束时间</label>
+			<input type="text" class="form-control" id="editEnd_time" placeholder="结束时间">
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" onclick="editPrice()">修改</button> 
+      </div>
+    </div>
+  </div>
+</div>
+{/block} {block name="script"}
+<script src="__STATIC__/js/bootstrap-datetimepicker.min.js"></script>
+<script src="__STATIC__/js/bootstrap-datetimepicker.zh-CN.js"></script>
+<script>
+	var setTotalCount = {$total};
+	var p = {$p};
+	$('#box').paging({
+		initPageNo: {$p}, // 初始页码
+		totalPages: {$pageNum}, //总页数
+		totalCount: '共' + setTotalCount + '条数据', // 条目总数
+		slideSpeed: 300, // 缓动速度。单位毫秒
+		jump: false, //是否支持跳转
+		callback: function(page) { // 回调函数
+			if(page != p) {
+				window.location.replace("{:url('student/recharge')}" + '?p=' + page + '&id={$user_id}');
+			}
+		}
+	})
+	$('#editPayment_time').datetimepicker({
+		language: 'zh-CN',
+		format: 'yyyy-mm-dd hh:ii'
+	});
+	$('#editEnd_time').datetimepicker({
+		language: 'zh-CN',
+		format: 'yyyy-mm-dd hh:ii'
+	});
+	
+	function theprice(month) {
+		$.getJSON("{:url('student/price_month_list')}" + "?month=" + month, function(result) {
+			data = result.data;
+			document.getElementById("pricelist").innerHTML = '';
+			for(var n = 0; n < data.length; n++) {
+				var discount = (100 - data[n].discount) * 0.01;
+				var monthmoney = Math.ceil(data[n].money / Math.ceil(data[n].class / 30) * discount);
+				var allmoney = Math.ceil(data[n].money * discount);
+				document.getElementById("pricelist").innerHTML += 
+				'<option value="' + data[n].id + '"> ' + Math.ceil(data[n].day / 30) + '个月 费用' + addCommas(monthmoney) + '/月 共' + addCommas(allmoney)+ '</option>';
+			}
+		});
+	}
+	
+	
+	//充值
+	function addPrice() {
+		var price = $('#pricelist').val();
+		if(price == 0){
+			alert('请正确选择套餐');
+			return false;
+		}
+		info = '是否充值?';
+		if(confirm(info)) {
+			$.ajax({
+				type: "POST",
+				url: "{:url('student/price_add')}",
+				data: {
+					price_id: price,
+					student_id: {$user_id}
+				},
+				success: function(result) {
+					$('#addPrice').modal('hide');
+					if(result == 1) {
+						location.reload();
+					} else {
+						alert('发生错误');
+					}
+				}
+			});
+		}
+	}
+	
+	//更新
+	function updatePrice(id,all_class,used_class,payment_time,end_time) {
+		$('#edit_id').val(id);
+		$("#edit_class").val(all_class);
+		$("#editUsed_class").val(used_class);
+		$("#editPayment_time").val(payment_time);
+		$("#editEnd_time").val(end_time);
+		$('#editPrice').modal('show');
+	}
+	
+	//修改
+	function editPrice(){
+		var order_id = $('#edit_id').val();
+		var allclass = $('#edit_class').val();
+		var used_class = $('#editUsed_class').val();
+		var payment_time = $('#editPayment_time').val();
+		var end_time = $('#editEnd_time').val();
+		if(used_class < 0){
+			alert('请正确输入已使用课程券');
+			return false;
+		}
+		info = '是否修改?';
+		if(confirm(info)) {
+			$.ajax({
+				type: "POST",
+				url: "{:url('student/price_edit')}",
+				data: {
+					order_id: order_id,
+					allclass: allclass,
+					used_class: used_class,
+					payment_time: payment_time,
+					end_time: end_time
+				},
+				success: function(result) {
+					$('#editPrice').modal('hide');
+					if(result == 1) {
+						location.reload();
+					} else {
+						alert('发生错误');
+					}
+				}
+			});
+		}
+	}
+
+			function addCommas(nStr) {
+				nStr += '';
+				x = nStr.split('.');
+				x1 = x[0];
+				x2 = x.length > 1 ? '.' + x[1] : '';
+				var rgx = /(\d+)(\d{3})/;
+				while(rgx.test(x1)) {
+					x1 = x1.replace(rgx, '$1' + ',' + '$2');
+				}
+				return x1 + x2;
+			}
+</script>
+{/block}

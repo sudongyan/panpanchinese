@@ -1,0 +1,206 @@
+{extend name="base:common" /} {block name="css"}
+<style>
+	/*dialog*/
+	
+	.aui-dialog {
+		width: 33.5rem;
+		text-align: center;
+		position: fixed;
+		z-index: 999;
+		left: 50%;
+		margin-left: -16.75rem;
+		margin-top: 0;
+		top: 45%;
+		border-radius: 0.3rem;
+		border: 2px solid #dddddd;
+		opacity: 0;
+		background-color: #ffffff;
+		-webkit-transform: translate3d(0, 0, 0) scale(1.2);
+		transform: translate3d(0, 0, 0) scale(1.2);
+		-webkit-transition-property: -webkit-transform, opacity;
+		transition-property: transform, opacity;
+		/*display: none;*/
+	}
+	
+	.aui-dialog-header {
+		padding: 0.5rem 0.75rem 0 0.75rem;
+		text-align: center;
+		font-size: 1.5em;
+		color: #212121;
+	}
+	
+	.aui-dialog-body {
+		padding: 0.75rem;
+		overflow: hidden;
+		font-size: 1.1em;
+		color: #757575;
+	}
+	
+	.aui-dialog-body input {
+		border: 1px solid #dddddd;
+		height: 1.8rem;
+		line-height: 1.8rem;
+		min-height: 1.8rem;
+		padding-left: 0.25rem;
+		padding-right: 0.25rem;
+	}
+	
+	.aui-dialog-footer {
+		position: relative;
+		font-size: 1em;
+		border-top: 1px solid #dddddd;
+		display: -webkit-box;
+		display: -webkit-flex;
+		display: flex;
+		-webkit-box-pack: center;
+		-webkit-justify-content: center;
+		justify-content: center;
+	}
+	
+	.aui-dialog-btn {
+		position: relative;
+		display: block;
+		width: 100%;
+		padding: 0 0.25rem;
+		height: 3rem;
+		font-size: 1.5rem;
+		line-height: 3rem;
+		text-align: center;
+		color: #0894ec;
+		border-right: 1px solid #dddddd;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		-webkit-box-sizing: border-box;
+		box-sizing: border-box;
+		-webkit-box-flex: 1;
+		box-flex: 1;
+	}
+	
+	.aui-dialog-btn:last-child {
+		border-right: none;
+	}
+	
+	.aui-dialog.aui-dialog-in {
+		opacity: 1;
+		-webkit-transition-duration: 300ms;
+		transition-duration: 300ms;
+		-webkit-transform: translate3d(0, 0, 0) scale(1);
+		transform: translate3d(0, 0, 0) scale(1);
+	}
+	
+	.aui-dialog.aui-dialog-out {
+		opacity: 0;
+		-webkit-transition-duration: 300ms;
+		transition-duration: 300ms;
+		-webkit-transform: translate3d(0, 0, 0) scale(0.815);
+		transform: translate3d(0, 0, 0) scale(0.815);
+	}
+	
+	@media only screen and (-webkit-min-device-pixel-ratio: 1.5) {
+		.aui-dialog-footer {
+			border: none;
+			background-size: 100% 1px;
+			background-repeat: no-repeat;
+			background-position: top;
+			background-image: linear-gradient(0, #dddddd, #dddddd 50%, transparent 50%);
+			background-image: -webkit-linear-gradient(90deg, #dddddd, #dddddd 50%, transparent 50%);
+		}
+		.aui-dialog-btn {
+			border: none;
+			background-image: -webkit-linear-gradient(0deg, #dddddd, #dddddd 50%, transparent 50%);
+			background-image: linear-gradient(270deg, #dddddd, #dddddd 50%, transparent 50%);
+			background-size: 1px 100%;
+			background-repeat: no-repeat;
+			background-position: right;
+		}
+		.aui-dialog-btn:last-child {
+			border: none;
+			background-size: 0 100%;
+		}
+		.aui-dialog-body input {
+			border: none;
+			background-image: -webkit-linear-gradient(270deg, #dddddd, #dddddd 50%, transparent 50%), -webkit-linear-gradient(180deg, #dddddd, #dddddd 50%, transparent 50%), -webkit-linear-gradient(90deg, #dddddd, #dddddd 50%, transparent 50%), -webkit-linear-gradient(0, #dddddd, #dddddd 50%, transparent 50%);
+			background-image: linear-gradient(180deg, #dddddd, #dddddd 50%, transparent 50%), linear-gradient(270deg, #dddddd, #dddddd 50%, transparent 50%), linear-gradient(0deg, #dddddd, #dddddd 50%, transparent 50%), linear-gradient(90deg, #dddddd, #dddddd 50%, transparent 50%);
+			background-size: 100% 1px, 1px 100%, 100% 1px, 1px 100%;
+			background-repeat: no-repeat;
+			background-position: top, right top, bottom, left top;
+		}
+	}
+	/*toast*/
+	
+	.aui-toast {
+		background: rgba(0, 0, 0, 0.7);
+		text-align: center;
+		border-radius: 0.25rem;
+		color: #ffffff;
+		position: fixed;
+		z-index: 3;
+		top: 45%;
+		left: 50%;
+		width: 7.5em;
+		min-height: 6em;
+		margin-left: -3.75em;
+		margin-top: -4rem;
+		display: none;
+	}
+	
+	.aui-toast .aui-iconfont {
+		margin-top: 0.2rem;
+		display: block;
+		font-size: 2.6rem;
+	}
+	
+	.aui-toast-content {
+		margin: 0 0 0.75rem;
+	}
+	
+	.aui-toast-loading {
+		background-color: #ffffff;
+		border-radius: 100%;
+		margin: 0.75rem 0;
+		-webkit-animation-fill-mode: both;
+		animation-fill-mode: both;
+		border: 2px solid #ffffff;
+		border-bottom-color: transparent;
+		height: 2.25rem;
+		width: 2.25rem;
+		background: transparent !important;
+		display: inline-block;
+		-webkit-animation: rotate 1s 0s linear infinite;
+		animation: rotate 1s 0s linear infinite;
+	}
+</style>
+{/block} {block name="body"}
+<div class="container" style="max-width: 400px;">
+	<div class="panel panel-default">
+		<div class="panel-heading" style="background-color: #9981b4;text-align: center;color: #ffffff;">
+			<h3 class="panel-title">WECHAT PAY</h3></div>
+		<div class="panel-body">
+			<div id="qrcode" style="margin:0 auto;width: 300px;"></div>
+		</div>
+	</div>
+</div>
+{/block} {block name="script"}
+<script src="__STATIC__/js/jquery-qrcode-0.14.0.min.js"></script>
+<script src="__STATIC__/js/aui-dialog.js"></script>
+<script src="__STATIC__/js/aui-toast.js"></script>
+<script>
+	var img = '{$data.code_url}';
+	window.onload = function() {
+		$('#qrcode').qrcode({
+			"size": 300,
+			"color": "#3a3",
+			"text": img
+		});
+	}
+	window.setInterval("validate()", 3000);
+
+	function validate() {
+		$.getJSON("{:url('pay/validate_wxid')}?prepay_id={$data.prepay_id}", function(res) {
+			if(res.result == true){
+				window.location.href="{:url('my/index')}";
+			}
+		});
+	}
+</script> {/block}

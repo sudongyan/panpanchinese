@@ -1,0 +1,394 @@
+{extend name="base:common" /}
+{block name="css"}
+<style>/*dialog*/
+.aui-dialog {
+	width: 33.5rem;
+	text-align: center;
+	position: fixed;
+	z-index: 999;
+	left: 50%;
+	margin-left: -16.75rem;
+	margin-top: 0;
+	top: 45%;
+	border-radius: 0.3rem;
+	border: 2px solid #dddddd;
+	opacity: 0;
+	background-color: #ffffff;
+	-webkit-transform: translate3d(0, 0, 0) scale(1.2);
+          	transform: translate3d(0, 0, 0) scale(1.2);
+ 	-webkit-transition-property: -webkit-transform, opacity;
+          	transition-property: transform, opacity;
+    /*display: none;*/
+}
+.aui-dialog-header {
+    padding: 0.5rem 0.75rem 0 0.75rem;
+    text-align: center;
+    font-size: 1.5em;
+    color: #212121;
+}
+.aui-dialog-body {
+    padding: 0.75rem;
+    overflow: hidden;
+    font-size: 1.1em;
+    color: #757575;
+}
+.aui-dialog-body input {
+	border: 1px solid #dddddd;
+	height: 1.8rem;
+	line-height: 1.8rem;
+	min-height: 1.8rem;
+	padding-left: 0.25rem;
+	padding-right: 0.25rem;
+}
+.aui-dialog-footer {
+    position: relative;
+    font-size: 1em;
+    border-top: 1px solid #dddddd;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: center;
+	-webkit-justify-content: center;
+			justify-content: center;
+}
+.aui-dialog-btn {
+	position: relative;
+	display: block;
+    width: 100%;
+	padding: 0 0.25rem;
+	height: 3rem;
+	font-size: 1.5rem;
+	line-height: 3rem;
+	text-align: center;
+	color: #0894ec;
+	border-right: 1px solid #dddddd;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	-webkit-box-sizing: border-box;
+			box-sizing: border-box;
+	-webkit-box-flex: 1;
+			box-flex: 1;
+}
+.aui-dialog-btn:last-child {
+	border-right: none;
+}
+.aui-dialog.aui-dialog-in {
+	opacity: 1;
+	-webkit-transition-duration: 300ms;
+	      transition-duration: 300ms;
+	-webkit-transform: translate3d(0, 0, 0) scale(1);
+	      transform: translate3d(0, 0, 0) scale(1);
+}
+.aui-dialog.aui-dialog-out {
+	opacity: 0;
+	-webkit-transition-duration: 300ms;
+	      transition-duration: 300ms;
+	-webkit-transform: translate3d(0, 0, 0) scale(0.815);
+	      transform: translate3d(0, 0, 0) scale(0.815);
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5) {
+    .aui-dialog-footer {
+		border: none;
+        background-size: 100% 1px;
+		background-repeat: no-repeat;
+		background-position: top;
+        background-image: linear-gradient(0,#dddddd,#dddddd 50%,transparent 50%);
+        background-image: -webkit-linear-gradient(90deg,#dddddd,#dddddd 50%,transparent 50%);
+	}
+	.aui-dialog-btn {
+		border: none;
+        background-image: -webkit-linear-gradient(0deg, #dddddd, #dddddd 50%, transparent 50%);
+        background-image: linear-gradient(270deg, #dddddd, #dddddd 50%, transparent 50%);
+        background-size: 1px 100%;
+        background-repeat: no-repeat;
+        background-position: right;
+	}
+	.aui-dialog-btn:last-child {
+		border: none;
+        background-size: 0 100%;
+	}
+	.aui-dialog-body input {
+        border: none;
+        background-image: -webkit-linear-gradient(270deg, #dddddd, #dddddd 50%, transparent 50%), -webkit-linear-gradient(180deg, #dddddd, #dddddd 50%, transparent 50%), -webkit-linear-gradient(90deg, #dddddd, #dddddd 50%, transparent 50%), -webkit-linear-gradient(0, #dddddd, #dddddd 50%, transparent 50%);
+        background-image: linear-gradient(180deg, #dddddd, #dddddd 50%, transparent 50%), linear-gradient(270deg, #dddddd, #dddddd 50%, transparent 50%), linear-gradient(0deg, #dddddd, #dddddd 50%, transparent 50%), linear-gradient(90deg, #dddddd, #dddddd 50%, transparent 50%);
+        background-size: 100% 1px, 1px 100%, 100% 1px, 1px 100%;
+        background-repeat: no-repeat;
+        background-position: top, right top, bottom, left top;
+    }
+}/*toast*/
+.aui-toast {
+	background: rgba(0, 0, 0, 0.7);
+	text-align: center;
+	border-radius: 0.25rem;
+	color: #ffffff;
+	position: fixed;
+	z-index: 3;
+	top: 45%;
+	left: 50%;
+	width: 7.5em;
+	min-height: 6em;
+	margin-left: -3.75em;
+	margin-top: -4rem;
+	display: none;
+}
+.aui-toast .aui-iconfont {
+	margin-top: 0.2rem;
+	display: block;
+	font-size: 2.6rem;
+}
+.aui-toast-content {
+  margin: 0 0 0.75rem;
+}
+.aui-toast-loading {
+    background-color: #ffffff;
+    border-radius: 100%;
+    margin: 0.75rem 0;
+    -webkit-animation-fill-mode: both;
+        	animation-fill-mode: both;
+    border: 2px solid #ffffff;
+    border-bottom-color: transparent;
+    height: 2.25rem;
+    width: 2.25rem;
+    background: transparent !important;
+    display: inline-block;
+    -webkit-animation: rotate 1s 0s linear infinite;
+        	animation: rotate 1s 0s linear infinite;
+}
+</style>
+{/block}
+ {block name="body"}
+<div class="container" style="max-width: 500px;">
+	<div class="panel panel-default">
+		<div class="panel-heading" style="background-color: #9981b4;text-align: center;color: #ffffff;"><h3 class="panel-title">{$Think.lang.teacher_index_8}</h3></div>
+		<div class="panel-body">
+			<form class="form-horizontal" method="post">
+				<input type="hidden" name="id" value="{$id}" />
+				<div class="form-group">
+					<label class="col-sm-2 control-label">{$Think.lang.teacher_index_46}</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" value="{$Curriculum.thetime}" readonly>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">{$Think.lang.my_index_31}</label>
+					<div class="col-sm-10">
+						<select class="form-control" onchange="thecourse(this.value)">
+							<option value="0">{$Think.lang.teacher_index_47}</option>
+							{volist name="CourseType" id="vo"}
+							<option value="{$vo.id}">{$vo.name_ko}</option>
+							{/volist}
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">{$Think.lang.my_index_32}</label>
+					<div class="col-sm-10">
+						<select class="form-control" name="course" id="course" onchange="theperiod(this.value)">
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">{$Think.lang.teacher_index_48}</label>
+					<div class="col-sm-10">
+						<select class="form-control" name="class" id="period">
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">{$Think.lang.teacher_index_49}</label>
+					<div class="col-sm-6">&nbsp;</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label"></label>
+					<div class="col-sm-10 ">
+							{volist name="demand" id="vo"}
+							<div class="checkbox"><label><input name="demand" type="checkbox" value="{$vo.id}"> {if $Think.cookie.think_var == 'ko-kr'}{$vo.info_ko}{elseif  $Think.cookie.think_var == 'zh-cn' /}{$vo.info_cn}{else /}{$vo.info_en}{/if}</label></div>
+							{/volist}
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label"></label>
+					<div class="col-sm-10">
+						<h6 style="color: blue;">{$Think.lang.teacher_index_50}<br />{$Think.lang.teacher_index_51}</h6>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="button" class="btn btn-purple" onclick="enroll();">{$Think.lang.teacher_index_52}</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading" style="text-align: center;"><h3 class="panel-title">{$Think.lang.teacher_index_53}</h3></div>
+		<div class="panel-body">
+				<div class="row" style="margin-bottom: 11px;"> 
+					<label class="col-sm-1" style="padding-right: 0px;">&bull;</label>
+					<div class="col-sm-11" style="padding-left: 0px;">
+						{$Think.lang.teacher_index_54}
+					</div>
+				</div>
+				<div class="row" style="margin-bottom: 11px;">
+					<label class="col-sm-1" style="padding-right: 0px;">&bull;</label>
+					<div class="col-sm-11" style="padding-left: 0px;">
+						{$Think.lang.teacher_index_55}
+					</div>
+				</div>
+				<div class="row" style="margin-bottom: 11px;">
+					<label class="col-sm-1" style="padding-right: 0px;">&bull;</label>
+					<div class="col-sm-11" style="padding-left: 0px;color: blue;">
+						{$Think.lang.teacher_index_56}
+					</div>
+				</div>
+				<div class="row">
+					<label class="col-sm-1" style="padding-right: 0px;"></label>
+					<div class="col-sm-11" style="padding-left: 0px;color: blue;">
+						{$Think.lang.teacher_index_67}<br />{$Think.lang.teacher_index_57}
+					</div>
+				</div>
+		</div>
+	</div>
+</div>
+{/block} {block name="script"}
+		<script src="__STATIC__/js/aui-dialog.js"></script>
+		<script src="__STATIC__/js/aui-toast.js"></script>
+		<script>
+			var toast = new auiToast();
+			var dialog = new auiDialog();
+			{volist name="CourseType" id="vo" key="k"}
+			{if $k == 1}
+			 var courseTypeId = {$vo.id};
+			{/if}
+			{/volist}
+			window.onload = function() {
+				thecourse(0);
+			}
+
+			function thecourse(type) {
+				if(type == '0'){
+					document.getElementById("course").innerHTML = '<option value="0">{$Think.lang.teacher_index_58}</option>';
+					document.getElementById("period").innerHTML = '<option value="0">{$Think.lang.teacher_index_59}</option>';
+				}else{
+				$.getJSON("{:url('teacher/course')}" + "?type=" + type, function(result) {
+					data = result.data;
+					document.getElementById("course").innerHTML = '<option value="0">{$Think.lang.teacher_index_58}</option>';
+					document.getElementById("period").innerHTML = '';
+					for(var n = 0; n < data.length; n++) {
+						document.getElementById("course").innerHTML += '<option value="' + data[n].id + '" data="' + data[n].period + '">' + data[n].name_ko + '</option>';
+						if(n == 0) {
+							theperiod(data[n].id);
+						}
+					}
+				});
+				}
+			}
+
+			function theperiod(type) {
+				$.getJSON("{:url('teacher/period')}" + "?type=" + type, function(result) {
+					data = result.data;
+					console.log(JSON.stringify(data));
+					document.getElementById("period").innerHTML = '<option value="0">{$Think.lang.teacher_index_60}</option>';
+					for(var n = 0; n < data.length; n++) {
+						document.getElementById("period").innerHTML += '<option value="' + data[n].number + '" data="' + data[n].number + '">' + data[n].number + '.' + data[n].name_ko + '</option>';
+					}
+				});
+			}
+			
+			function enroll(){
+				var course = document.getElementById("course").value;
+				var theclass = document.getElementById("period").value;
+				if(course == 0 || theclass == 0){
+					dialog.alert({
+						title: "{$Think.lang.web_common_17}",
+						msg: '{$Think.lang.teacher_index_61}',
+						buttons: ['{$Think.lang.web_common_18}']
+					});
+					return;
+				}
+				var arr = document.getElementsByName("demand");
+				var demand = '';
+				for(i=0;i<arr.length;i++){
+					if(arr[i].checked){
+						demand = demand + ',' + arr[i].value;
+					}
+				}
+				/*
+				dialog.alert({
+					title: "{$Think.lang.web_common_17}",
+					msg: '수업을 예약 하시겠습니까?',
+					buttons: ['네','아니요']
+				}, function(ret) {
+					if(ret.buttonIndex == 1){
+						toast.loading({
+		                    title:"loading"
+		                });
+						$.ajax({
+							type: "POST",
+							url: "{:url('teacher/enroll')}",
+							data: {
+								id: {$id},
+								course:course,
+								class:theclass
+							},
+							datatype: "json",
+							success: function(result) {
+								toast.hide();
+								if(result.data == 1) {
+									location.href = "{:url('my/index')}";
+								} else {
+									dialog.alert({
+										title: "{$Think.lang.web_common_17}",
+										msg: '예약이 마감되었습니다.<br>다른 예약을 해주시기 바랍니다.',
+										buttons: ['{$Think.lang.web_common_18}']
+									}, function(ret) {
+										history.back(-1);
+									})
+								}
+							},
+							error: function() {
+								alert("error");
+							}
+						});
+					}
+				});
+				*/
+						$.ajax({
+							type: "POST",
+							url: "{:url('teacher/enroll')}",
+							data: {
+								id: {$id},
+								course:course,
+								class:theclass,
+								demand:demand
+							},
+							datatype: "json",
+							success: function(result) {
+								toast.hide();
+								if(result.data == 1) {
+									dialog.alert({
+										title: "{$Think.lang.web_common_17}",
+										msg: '{$Think.lang.teacher_index_64}',
+										buttons: ['{$Think.lang.web_common_18}']
+									}, function(ret) {
+										location.href='{:url('my/index')}';
+									})
+								} else {
+									alert(JSON.stringify(result));
+									return false;
+									dialog.alert({
+										title: "{$Think.lang.web_common_17}",
+										msg: '{$Think.lang.teacher_index_65}<br>{$Think.lang.teacher_index_66}',
+										buttons: ['{$Think.lang.web_common_18}']
+									}, function(ret) {
+										history.back(-1);
+									})
+								}
+							},
+							error: function() {
+								alert("error");
+							}
+						});
+			}
+		</script> {/block}

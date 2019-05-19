@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>我的订单</title>
+		<link href="__STATIC__/css/aui.css" rel="stylesheet" />
+		<link href="__STATIC__/css/style.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="__STATIC__/css/iconfont.css" /> {block name="css"}{/block}
+		<style>
+			.aui-icon-star {
+				color: #B5B5B5;
+				font-size: 50px;
+			}
+			
+			.icon-iconfontxingxing {
+				color: #FFB400;
+				font-size: 50px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="aui-bar aui-bar-nav">
+			<a class="aui-pull-left aui-btn" onclick="javascript:history.back(-1);">
+				<span class="aui-iconfont aui-icon-left"></span>
+			</a>
+			<div class="aui-title">评价</div>
+			<a class="aui-pull-right aui-btn" onclick="Submit()">
+				{$Think.lang.teacher_index_6}
+			</a>
+		</header>
+		<div class="aui-content-padded aui-margin-b-15">
+			<input type="hidden" id="info" value="0" />
+			<li class="star-li" style="margin-top: 3rem;">
+				<div class="icons" style="text-align:center">
+					<i data-index="1" class="aui-iconfont aui-icon-star"></i>
+					<i data-index="2" class="aui-iconfont aui-icon-star"></i>
+					<i data-index="3" class="aui-iconfont aui-icon-star"></i>
+					<i data-index="4" class="aui-iconfont aui-icon-star"></i>
+					<i data-index="5" class="aui-iconfont aui-icon-star"></i>
+				</div>
+			</li>
+			<ul class="aui-list aui-form-list" style="margin-top: 3rem;">
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-input">
+							<textarea class="form-control" style="height: 8rem;" id="information" rows="5" placeholder="{$Think.lang.my_index_63}" required></textarea>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<script src="__STATIC__/js/jquery-1.10.2.js"></script>
+		<script>
+			$(".icons i").click(function() {
+				var index = parseInt(this.getAttribute("data-index")); //获取当前元素的索引值
+				var parent = this.parentNode; //获取当前元素的父节点
+				var children = parent.children; //获取父节点下所有子元素
+				if(this.classList.contains("aui-icon-star")) { //判断当前节点列表中是否含有.mui-icon-star元素
+					for(var i = 0; i < index; i++) { //亮星
+						children[i].classList.remove('aui-icon-star');
+						children[i].classList.add('iconfont');
+						children[i].classList.add('icon-iconfontxingxing');
+					}
+				} else { //重置已经亮星的 元素
+					for(var i = index; i < 5; i++) {
+						children[i].classList.add('aui-icon-star')
+						children[i].classList.remove('iconfont');
+						children[i].classList.remove('icon-iconfontxingxing');
+					}
+				}
+				document.getElementById("info").value = index;
+			});
+
+			function Submit() {
+				var index = document.getElementById("info").value;
+				if(index == 0) {
+					alert('请选择评分');
+				} else {
+					$.ajax({
+						type: "POST",
+						url: "{:url('timetable/evaluate_add')}",
+						data: {
+							order_id: {$order_id},
+							score: index,
+							information: document.getElementById("information").value
+						},
+						success: function(result) {
+							if(result.data == 1) {
+								javascript: history.back(-1);
+							}
+							else {
+								alert('发生错误');
+							}
+						}
+					});
+				}
+			}
+		</script>		<!-- Global site tag (gtag.js) - Google Ads: 789908941 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-789908941"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-789908941');
+</script>
+<script>
+  gtag('event', 'page_view', {
+    'send_to': 'AW-789908941',
+    'user_id': 'replace with value'
+  });
+</script>
+	</body>
+
+</html>

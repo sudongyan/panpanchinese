@@ -1,0 +1,31 @@
+{extend name="base:common" /}{block name="css"}
+<style>
+	html,
+	body {
+		background-color: #f8f8f8;
+	}
+</style>
+{/block} {block name="body"}
+<div class="container" style="max-width: 900px;">
+	<div style="text-align:center;">
+		{if $type == 'all'}
+		<button type="button" class="btn btn-purple btn-sm">ALL</button> {else /}
+		<button type="button" class="btn btn-default btn-sm" onclick="location.href='{:url('course/index')}'">ALL</button> {/if} {volist name="typelist" id="to"} {if $type == $to.id}
+		<button type="button" class="btn btn-purple btn-sm">{if $Think.cookie.think_var == 'ko-kr'}{$to.name_ko}{elseif $Think.cookie.think_var == 'zh-cn' /}{$to.name}{elseif $Think.cookie.think_var == 'en-us' /}{$to.name_en}{/if}</button> {else /}
+		<button type="button" class="btn btn-default btn-sm" onclick="location.href='{:url('course/index',['type'=>$to.id])}'">{if $Think.cookie.think_var == 'ko-kr'}{$to.name_ko}{elseif $Think.cookie.think_var == 'zh-cn' /}{$to.name}{elseif $Think.cookie.think_var == 'en-us' /}{$to.name_en}{/if}</button> {/if} {/volist}
+	</div>
+	<br />
+	<div class="row">
+		{volist name="list" id="vo"}
+		<div class="col-md-3" onclick="location.href='{:url('course/info',['id'=>$vo.id])}'">
+			<img src="{if $Think.cookie.think_var == 'ko-kr'}{$vo.cover}{else /}{$vo.cover_en}{/if}" style="width: 100%;">
+			<div class="thumbnail">
+				<div class="caption" style="text-align: center;">
+					<h5>{if $Think.cookie.think_var == 'ko-kr'}{$vo.name_ko}{elseif $Think.cookie.think_var == 'zh-cn' /}{$vo.name_cn}{elseif $Think.cookie.think_var == 'en-us' /}{$vo.name_en}{/if}<br /><br /><span class="label label-default" style="background-color: #C5C5C5;">{$vo.TypeName}</span></h5>
+				</div>
+			</div>
+		</div>
+		{/volist}
+	</div>
+</div>
+{/block} {block name="script"} {/block}

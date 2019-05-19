@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>수업 예약</title>
+		<link href="__STATIC__/css/aui.css" rel="stylesheet" />
+		<link href="__STATIC__/css/style.css" rel="stylesheet" />
+    		<link rel="stylesheet" type="text/css" href="__STATIC__/css/iconfont.css" />
+    		{block name="css"}{/block}
+		<style>
+			#timelist .aui-btn {
+				margin-bottom: 0.2rem;
+			}
+			
+			.aui-bar-btn-item {
+				border-color: #9981b4;
+			}
+			.aui-bar-btn-item.aui-active {
+    				background-color: #9981b4;
+			}
+			table td{
+    				border:solid #d6d6d6; border-width:0px 1px 1px 0px; padding:0px 0px;
+			}
+		</style>
+	</head> 
+
+	<body>
+		<header class="aui-bar aui-bar-nav">
+			<a class="aui-pull-left aui-btn" onclick="javascript:history.back(-1);">
+				<span class="aui-iconfont aui-icon-left"></span>
+			</a>
+			<div class="aui-title">{$teacher.nickName}</div>
+		</header>
+		<div class="aui-content aui-margin-b-15">
+			<ul class="aui-list aui-media-list">
+				<li class="aui-list-item">
+					<div class="aui-media-list-item-inner">
+						<div class="aui-list-item-media">
+							<img src="{$teacher.avatar}">
+						</div>
+						<div class="aui-list-item-inner">
+							<div class="aui-list-item-text">
+								<div class="aui-list-item-title" style="color: #000000;">{$teacher.nickName}</div>
+								<div class="aui-list-item-right">
+									{if $teacher.mp3 != null}
+									<div id="mp3div" onclick="bf()">
+										<i class="aui-iconfont iconfont icon-bofang1" style="font-size: 25px;"></i>
+									</div>
+									<audio src="{$teacher.mp3}" controls="controls" preload id="mp3" hidden></audio>
+									{/if}
+								</div>
+							</div>
+							<div class="aui-list-item-text">
+								<span style="width:4rem;">
+								{for start="0" end="5"}
+								{if ($teacher.score > $i) AND ($teacher.score >= $i+1)}
+								<i class="aui-iconfont iconfont icon-iconfontxingxing" style="color: #ffba00;margin-left: -2px;margin-right: -2px;"></i>
+								{elseif $teacher.score > $i /}
+								<i class="aui-iconfont iconfont icon-iconfontxingxing" style="background-image: -webkit-gradient(linear,0 50%,100% 50% , color-stop(0.4, #ffba00), color-stop(0.60, #cbcbcb));-webkit-background-clip: text;-webkit-text-fill-color: transparent; margin-left: -2px;margin-right: -2px;"></i>
+								{else /}
+								<i class="aui-iconfont iconfont icon-iconfontxingxing" style="color: #cbcbcb;margin-left: -2px;margin-right: -2px;"></i> 
+								{/if}
+								{/for}
+								</span>
+							</div>
+							<div class="aui-list-item-text">
+								{$Think.lang.teacher_index_12} {$teacher.score} {$Think.lang.teacher_index_23} {$teacher.evaluate_num}{$Think.lang.teacher_index_24}
+							</div>
+						</div>
+					</div>
+				</li>
+			</ul>
+			{if $teacher.mp4 != null}
+			<video src="{$teacher.mp4}" controls="controls" style="width: 100%;"></video>
+			{/if}
+			<ul class="aui-list aui-media-list">
+				<li class="aui-list-item">
+					<div class="aui-info">
+						<div class="aui-info-item">
+							<b>{$teacher.taglist}</b>
+						</div>
+					</div>
+					<div class="aui-info">
+						<div class="aui-info-item">
+							{$teacher.introduction}
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<section class="aui-content">
+			<div class="aui-card-list">
+				<div class="aui-card-list-footer">
+					<div><i class="aui-iconfont aui-icon-left" onclick="left();"></i></div>
+					<div id="theweek">{$day.a} —— {$day.g}</div>
+					<div><i class="aui-iconfont aui-icon-right" onclick="right();"></i></div>
+				</div>
+				<div class="aui-card-list-content-padded">
+				<table style="width: 100%;text-align: center;">
+					<tbody>
+					<tr style="color: #ffffff;background-color:#9981b4;">
+						<td>TIME</td>
+						<td>{$Think.lang.week_1}
+							<div id="daydate-0"></div>
+						</td>
+						<td>{$Think.lang.week_2}
+							<div id="daydate-1"></div>
+						</td>
+						<td>{$Think.lang.week_3}
+							<div id="daydate-2"></div>
+						</td>
+						<td>{$Think.lang.week_4}
+							<div id="daydate-3"></div>
+						</td>
+						<td>{$Think.lang.week_5}
+							<div id="daydate-4"></div>
+						</td>
+						<td>{$Think.lang.week_6}
+							<div id="daydate-5"></div>
+						</td>
+						<td>{$Think.lang.week_0}
+							<div id="daydate-6"></div>
+						</td>
+					</tr>
+					<tr>
+						<td rowspan="2">0{$Think.lang.teacher_index_9}</td>
+						<td id="a0">&nbsp;</td>
+						<td id="b0">&nbsp;</td>
+						<td id="c0">&nbsp;</td>
+						<td id="d0">&nbsp;</td>
+						<td id="e0">&nbsp;</td>
+						<td id="f0">&nbsp;</td>
+						<td id="g0">&nbsp;</td>
+					</tr>
+					<tr>
+						<td id="a1">&nbsp;</td>
+						<td id="b1">&nbsp;</td>
+						<td id="c1">&nbsp;</td>
+						<td id="d1">&nbsp;</td>
+						<td id="e1">&nbsp;</td>
+						<td id="f1">&nbsp;</td>
+						<td id="g1">&nbsp;</td>
+					</tr>
+					<tr>
+						<td rowspan="2">1{$Think.lang.teacher_index_9}</td>
+						<td id="a2">&nbsp;</td>
+						<td id="b2">&nbsp;</td>
+						<td id="c2">&nbsp;</td>
+						<td id="d2">&nbsp;</td>
+						<td id="e2">&nbsp;</td>
+						<td id="f2">&nbsp;</td>
+						<td id="g2">&nbsp;</td>
+					</tr>
+					<tr>
+						<td id="a3">&nbsp;</td>
+						<td id="b3">&nbsp;</td>
+						<td id="c3">&nbsp;</td>
+						<td id="d3">&nbsp;</td>
+						<td id="e3">&nbsp;</td>
+						<td id="f3">&nbsp;</td>
+						<td id="g3">&nbsp;</td>
+					</tr>
+					<tr>
+						<td rowspan="2">2{$Think.lang.teacher_index_9}</td>
+						<td id="a4">&nbsp;</td>
+						<td id="b4">&nbsp;</td>
+						<td id="c4">&nbsp;</td>
+						<td id="d4">&nbsp;</td>
+						<td id="e4">&nbsp;</td>
+						<td id="f4">&nbsp;</td>
+						<td id="g4">&nbsp;</td>
+					</tr>
+					<tr>
+						<td id="a5">&nbsp;</td>
+						<td id="b5">&nbsp;</td>
+						<td id="c5">&nbsp;</td>
+						<td id="d5">&nbsp;</td>
+						<td id="e5">&nbsp;</td>
+						<td id="f5">&nbsp;</td>
+						<td id="g5">&nbsp;</td>
+					</tr>
+					<tr>
+						<td rowspan="2">3{$Think.lang.teacher_index_9}</td>
+						<td id="a6">&nbsp;</td>
+						<td id="b6">&nbsp;</td>
+						<td id="c6">&nbsp;</td>
+						<td id="d6">&nbsp;</td>
+						<td id="e6">&nbsp;</td>
+						<td id="f6">&nbsp;</td>
+						<td id="g6">&nbsp;</td>
+					</tr>
+					<tr>
+						<td id="a7">&nbsp;</td>
+						<td id="b7">&nbsp;</td>
+						<td id="c7">&nbsp;</td>
+						<td id="d7">&nbsp;</td>
+						<td id="e7">&nbsp;</td>
+						<td id="f7">&nbsp;</td>
+						<td id="g7">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td rowspan="2">4{$Think.lang.teacher_index_9}</td>
+						<td id="a8">&nbsp;</td>
+						<td id="b8">&nbsp;</td>
+						<td id="c8">&nbsp;</td>
+						<td id="d8">&nbsp;</td>
+						<td id="e8">&nbsp;</td>
+						<td id="f8">&nbsp;</td>
+						<td id="g8">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td id="a9">&nbsp;</td>
+						<td id="b9">&nbsp;</td>
+						<td id="c9">&nbsp;</td>
+						<td id="d9">&nbsp;</td>
+						<td id="e9">&nbsp;</td>
+						<td id="f9">&nbsp;</td>
+						<td id="g9">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td rowspan="2">5{$Think.lang.teacher_index_9}</td>
+						<td id="a10">&nbsp;</td>
+						<td id="b10">&nbsp;</td>
+						<td id="c10">&nbsp;</td>
+						<td id="d10">&nbsp;</td>
+						<td id="e10">&nbsp;</td>
+						<td id="f10">&nbsp;</td>
+						<td id="g10">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td id="a11">&nbsp;</td>
+						<td id="b11">&nbsp;</td>
+						<td id="c11">&nbsp;</td>
+						<td id="d11">&nbsp;</td>
+						<td id="e11">&nbsp;</td>
+						<td id="f11">&nbsp;</td>
+						<td id="g11">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td rowspan="2">6{$Think.lang.teacher_index_9}</td>
+						<td id="a12">&nbsp;</td>
+						<td id="b12">&nbsp;</td>
+						<td id="c12">&nbsp;</td>
+						<td id="d12">&nbsp;</td>
+						<td id="e12">&nbsp;</td>
+						<td id="f12">&nbsp;</td>
+						<td id="g12">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td id="a13">&nbsp;</td>
+						<td id="b13">&nbsp;</td>
+						<td id="c13">&nbsp;</td>
+						<td id="d13">&nbsp;</td>
+						<td id="e13">&nbsp;</td>
+						<td id="f13">&nbsp;</td>
+						<td id="g13">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td rowspan="2">7{$Think.lang.teacher_index_9}</td>
+						<td id="a14">&nbsp;</td>
+						<td id="b14">&nbsp;</td>
+						<td id="c14">&nbsp;</td>
+						<td id="d14">&nbsp;</td>
+						<td id="e14">&nbsp;</td>
+						<td id="f14">&nbsp;</td>
+						<td id="g14">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td id="a15">&nbsp;</td>
+						<td id="b15">&nbsp;</td>
+						<td id="c15">&nbsp;</td>
+						<td id="d15">&nbsp;</td>
+						<td id="e15">&nbsp;</td>
+						<td id="f15">&nbsp;</td>
+						<td id="g15">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td rowspan="2">8{$Think.lang.teacher_index_9}</td>
+						<td id="a16">&nbsp;</td>
+						<td id="b16">&nbsp;</td>
+						<td id="c16">&nbsp;</td>
+						<td id="d16">&nbsp;</td>
+						<td id="e16">&nbsp;</td>
+						<td id="f16">&nbsp;</td>
+						<td id="g16">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td id="a17">&nbsp;</td>
+						<td id="b17">&nbsp;</td>
+						<td id="c17">&nbsp;</td>
+						<td id="d17">&nbsp;</td>
+						<td id="e17">&nbsp;</td>
+						<td id="f17">&nbsp;</td>
+						<td id="g17">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td rowspan="2">9{$Think.lang.teacher_index_9}</td>
+						<td id="a18">&nbsp;</td>
+						<td id="b18">&nbsp;</td>
+						<td id="c18">&nbsp;</td>
+						<td id="d18">&nbsp;</td>
+						<td id="e18">&nbsp;</td>
+						<td id="f18">&nbsp;</td>
+						<td id="g18">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td id="a19">&nbsp;</td>
+						<td id="b19">&nbsp;</td>
+						<td id="c19">&nbsp;</td>
+						<td id="d19">&nbsp;</td>
+						<td id="e19">&nbsp;</td>
+						<td id="f19">&nbsp;</td>
+						<td id="g19">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td rowspan="2">10{$Think.lang.teacher_index_9}</td>
+						<td id="a20">&nbsp;</td>
+						<td id="b20">&nbsp;</td>
+						<td id="c20">&nbsp;</td>
+						<td id="d20">&nbsp;</td>
+						<td id="e20">&nbsp;</td>
+						<td id="f20">&nbsp;</td>
+						<td id="g20">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td id="a21">&nbsp;</td>
+						<td id="b21">&nbsp;</td>
+						<td id="c21">&nbsp;</td>
+						<td id="d21">&nbsp;</td>
+						<td id="e21">&nbsp;</td>
+						<td id="f21">&nbsp;</td>
+						<td id="g21">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td rowspan="2">11{$Think.lang.teacher_index_9}</td>
+						<td id="a22">&nbsp;</td>
+						<td id="b22">&nbsp;</td>
+						<td id="c22">&nbsp;</td>
+						<td id="d22">&nbsp;</td>
+						<td id="e22">&nbsp;</td>
+						<td id="f22">&nbsp;</td>
+						<td id="g22">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td id="a23">&nbsp;</td>
+						<td id="b23">&nbsp;</td>
+						<td id="c23">&nbsp;</td>
+						<td id="d23">&nbsp;</td>
+						<td id="e23">&nbsp;</td>
+						<td id="f23">&nbsp;</td>
+						<td id="g23">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td rowspan="2">12{$Think.lang.teacher_index_9}</td>
+						<td id="a24">&nbsp;</td>
+						<td id="b24">&nbsp;</td>
+						<td id="c24">&nbsp;</td>
+						<td id="d24">&nbsp;</td>
+						<td id="e24">&nbsp;</td>
+						<td id="f24">&nbsp;</td>
+						<td id="g24">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td id="a25">&nbsp;</td>
+						<td id="b25">&nbsp;</td>
+						<td id="c25">&nbsp;</td>
+						<td id="d25">&nbsp;</td>
+						<td id="e25">&nbsp;</td>
+						<td id="f25">&nbsp;</td>
+						<td id="g25">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td rowspan="2">13{$Think.lang.teacher_index_9}</td>
+						<td id="a26">&nbsp;</td>
+						<td id="b26">&nbsp;</td>
+						<td id="c26">&nbsp;</td>
+						<td id="d26">&nbsp;</td>
+						<td id="e26">&nbsp;</td>
+						<td id="f26">&nbsp;</td>
+						<td id="g26">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td id="a27">&nbsp;</td>
+						<td id="b27">&nbsp;</td>
+						<td id="c27">&nbsp;</td>
+						<td id="d27">&nbsp;</td>
+						<td id="e27">&nbsp;</td>
+						<td id="f27">&nbsp;</td>
+						<td id="g27">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td rowspan="2">14{$Think.lang.teacher_index_9}</td>
+						<td id="a28">&nbsp;</td>
+						<td id="b28">&nbsp;</td>
+						<td id="c28">&nbsp;</td>
+						<td id="d28">&nbsp;</td>
+						<td id="e28">&nbsp;</td>
+						<td id="f28">&nbsp;</td>
+						<td id="g28">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td id="a29">&nbsp;</td>
+						<td id="b29">&nbsp;</td>
+						<td id="c29">&nbsp;</td>
+						<td id="d29">&nbsp;</td>
+						<td id="e29">&nbsp;</td>
+						<td id="f29">&nbsp;</td>
+						<td id="g29">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td rowspan="2">15{$Think.lang.teacher_index_9}</td>
+						<td id="a30">&nbsp;</td>
+						<td id="b30">&nbsp;</td>
+						<td id="c30">&nbsp;</td>
+						<td id="d30">&nbsp;</td>
+						<td id="e30">&nbsp;</td>
+						<td id="f30">&nbsp;</td>
+						<td id="g30">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td id="a31">&nbsp;</td>
+						<td id="b31">&nbsp;</td>
+						<td id="c31">&nbsp;</td>
+						<td id="d31">&nbsp;</td>
+						<td id="e31">&nbsp;</td>
+						<td id="f31">&nbsp;</td>
+						<td id="g31">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td rowspan="2">16{$Think.lang.teacher_index_9}</td>
+						<td id="a32">&nbsp;</td>
+						<td id="b32">&nbsp;</td>
+						<td id="c32">&nbsp;</td>
+						<td id="d32">&nbsp;</td>
+						<td id="e32">&nbsp;</td>
+						<td id="f32">&nbsp;</td>
+						<td id="g32">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td id="a33">&nbsp;</td>
+						<td id="b33">&nbsp;</td>
+						<td id="c33">&nbsp;</td>
+						<td id="d33">&nbsp;</td>
+						<td id="e33">&nbsp;</td>
+						<td id="f33">&nbsp;</td>
+						<td id="g33">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td rowspan="2">17{$Think.lang.teacher_index_9}</td>
+						<td id="a34">&nbsp;</td>
+						<td id="b34">&nbsp;</td>
+						<td id="c34">&nbsp;</td>
+						<td id="d34">&nbsp;</td>
+						<td id="e34">&nbsp;</td>
+						<td id="f34">&nbsp;</td>
+						<td id="g34">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td id="a35">&nbsp;</td>
+						<td id="b35">&nbsp;</td>
+						<td id="c35">&nbsp;</td>
+						<td id="d35">&nbsp;</td>
+						<td id="e35">&nbsp;</td>
+						<td id="f35">&nbsp;</td>
+						<td id="g35">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td rowspan="2">18{$Think.lang.teacher_index_9}</td>
+						<td id="a36">&nbsp;</td>
+						<td id="b36">&nbsp;</td>
+						<td id="c36">&nbsp;</td>
+						<td id="d36">&nbsp;</td>
+						<td id="e36">&nbsp;</td>
+						<td id="f36">&nbsp;</td>
+						<td id="g36">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td id="a37">&nbsp;</td>
+						<td id="b37">&nbsp;</td>
+						<td id="c37">&nbsp;</td>
+						<td id="d37">&nbsp;</td>
+						<td id="e37">&nbsp;</td>
+						<td id="f37">&nbsp;</td>
+						<td id="g37">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td rowspan="2">19{$Think.lang.teacher_index_9}</td>
+						<td id="a38">&nbsp;</td>
+						<td id="b38">&nbsp;</td>
+						<td id="c38">&nbsp;</td>
+						<td id="d38">&nbsp;</td>
+						<td id="e38">&nbsp;</td>
+						<td id="f38">&nbsp;</td>
+						<td id="g38">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td id="a39">&nbsp;</td>
+						<td id="b39">&nbsp;</td>
+						<td id="c39">&nbsp;</td>
+						<td id="d39">&nbsp;</td>
+						<td id="e39">&nbsp;</td>
+						<td id="f39">&nbsp;</td>
+						<td id="g39">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td rowspan="2">20{$Think.lang.teacher_index_9}</td>
+						<td id="a40">&nbsp;</td>
+						<td id="b40">&nbsp;</td>
+						<td id="c40">&nbsp;</td>
+						<td id="d40">&nbsp;</td>
+						<td id="e40">&nbsp;</td>
+						<td id="f40">&nbsp;</td>
+						<td id="g40">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td id="a41">&nbsp;</td>
+						<td id="b41">&nbsp;</td>
+						<td id="c41">&nbsp;</td>
+						<td id="d41">&nbsp;</td>
+						<td id="e41">&nbsp;</td>
+						<td id="f41">&nbsp;</td>
+						<td id="g41">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td rowspan="2">21{$Think.lang.teacher_index_9}</td>
+						<td id="a42">&nbsp;</td>
+						<td id="b42">&nbsp;</td>
+						<td id="c42">&nbsp;</td>
+						<td id="d42">&nbsp;</td>
+						<td id="e42">&nbsp;</td>
+						<td id="f42">&nbsp;</td>
+						<td id="g42">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td id="a43">&nbsp;</td>
+						<td id="b43">&nbsp;</td>
+						<td id="c43">&nbsp;</td>
+						<td id="d43">&nbsp;</td>
+						<td id="e43">&nbsp;</td>
+						<td id="f43">&nbsp;</td>
+						<td id="g43">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td rowspan="2">22{$Think.lang.teacher_index_9}</td>
+						<td id="a44">&nbsp;</td>
+						<td id="b44">&nbsp;</td>
+						<td id="c44">&nbsp;</td>
+						<td id="d44">&nbsp;</td>
+						<td id="e44">&nbsp;</td>
+						<td id="f44">&nbsp;</td>
+						<td id="g44">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td id="a45">&nbsp;</td>
+						<td id="b45">&nbsp;</td>
+						<td id="c45">&nbsp;</td>
+						<td id="d45">&nbsp;</td>
+						<td id="e45">&nbsp;</td>
+						<td id="f45">&nbsp;</td>
+						<td id="g45">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td rowspan="2">23{$Think.lang.teacher_index_9}</td>
+						<td id="a46">&nbsp;</td>
+						<td id="b46">&nbsp;</td>
+						<td id="c46">&nbsp;</td>
+						<td id="d46">&nbsp;</td>
+						<td id="e46">&nbsp;</td>
+						<td id="f46">&nbsp;</td>
+						<td id="g46">&nbsp;</td>
+					</tr>
+					<tr class="opentr" style="display: none;">
+						<td id="a47">&nbsp;</td>
+						<td id="b47">&nbsp;</td>
+						<td id="c47">&nbsp;</td>
+						<td id="d47">&nbsp;</td>
+						<td id="e47">&nbsp;</td>
+						<td id="f47">&nbsp;</td>
+						<td id="g47">&nbsp;</td>
+					</tr>
+					</tbody>
+				</table>
+				</div>
+			</div>
+				<div id="open-button" class="aui-content-padded">
+					<button type="button" class="aui-btn aui-btn-purple aui-btn-block" onclick="opentr();">{$Think.lang.teacher_index_10}</button>
+				</div>
+		</section>
+		<section class="aui-content">
+			<div class="aui-card-list">
+				<div class="aui-card-list-header">
+					{$Think.lang.teacher_index_17}
+				</div>
+				<div class="aui-hr"></div>
+				<div class="aui-card-list-content-padded">
+					<ul style="list-style-position: outside;">
+						<li style="list-style-type:disc;margin-left: 1rem;">{$Think.lang.teacher_index_18}</li>
+						<li style="list-style-type:disc;margin-left: 1rem;">{$Think.lang.teacher_index_19}</li>
+						<li style="list-style-type:disc;margin-left: 1rem;">{$Think.lang.teacher_index_20}</li>
+						<li style="list-style-type:disc;margin-left: 1rem;">{$Think.lang.teacher_index_21}</li>
+					</ul>
+				</div>
+			</div>
+		</section>
+		<section class="aui-content">
+			<div class="aui-card-list">
+				<div class="aui-card-list-header">
+					<span>{$Think.lang.teacher_index_22}&nbsp;&nbsp;&nbsp;&nbsp;<em style="font-size: 0.5rem;color: #737373;">{$Think.lang.teacher_index_12} {$teacher.score} {$Think.lang.teacher_index_23} {$teacher.evaluate_num}{$Think.lang.teacher_index_24}</em></span>
+				</div>
+			</div>
+		</section>
+		<div class="aui-content" style="margin-top: -0.8rem;">
+			<ul id="list" class="aui-list aui-media-list">
+				{volist name="evaluatelist" id="vo"}
+				<li class="aui-list-item">
+					<div class="aui-media-list-item-inner">
+						<div class="aui-list-item-media" style="width: 3.5rem;">
+							<img src="{$vo.avatar}">
+						</div>
+						<div class="aui-list-item-inner">
+							<div class="aui-list-item-text">
+								<div class="aui-list-item-title" style="color: #000000;">{$vo.nickName}</div>
+							</div>
+							<div class="aui-list-item-text" style="width: 3rem;margin-top: -5px;">
+								{for start="0" end="5"}
+								{if $vo.score > $i}
+								<i class="aui-iconfont iconfont icon-iconfontxingxing" style="color: #ffba00;"></i> 
+								{else /}
+								<i class="aui-iconfont iconfont icon-iconfontxingxing" style="color: #cbcbcb;"></i> 
+								{/if}
+								{/for}
+							</div>
+							<div class="aui-list-item-text">
+								{$vo.information}
+							</div>
+						</div>
+					</div>
+				</li>
+				{/volist}
+			</ul>
+		</div>
+		<script src="__STATIC__/js/jquery-1.10.2.js"></script>
+		<script src="__STATIC__/js/aui-tab.js"></script>
+		<script src="__STATIC__/js/aui-scroll.js"></script>
+		<script src="__STATIC__/js/aui-dialog.js"></script>
+		<script type="text/javascript">
+			var toast;
+			var nowday;
+			var nowtime;
+			var dialog = new auiDialog();
+			window.onload = function(){
+				nowday = '{$nowday}';
+				nowtime = '{$nowtime}';
+                newupdate(nowday);
+            } 
+			var daylist = [];
+			{volist name="day" id="vo"}
+			daylist.push('{$vo}');
+			{/volist}
+			var tab = new auiTab({
+				element: document.getElementById("date"),
+				index: {$nowweek},
+				repeatClick: true
+			}, function(ret) {
+				if(Date.parse(daylist[ret.index-1]) < Date.parse(nowday)){
+					document.getElementById("timelist").innerHTML = '{$Think.lang.teacher_index_38}';
+				}else{
+					update(daylist[ret.index-1]);
+				}
+			});
+			
+			function newupdate (){
+				var theweek = [];
+				for(var i = 0; i < daylist.length; i++) {
+					var thedatename = daylist[i].replace(/-/g, '/');
+					$('#daydate-' + i).css('font-size','8px');
+					$('#daydate-' + i).html(thedatename.substr(thedatename.length - 5));
+					switch(i){
+						case 0:
+						theweek[i] = 'a';
+						break;
+						case 1:
+						theweek[i] = 'b';
+						break;
+						case 2:
+						theweek[i] = 'c';
+						break;
+						case 3:
+						theweek[i] = 'd';
+						break;
+						case 4:
+						theweek[i] = 'e';
+						break;
+						case 5:
+						theweek[i] = 'f';
+						break;
+						case 6:
+						theweek[i] = 'g';
+						break;
+					}
+					var theday = daylist[i];
+					if(new Date(nowday.replace(/-/g,'/')).getTime() > new Date(theday.replace(/-/g,'/')).getTime()){
+						for(var z = 0; z < 48; z++) {
+							document.getElementById(theweek[i] + z).style.backgroundColor = '#bababa';
+						}
+					}
+					if(new Date(nowday.replace(/-/g,'/')).getTime() == new Date(theday.replace(/-/g,'/')).getTime()){
+						var thenowtime1 = new Date(nowtime).getHours();
+						var thenowtime2 = new Date(nowtime).getMinutes();
+						var thenum = thenowtime1 * 2;
+						if(thenowtime2 < 30){
+							thenum++;
+						}else{
+							thenum = thenum + 2;
+						}
+						for(var z = 0; z < thenum + 1; z++) {
+							document.getElementById(theweek[i] + z).style.backgroundColor = '#bababa';
+						}
+					}
+					$.ajaxSetup({async: false});
+					var zone = new Date().getTimezoneOffset() / 60;
+					if(zone != 0){
+						zone = zone - (zone * 2);
+					}
+					$.getJSON("{:url('teacher/curriculum')}" + "?tid={$teacher.id}&date=" + theday + '&thetimezone=' + zone, function(result) {
+						data = result.data;
+						for(var n = 0; n < data.length; n++) {
+							var theid = theweek[i] + data[n].number;
+							if(data[n].uid != 0 && data[n].uid == data[n].student_id){
+								document.getElementById(theid).style.backgroundColor = '#9981b4';
+								document.getElementById(theid).innerHTML = '{$Think.lang.teacher_index_26}';
+								document.getElementById(theid).style.color = '#ffffff';
+							}else if(data[n].student_id == 0){
+								if(document.getElementById(theid).style.backgroundColor == 'rgb(186, 186, 186)'||document.getElementById(theid).style.backgroundColor == '#bababa'){
+									document.getElementById(theid).style.backgroundColor = '#74aac4';
+								}else  if(document.getElementById(theid).style.backgroundColor != '#9981b4'&&document.getElementById(theid).style.backgroundColor != 'rgb(116, 170, 196)'){
+									document.getElementById(theid).style.backgroundColor = '#00adff';
+									$("#" + theid).attr("onclick",'enroll(' + data[n].id + ')');
+								}
+							}
+						}
+					});
+				}
+			}
+			{if $teacher.mp3 != null}
+			function bf(){
+				var audio = document.getElementById('mp3');
+				if(audio !== null){
+					if(audio.paused){
+						document.getElementById("mp3div").innerHTML ='<i class="aui-iconfont iconfont icon-bofang" style="font-size: 25px;"></i>';
+						audio.play();//audio.play();// 这个就是播放  
+					}else{
+						document.getElementById("mp3div").innerHTML ='<i class="aui-iconfont iconfont icon-bofang1" style="font-size: 25px;"></i>';
+						audio.pause();// 这个就是暂停
+					}
+				}
+			}
+			var aud = document.getElementById("mp3");
+			aud.onended = function() {
+				document.getElementById("mp3div").innerHTML ='<i class="aui-iconfont iconfont icon-bofang1" style="font-size: 25px;"></i>';
+			};
+			{/if}
+			
+			function left(){
+				var now = new Date();
+				var date = new Date(Date.parse(daylist[0]) - 7 * 24 * 3600 * 1000);
+				var year = date.getFullYear();
+				var month = date.getMonth() + 1;
+				if(month < 10){
+					month = '0' + month;
+				}
+				var day = date.getDate();
+				if(day < 10){
+					day = '0' + day;
+				}
+				var theday = year + '-' + month + '-' + day;
+				if(Date.parse(daylist[0]) <= Date.parse(nowday)){
+					alert('{$Think.lang.teacher_index_27}');
+				}else{
+					daylist[0] = theday;
+					daylist[1] = dateAdd(daylist[0]);
+					daylist[2] = dateAdd(daylist[1]);
+					daylist[3] = dateAdd(daylist[2]);
+					daylist[4] = dateAdd(daylist[3]);
+					daylist[5] = dateAdd(daylist[4]);
+					daylist[6] = dateAdd(daylist[5]);
+					document.getElementById("theweek").innerHTML = daylist[0] + ' —— ' + daylist[6];
+					updateDate();
+				}
+			}
+			
+			function right(){
+					var now = new Date();
+					var date = new Date(Date.parse(daylist[6]) + 1 * 24 * 3600 * 1000);
+					var year = date.getFullYear();
+					var month = date.getMonth() + 1;
+					if(month < 10){
+						month = '0' + month;
+					}
+					var day = date.getDate();
+					if(day < 10){
+						day = '0' + day;
+					}
+					daylist[0] = year + '-' + month + '-' + day;
+					daylist[1] = dateAdd(daylist[0]);
+					daylist[2] = dateAdd(daylist[1]);
+					daylist[3] = dateAdd(daylist[2]);
+					daylist[4] = dateAdd(daylist[3]);
+					daylist[5] = dateAdd(daylist[4]);
+					daylist[6] = dateAdd(daylist[5]);
+					document.getElementById("theweek").innerHTML = daylist[0] + ' —— ' + daylist[6];
+					updateDate();
+			}
+			
+			function updateDate(){
+				for(var i = 0; i < daylist.length; i++) {
+					var theweek;
+					switch(i){
+						case 0:
+						theweek = 'a';
+						break;
+						case 1:
+						theweek = 'b';
+						break;
+						case 2:
+						theweek = 'c';
+						break;
+						case 3:
+						theweek = 'd';
+						break;
+						case 4:
+						theweek = 'e';
+						break;
+						case 5:
+						theweek = 'f';
+						break;
+						case 6:
+						theweek = 'g';
+						break;
+					}
+					for(var z = 0; z < 48; z++) {
+						document.getElementById(theweek + z).style.backgroundColor = '#ffffff';
+						$("#" + theweek + z).removeAttr("onclick");
+						$("#" + theweek + z).html('&nbsp;');
+					}
+					var theday = daylist[i];
+					if(new Date(nowday.replace(/-/g,'/')).getTime() > new Date(theday.replace(/-/g,'/')).getTime()){
+						for(var z = 0; z < 48; z++) {
+							document.getElementById(theweek + z).style.backgroundColor = '#bababa';
+						}
+					}
+					if(new Date(nowday.replace(/-/g,'/')).getTime() == new Date(theday.replace(/-/g,'/')).getTime()){
+						var thenowtime1 = new Date(nowtime).getHours();
+						var thenowtime2 = new Date(nowtime).getMinutes();
+						var thenum = thenowtime1 * 2;
+						if(thenowtime2 < 30){
+							thenum++;
+						}else{
+							thenum = thenum + 2;
+						}
+						for(var z = 0; z < thenum + 1; z++) {
+							document.getElementById(theweek + z).style.backgroundColor = '#bababa';
+						}
+					}
+				}
+				newupdate();
+			}
+			
+			function dateAdd(startDate) {
+				startDate = new Date(startDate);
+				startDate = +startDate + 1000*60*60*24;
+				startDate = new Date(startDate);
+				var addmonth = (startDate.getMonth()+1);
+				if(addmonth < 10){
+					addmonth = '0' + addmonth;
+				}
+				var addday = startDate.getDate();
+				if(addday < 10){
+					addday = '0' + addday;
+				}
+				var nextStartDate = startDate.getFullYear()+"-"+addmonth+"-"+addday;
+				return nextStartDate;
+			}
+			
+			function enroll(id){
+					$.getJSON("{:url('teacher/enroll_validate')}" + "?id=" + id, function(result) {
+						var data = result.data;
+						if(data == 1){
+							location.href = "{:url('teacher/enroll')}?id=" + id;
+						}else if(data == 2){
+							dialog.alert({
+								title: "{$Think.lang.web_common_17}",
+								msg: '{$Think.lang.teacher_index_30}<br>{$Think.lang.teacher_index_31}',
+								buttons: ['{$Think.lang.web_common_18}']
+							})
+						}else if(data == 3){
+							dialog.alert({
+								title: "{$Think.lang.web_common_17}",
+								msg: '{$Think.lang.teacher_index_32}<br>{$Think.lang.teacher_index_33}',
+								buttons: ['{$Think.lang.web_common_18}']
+							})
+						}else if(data == 4){
+							dialog.alert({
+								title: "{$Think.lang.web_common_17}",
+								msg: '{$Think.lang.teacher_index_34}<br>{$Think.lang.teacher_index_35}',
+								buttons: ['{$Think.lang.web_common_18}']
+							})
+						}else if(data == 5){
+							dialog.alert({
+								title: "{$Think.lang.web_common_17}",
+								msg: '{$Think.lang.teacher_index_36}<br>{$Think.lang.teacher_index_37}',
+								buttons: ['{$Think.lang.web_common_18}']
+							})
+						}
+					});
+			}
+			
+			function opentr() {
+				$(".opentr").css("display","table-row");
+				$("#open-button").css("display","none");
+			}
+		</script>
+		<script>
+			var p = 1;
+			var s = 1;
+			var scroll = new auiScroll({
+				listen: true, //是否监听滚动高度，开启后将实时返回滚动高度
+				distance: 200 //判断到达底部的距离，isToBottom为true
+			}, function(ret) {
+				if(ret.isToBottom == true && s == 1) {
+					p++;
+					$.getJSON("{:url('teacher/evaluate_list')}" + "?p=" + p + "&teacher_id={$teacher.id}", function(result) {
+						data = result.data;
+						if(data.length < 20){
+							s = 0;
+						}
+						for(var n = 0; n < data.length; n++) {
+							document.getElementById("list").innerHTML +=
+							'<li class="aui-list-item"><div class="aui-media-list-item-inner"><div class="aui-list-item-media" style="width: 3.5rem;">'+
+							'<img src="' + data[n].avatar + '">'+
+							'</div><div class="aui-list-item-inner"><div class="aui-list-item-text">'+
+							'<div class="aui-list-item-title" style="color: #000000;">' + data[n].nickName + '</div>'+
+							'</div>'+
+							'<div class="aui-list-item-text" style="width: 3rem;margin-top: -5px;">'+
+							for(var i = 0; i < 5; i++) {
+								if(data[n].score > i){
+									'<i class="aui-iconfont iconfont icon-iconfontxingxing" style="color: #ffba00;"></i>'+
+								}else{
+									'<i class="aui-iconfont iconfont icon-iconfontxingxing" style="color: #cbcbcb;"></i>'+
+								}
+							}
+							'</div>'+
+							'<div class="aui-list-item-text">'+
+							+ data[n].information +
+							'</div></div></div></li>';
+						}
+					});
+				}
+			});
+		</script>		<!-- Global site tag (gtag.js) - Google Ads: 789908941 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-789908941"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-789908941');
+</script>
+<script>
+  gtag('event', 'page_view', {
+    'send_to': 'AW-789908941',
+    'user_id': 'replace with value'
+  });
+</script>
+	</body>
+
+</html>

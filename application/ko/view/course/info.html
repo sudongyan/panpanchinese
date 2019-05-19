@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>{if $Think.cookie.think_var == 'ko-kr'}{$course.name_ko}{elseif $Think.cookie.think_var == 'zh-cn' /}{$course.name_cn}{elseif $Think.cookie.think_var == 'en-us' /}{$course.name_en}{/if}</title>
+		<link href="__STATIC__/css/aui.css" rel="stylesheet" />
+		<link href="__STATIC__/css/style.css" rel="stylesheet" /> {block name="css"} {/block}
+	</head>
+
+	<body>
+		<header class="aui-bar aui-bar-nav">
+			<a class="aui-pull-left aui-btn" onclick="javascript:history.back(-1);">
+				<span class="aui-iconfont aui-icon-left"></span>
+			</a>
+			<div class="aui-title aui-ellipsis-1">{$course.name_ko}</div>
+		</header>
+		<div class="aui-content aui-margin-b-15">
+			{volist name="list" id="vo"}
+			{if $vo.show == 0}
+			{if $Think.session.ko_id != null }
+			<ul class="aui-list aui-list-in aui-margin-b-5 aui-margin-t-5" onclick="cz()">
+				<li class="aui-list-item" style="height: 50px;">
+					<div class="aui-list-item-inner aui-list-item-arrow">
+						<div class="aui-list-item-title aui-ellipsis-1" style="color: #a4a4a4;">{$vo.number}.{if $Think.cookie.think_var == 'ko-kr'}{$vo.name_ko}{elseif $Think.cookie.think_var == 'zh-cn' /}{$vo.name_cn}{elseif $Think.cookie.think_var == 'en-us' /}{$vo.name_en}{/if}</div>
+					</div>
+				</li>
+			</ul>
+			{else /}
+			<ul class="aui-list aui-list-in aui-margin-b-5 aui-margin-t-5" onclick="location.href='{:url('my/login')}'">
+				<li class="aui-list-item" style="height: 50px;">
+					<div class="aui-list-item-inner aui-list-item-arrow">
+						<div class="aui-list-item-title aui-ellipsis-1" style="color: #a4a4a4;">{$vo.number}.{if $Think.cookie.think_var == 'ko-kr'}{$vo.name_ko}{elseif $Think.cookie.think_var == 'zh-cn' /}{$vo.name_cn}{elseif $Think.cookie.think_var == 'en-us' /}{$vo.name_en}{/if}</div>
+					</div>
+				</li>
+			</ul>
+			{/if}
+			{else /}
+			<ul class="aui-list aui-list-in aui-margin-b-5 aui-margin-t-5" onclick="location.href='{$vo.url}'">
+				<li class="aui-list-item" style="height: 50px;">
+					<div class="aui-list-item-inner aui-list-item-arrow">
+						<div class="aui-list-item-title aui-ellipsis-1">{$vo.number}.{if $Think.cookie.think_var == 'ko-kr'}{$vo.name_ko}{elseif $Think.cookie.think_var == 'zh-cn' /}{$vo.name_cn}{elseif $Think.cookie.think_var == 'en-us' /}{$vo.name_en}{/if}</div>
+					</div>
+				</li>
+			</ul>
+			{/if}
+			{/volist}
+		</div>
+		<script src="__STATIC__/js/jquery-1.10.2.js"></script>
+		<script src="__STATIC__/js/aui-dialog.js"></script>
+		<script>
+			var dialog = new auiDialog();
+			function cz(){
+					dialog.alert({
+						title: "{$Think.lang.web_common_17}",
+						msg: '{$Think.lang.course_4}<br />{$Think.lang.course_5}',
+						buttons: ['{$Think.lang.web_common_18}']
+					})
+			}
+		</script>		<!-- Global site tag (gtag.js) - Google Ads: 789908941 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-789908941"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-789908941');
+</script>
+<script>
+  gtag('event', 'page_view', {
+    'send_to': 'AW-789908941',
+    'user_id': 'replace with value'
+  });
+</script>
+	</body>
+
+</html>

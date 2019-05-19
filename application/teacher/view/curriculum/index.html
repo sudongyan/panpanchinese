@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>课程设置</title>
+		<link href="__STATIC__/css/aui.css" rel="stylesheet" />
+		<link href="__STATIC__/css/style.css" rel="stylesheet" />
+		<style>
+			#timelist .aui-btn {
+				margin-bottom: 0.2rem;
+			}
+			.aui-bar-btn-item {
+				border-color: #9981b4;
+			}
+			.aui-bar-btn-item.aui-active {
+    				background-color: #9981b4;
+			}
+		</style>
+		{block name="css"}{/block}
+	</head>
+
+	<body>
+		<section class="aui-content">
+			<div class="aui-card-list">
+				<div class="aui-card-list-footer">
+					<div><i class="aui-iconfont aui-icon-left" onclick="left();"></i></div>
+					<div id="theweek">{$day.a} —— {$day.g}</div>
+					<div><i class="aui-iconfont aui-icon-right" onclick="right();"></i></div>
+				</div> 
+				<div class="aui-card-list-content-padded">
+					<div id="date" class="aui-bar aui-bar-btn" style="width:100%;">
+						<div id="day1" class="aui-bar-btn-item">周一</div>
+						<div class="aui-bar-btn-item">周二</div>
+						<div class="aui-bar-btn-item">周三</div>
+						<div class="aui-bar-btn-item">周四</div>
+						<div class="aui-bar-btn-item">周五</div>
+						<div class="aui-bar-btn-item">周六</div>
+						<div class="aui-bar-btn-item">周日</div>
+					</div>
+					<br />
+					<div id="timelist" style="text-align:center;width:100%;height: 20rem;">
+						<section class="aui-grid">
+ 						  	<div class="aui-row" id="timelist">
+						    </div>
+						</section>
+					</div>
+					<br />
+				</div>
+			</div>
+		</section>
+		<script src="__STATIC__/js/jquery-1.10.2.js"></script>
+		<script src="__STATIC__/js/aui-tab.js"></script>
+		<script src="__STATIC__/js/aui-dialog.js"></script>
+		<script>
+			var nowday;
+			var dialog = new auiDialog();
+			$(function() {
+				nowday = '{$nowday}';
+				update_html(nowday);
+			});
+			var daylist = [];
+			{volist name="day" id="vo"}
+			daylist.push('{$vo}');
+			{/volist}
+			var tab = new auiTab({
+				element: document.getElementById("date"),
+				index: {$nowweek},
+				repeatClick: true
+			}, function(ret) {
+				if(Date.parse(daylist[ret.index-1]) < Date.parse(nowday)){
+					document.getElementById("timelist").innerHTML = '请勿选择先前日期';
+				}else{
+					update_html(daylist[ret.index-1]);
+				}
+			});
+			
+			function isInteger(obj) {
+				return obj%1 === 0
+			}
+
+			function update_html(thedate) {
+				var html;
+				for(var i = 0; i < 48; i++) {
+					var time;
+					var h;
+					if(isInteger(i / 2)) {
+						h = i / 2;
+						if(h < 10){
+							h = '0'+ h;
+						}
+						time = h + ':00';
+					} else {
+						h = parseInt(i / 2);
+						if(h < 10){
+							h = '0'+ h;
+						}
+						time = h + ':30';
+					}
+					var daytime = thedate + ' ' + time;
+					var the_time = Date.parse(daytime.replace(/-/g,'/')) / 1000;
+					if(the_time > Math.round(new Date().getTime()/1000)){
+						html +='<div class="aui-col-xs-3"><div class="aui-btn aui-btn-gray" name="interval" onclick="update_curriculum(' + i + ',\'' + thedate + '\')" id="' + i + '">' + time + '</div></div>';
+					}else{
+						html +='<div class="aui-col-xs-3"><div class="aui-btn" name="interval" id="' + i + '">' + time + '</div></div>';
+					}
+				}
+				html = html.replace('undefined', '');
+				$("#timelist").html(html);
+				$.getJSON("{:url('curriculum/curriculum')}" + "?date=" + thedate, function(result) {
+					data = result.data;
+					for(var n = 0; n < data.length; n++) {
+						$("#" + data[n].interval).removeAttr("onclick");
+						$("#" + data[n].interval).removeClass('aui-btn-gray');
+						$("#" + data[n].interval).addClass('aui-btn-purple');
+						if(data[n].student_id != 0){
+							$("#" + data[n].interval).removeClass('aui-btn-purple');
+							$("#" + data[n].interval).addClass('aui-btn-danger');
+						}else{
+							$("#" + data[n].interval).attr("onclick",'del_curriculum(' + data[n].interval + ',\'' + data[n].day + '\');');
+						}
+					}
+				});
+			}
+			
+			
+			
+			function update_curriculum(interval,day) {
+				var time;
+				var h;
+				if(isInteger(interval / 2)) {
+					h = interval / 2;
+					if(h < 10){
+						h = '0'+ h;
+					}
+					time = h + ':00';
+				} else {
+					h = parseInt(interval / 2);
+					if(h < 10){
+						h = '0'+ h;
+					}
+					time = h + ':30';
+				}
+				dialog.alert({
+					title:day + ' ' + time,
+					msg:'是否确认添加？',
+					buttons:['否','是']
+				},function(ret){
+					if(ret.buttonIndex == 2){
+						$.ajax({
+							type:"POST",
+							url:"{:url('curriculum/updatedata')}",
+							data:{
+								day:day,	
+								interval:interval
+								},
+							datatype: "json",
+							success:function(result){
+								if(result.data == 1){
+									$("#" + interval).removeAttr("onclick");
+									$("#" + interval).removeClass('aui-btn-gray');
+									$("#" + interval).addClass('aui-btn-purple');
+									$("#" + interval).attr("onclick",'del_curriculum(' + interval + ',\'' + day + '\');');
+								}else{
+									alert("提交错误");
+								}
+							},
+							error: function(){
+								alert("提交错误");
+							}         
+        					});
+					}
+				})
+			}
+			
+			function del_curriculum(interval,day) {
+				var time;
+				var h;
+				if(isInteger(interval / 2)) {
+					h = interval / 2;
+					if(h < 10){
+						h = '0'+ h;
+					}
+					time = h + ':00';
+				} else {
+					h = parseInt(interval / 2);
+					if(h < 10){
+						h = '0'+ h;
+					}
+					time = h + ':30';
+				}
+				dialog.alert({
+					title:day + ' ' + time,
+					msg:'是否确认取消？',
+					buttons:['否','是']
+				},function(ret){
+					if(ret.buttonIndex == 2){
+						$.ajax({
+							type:"POST",
+							url:"{:url('curriculum/canceldata')}",
+							data:{
+								day:day,
+								interval:interval
+								},
+							datatype: "json",
+							success:function(result){
+								if(result.data == 1){
+									$("#" + interval).removeAttr("onclick");
+									$("#" + interval).removeClass('aui-btn-purple');	
+									var the_time = Date.parse(day + ' ' + time) / 1000;
+									if(the_time > Math.round(new Date().getTime()/1000)){
+										$("#" + interval).addClass('aui-btn-gray');	
+										$("#" + interval).attr("onclick",'update_curriculum(' + interval + ',\'' + day + '\');');
+									}
+								}else{
+									alert("提交错误");
+								}
+							},
+							error: function(){
+								alert("提交错误");
+							}         
+        					});
+					}
+				})
+			}
+			
+			function left(){
+				var now = new Date();
+				var date = new Date(Date.parse(daylist[0]) - 7 * 24 * 3600 * 1000);
+				var year = date.getFullYear();
+				var month = date.getMonth() + 1;
+				if(month < 10){
+					month = '0' + month;
+				}
+				var day = date.getDate();
+				if(day < 10){
+					day = '0' + day;
+				}
+				var theday = year + '-' + month + '-' + day;
+				if(Date.parse(daylist[0]) <= Date.parse(nowday)){
+					alert('禁止选择之前日期');
+				}else{
+					daylist[0] = theday;
+					daylist[1] = dateAdd(daylist[0]);
+					daylist[2] = dateAdd(daylist[1]);
+					daylist[3] = dateAdd(daylist[2]);
+					daylist[4] = dateAdd(daylist[3]);
+					daylist[5] = dateAdd(daylist[4]);
+					daylist[6] = dateAdd(daylist[5]);
+					document.getElementById("theweek").innerHTML = daylist[0] + ' —— ' + daylist[6];
+					document.getElementById("day1").click();
+				}
+			}
+			
+			function right(){
+					var now = new Date();
+					var date = new Date(Date.parse(daylist[6]) + 1 * 24 * 3600 * 1000);
+					var year = date.getFullYear();
+					var month = date.getMonth() + 1;
+					if(month < 10){
+						month = '0' + month;
+					}
+					var day = date.getDate();
+					if(day < 10){
+						day = '0' + day;
+					}
+					if(Date.parse(daylist[0]) >= Date.parse(nowday) + 90 * 24 * 3600 * 1000){
+						alert('禁止选择90天之后日期');
+					}else{
+						daylist[0] = year + '-' + month + '-' + day;
+						daylist[1] = dateAdd(daylist[0]);	
+						daylist[2] = dateAdd(daylist[1]);
+						daylist[3] = dateAdd(daylist[2]);
+						daylist[4] = dateAdd(daylist[3]);
+						daylist[5] = dateAdd(daylist[4]);
+						daylist[6] = dateAdd(daylist[5]);
+						document.getElementById("theweek").innerHTML = daylist[0] + ' —— ' + daylist[6];
+						document.getElementById("day1").click();
+					}
+			}
+			
+			function dateAdd(startDate) {
+				startDate = new Date(startDate);
+				startDate = +startDate + 1000*60*60*24;
+				startDate = new Date(startDate);
+				var addmonth = (startDate.getMonth()+1);
+				if(addmonth < 10){
+					addmonth = '0' + addmonth;
+				}
+				var addday = startDate.getDate();
+				if(addday < 10){
+					addday = '0' + addday;
+				}
+				var nextStartDate = startDate.getFullYear()+"-"+addmonth+"-"+addday;
+				return nextStartDate;
+			}
+		</script>
+	</body>
+
+</html>

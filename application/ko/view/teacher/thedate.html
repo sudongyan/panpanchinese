@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>{$Think.lang.teacher_index_11}</title>
+		<link href="__STATIC__/css/aui.css" rel="stylesheet" />
+		<link href="__STATIC__/css/style.css" rel="stylesheet" /> {block name="css"}{/block}
+		<style>
+			#timelist .aui-btn {
+				margin-bottom: 0.2rem;
+			}
+			
+			.aui-bar-btn-item {
+				border-color: #9981b4;
+			}
+			
+			.aui-bar-btn-item.aui-active {
+				background-color: #9981b4;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="aui-bar aui-bar-nav">
+			<a class="aui-pull-left aui-btn" onclick="javascript:history.back(-1);">
+				<span class="aui-iconfont aui-icon-left"></span>
+			</a>
+			<div class="aui-title">{$Think.lang.teacher_index_11}</div>
+		</header>
+		<form class="aui-content-padded" method="get" action="{:url('teacher/day')}" onsubmit="return checkDate();">
+			<ul class="aui-list aui-select-list aui-margin-b-15">
+				<li class="aui-list-header">{$Think.lang.teacher_index_3}</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-input">
+							<select name='day' id="time1list">
+							</select>
+						</div>
+					</div>
+				</li>
+			</ul>
+			<!--
+			<ul class="aui-list aui-select-list aui-margin-b-15">
+				<li class="aui-list-header">마감시간</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-input">
+							<select name='time2' id="time2list">
+							</select>
+						</div>
+					</div>
+				</li>
+			</ul>
+			-->
+			<ul class="aui-list aui-select-list aui-margin-b-15">
+				<li class="aui-list-header">{$Think.lang.teacher_index_4}</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-input">
+							<select name='times' id="times">
+							</select>
+						</div>
+					</div>
+				</li>
+			</ul>
+			<ul class="aui-list aui-select-list aui-margin-b-15">
+				<li class="aui-list-header">{$Think.lang.teacher_index_5}</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-input">
+							<select name='timee' id="timee">
+							</select>
+						</div>
+					</div>
+				</li>
+			</ul>
+			<!--
+			<ul class="aui-list aui-select-list aui-margin-b-15">
+				<li class="aui-list-header">Tag</li>
+				{volist name="taglist" id="vo"}
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<label><input class="aui-checkbox" type="checkbox" name="tag[]" value="{$vo.id}"> {$vo.name_ko}</label>
+					</div>
+				</li>
+				{/volist}
+			</ul>
+			-->
+			<input id="thetimezone" type="hidden" name="thetimezone" />
+			<p>
+				<button type="submit" class="aui-btn aui-btn-purple aui-btn-block" style="margin-top: 1rem;">{$Think.lang.teacher_index_6}</button>
+			</p>
+		</form>
+		<script src="__STATIC__/js/jquery-1.10.2.js"></script>
+		<script>
+			window.onload = function() {
+				var zone = new Date().getTimezoneOffset() / 60;
+				if(zone != 0) {
+					zone = zone - (zone * 2);
+				}
+				document.getElementById("thetimezone").value = zone;
+				document.getElementById("time1list").innerHTML = '<option value="' + formatDateTime(Date.parse(new Date())) + '">' + formatDateTime(Date.parse(new Date())) + '</option>';
+				if(new Date().getDay() == 1) {
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 1)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 1)))) + '</option>';
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 2)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 2)))) + '</option>';
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 3)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 3)))) + '</option>';
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 4)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 4)))) + '</option>';
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 5)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 5)))) + '</option>';
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 6)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 6)))) + '</option>';
+				} else if(new Date().getDay() == 2) {
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 1)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 1)))) + '</option>';
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 2)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 2)))) + '</option>';
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 3)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 3)))) + '</option>';
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 4)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 4)))) + '</option>';
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 5)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 5)))) + '</option>';
+				} else if(new Date().getDay() == 3) {
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 1)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 1)))) + '</option>';
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 2)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 2)))) + '</option>';
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 3)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 3)))) + '</option>';
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 4)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 4)))) + '</option>';
+				} else if(new Date().getDay() == 4) {
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 1)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 1)))) + '</option>';
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 2)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 2)))) + '</option>';
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 3)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 3)))) + '</option>';
+				} else if(new Date().getDay() == 5) {
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 1)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 1)))) + '</option>';
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 2)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 2)))) + '</option>';
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 3)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 3)))) + '</option>';
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 4)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 4)))) + '</option>';
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 5)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 5)))) + '</option>';
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 6)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 6)))) + '</option>';
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 7)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 7)))) + '</option>';
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 8)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 8)))) + '</option>';
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 9)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 9)))) + '</option>';
+				} else if(new Date().getDay() == 6) {
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 1)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 1)))) + '</option>';
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 2)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 2)))) + '</option>';
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 3)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 3)))) + '</option>';
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 4)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 4)))) + '</option>';
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 5)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 5)))) + '</option>';
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 6)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 6)))) + '</option>';
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 7)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 7)))) + '</option>';
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 8)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 8)))) + '</option>';
+				} else if(new Date().getDay() == 0) {
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 1)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 1)))) + '</option>';
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 2)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 2)))) + '</option>';
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 3)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 3)))) + '</option>';
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 4)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 4)))) + '</option>';
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 5)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 5)))) + '</option>';
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 6)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 6)))) + '</option>';
+					document.getElementById("time1list").innerHTML += '<option value="' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 7)))) + '">' + formatDateTime(Date.parse(new Date(new Date().setDate(new Date().getDate() + 7)))) + '</option>';
+				}
+				//document.getElementById("time2list").innerHTML = document.getElementById("time1list").innerHTML;
+				for(var i = 0; i < 48; i++) {
+					var time;
+					var h;
+					if(isInteger(i / 2)) {
+						h = i / 2;
+						if(h < 10) {
+							h = '0' + h;
+						}
+						time = h + ':00';
+					} else {
+						h = parseInt(i / 2);
+						if(h < 10) {
+							h = '0' + h;
+						}
+						time = h + ':30';
+					}
+					document.getElementById("times").innerHTML +=  '<option value="' + i + '">' + time + '</option>';
+					if(i == 47){
+						document.getElementById("timee").innerHTML +=  '<option value="' + i + '" selected="selected">' + time + '</option>';
+					}else{
+						document.getElementById("timee").innerHTML +=  '<option value="' + i + '">' + time + '</option>';
+					}
+				}
+			}
+
+			function isInteger(obj) {
+				return obj % 1 === 0
+			}
+
+			function checkDate() {
+				var time1list = new Date($('#time1list').val());
+				var time2list = new Date($('#time2list').val());
+    				var times = $('#times').val();
+    				var timee = $('#timee').val();
+				if(time1list > time2list) {
+					alert('请正确选择日期');
+					return false;
+				}
+    				if(timee - times < 0){
+    					alert('请正确选择时间');
+    					return false;
+    				}
+			}
+
+			function  formatDateTime(inputTime)  {      
+				var  date  =  new  Date(inputTime);    
+				var  y  =  date.getFullYear();      
+				var  m  =  date.getMonth()  +  1;      
+				m  =  m  <  10  ?  ('0'  +  m)  :  m;      
+				var  d  =  date.getDate();      
+				d  =  d  <  10  ?  ('0'  +  d)  :  d;      
+				var  h  =  date.getHours();    
+				h  =  h  <  10  ?  ('0'  +  h)  :  h;    
+				var  minute  =  date.getMinutes();    
+				var  second  =  date.getSeconds();    
+				minute  =  minute  <  10  ?  ('0'  +  minute)  :  minute;      
+				second  =  second  <  10  ?  ('0'  +  second)  :  second;     
+				return  y  +  '-'  +  m  +  '-'  +  d;  
+			};
+		</script>		<!-- Global site tag (gtag.js) - Google Ads: 789908941 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-789908941"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-789908941');
+</script>
+<script>
+  gtag('event', 'page_view', {
+    'send_to': 'AW-789908941',
+    'user_id': 'replace with value'
+  });
+</script>
+	</body>
+
+</html>

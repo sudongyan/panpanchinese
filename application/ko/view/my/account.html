@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>{$Think.lang.my_index_15}</title>
+		<link href="__STATIC__/css/aui.css" rel="stylesheet" />
+		<link href="__STATIC__/css/style.css" rel="stylesheet" />
+		<style>
+			html,
+			body {
+				background-color: #ffffff;
+			}
+		</style>
+		{block name="css"}{/block}
+	</head>
+
+	<body>
+		<header class="aui-bar aui-bar-nav">
+			<a class="aui-pull-left aui-btn" onclick="javascript:history.back(-1);">
+				<span class="aui-iconfont aui-icon-left"></span>
+			</a>
+			<div class="aui-title">{$Think.lang.my_index_7}</div>
+		</header>
+		<div class="aui-content" align="center" style="margin-top: 1rem;">
+			<img style="width: 70%;" src="__STATIC__/img/ko.png" />
+		</div>
+		<div class="aui-content-padded">
+			<div class="aui-row-padded">
+				<div class="aui-col-xs-12">
+					<h3>{$Think.lang.my_index_18}<span class="aui-pull-right">{$student.balance}{$Think.lang.my_index_9}</span></h3>
+				</div>
+				<div class="aui-col-xs-12">
+					<h3>{$Think.lang.my_index_20}<span class="aui-pull-right">{$student.oldbalance}{$Think.lang.my_index_9}</span></h3>
+				</div>
+				<div class="aui-hr" style="margin-top: 0.5rem;margin-bottom: 0.5rem;"></div>
+				<div class="aui-col-xs-12">
+					<h3>{$Think.lang.my_index_45}<span class="aui-pull-right">{$student.validity_start} - {$student.validity_end}</span></h3>
+				</div>
+			</div>
+			<p style="margin-top: 1rem;">
+				<div class="aui-btn aui-btn-purple aui-btn-block">{$Think.lang.my_index_46}</div>
+			</p>
+		</div>
+		<div class="aui-content-padded" align="center" style="margin-top: 1rem;">
+					<img style="width: 100%;border-radius:10px;" src="__STATIC__/img/info.jpeg" />
+		</div>
+		<script src="__STATIC__/js/jquery-1.10.2.js"></script>		<!-- Global site tag (gtag.js) - Google Ads: 789908941 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-789908941"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-789908941');
+</script>
+<script>
+  gtag('event', 'page_view', {
+    'send_to': 'AW-789908941',
+    'user_id': 'replace with value'
+  });
+</script>
+	</body>
+
+</html>

@@ -1,0 +1,174 @@
+﻿{extend name="Base:common" /} {block name="body"}
+
+<div class="header">
+	<h1 class="page-header">
+		老师管理
+	{switch name="Request.param.state" }
+    		{case value="1"}<small>开启中</small>{/case}
+    		{case value="0"}<small>关闭中</small>{/case}
+    		{default /}
+    		<small>全部</small>
+	{/switch}
+	</h1>
+	<ol class="breadcrumb">
+		<li>
+			<a href="{:url('index/index')}">首页</a>
+		</li>
+		<li>
+			<a href="{:url('teacher/index')}">老师管理</a>
+		</li>
+		{switch name="Request.param.state" }{case value="1"}
+		<li class="active">开启中</li>{/case} {case value="0"}
+		<li class="active">关闭中</li>{/case} {default /}
+		<li class="active">全部</li>
+		{/switch}
+	</ol>
+
+</div>
+<div id="page-inner">
+	<div class="row">
+		<div class="col-md-12">
+			<!-- Nav tabs -->
+			<ul class="nav nav-tabs">
+				{switch name="Request.param.state" } {case value="1"}
+				<li>
+					<a href="{:url('teacher/index')}">全部</a>
+				</li>
+				<li class="active">
+					<a href="{:url('teacher/index',['state'=>1])}">开启中</a>
+				</li>
+				<li>
+					<a href="{:url('teacher/index',['state'=>0])}">关闭中</a>
+				</li>
+				{/case} {case value="0"}
+				<li>
+					<a href="{:url('teacher/index')}">全部</a>
+				</li>
+				<li>
+					<a href="{:url('teacher/index',['state'=>1])}">开启中</a>
+				</li>
+				<li class="active">
+					<a href="{:url('teacher/index',['state'=>0])}">关闭中</a>
+				</li>
+				{/case} {default /}
+				<li class="active">
+					<a href="{:url('teacher/index')}">全部</a>
+				</li>
+				<li>
+					<a href="{:url('teacher/index',['state'=>1])}">开启中</a>
+				</li>
+				<li>
+					<a href="{:url('teacher/index',['state'=>0])}">关闭中</a>
+				</li>
+				{/switch}
+			</ul>
+			<!-- Advanced Tables -->
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-lg-6">
+							<form class="input-group" method="get">
+								<input id="search" type="text" class="form-control" name="search" placeholder="老师账号/昵称/微信/手机号">
+								<span class="input-group-btn">
+									<button class="btn btn-danger" type="submit">搜索</button>
+      							</span>
+							</form>
+						</div>
+						<div class="col-lg-6">
+							<button type="button" class="btn btn-danger pull-right" onclick="location.href='{:url('teacher/add')}'">新增老师</button> 
+							<button type="button" class="btn btn-danger pull-right" style="margin-right: 10px;" onclick="location.href='{:url('teachertag/index')}'">标签管理</button>
+						</div>
+					</div>
+					<!-- /input-group -->
+				</div>
+				<div class="panel-body">
+					<div class="table-responsive">
+						<table class="table table-striped table-bordered table-hover">
+							<thead>
+								<tr>
+									<th width="100">用户头像</th>
+									<th>老师信息</th>
+									<th>账号信息</th>
+									<th>评价信息</th>
+									<th>课程信息</th>
+									<th width="100">老师管理</th>
+								</tr>
+							</thead>
+							<tbody>
+								{volist name="list" id="vo"}
+								<tr>
+									<td><img src="{$vo.avatar}" class="img-responsive"></td>
+									<td class="center">
+										昵称：{$vo.nickName}<br /> 微信：{$vo.wx}
+										<br /> 时区：北京时间
+									</td>
+									<td class="center">
+										账号：{$vo.account}<br /> 状态：{if condition="$vo.state == 1"}开启中{else /}关闭中{/if}
+									</td>
+									<td class="center">
+										评分：{$vo.score}星<br /> 评价：{$vo.evaluate_num}条记录
+									</td>
+									<td class="center">
+										待开始课程：{$vo.order_0}<br /> 待评价课程：{$vo.order_3}
+										<br /> 已完成课程：{$vo.order_1}
+										<br /> 已取消课程：{$vo.order_2}
+									</td>
+									<td class="center">
+										{if condition="($Think.session.teacher eq 1) OR ($Think.session.id eq 1)"}
+										<div class="btn-group-vertical" role="group" aria-label="...">
+											<button type="button" onclick="location.href='{:url('teacher/edit',['id'=>$vo.id])}'" class="btn btn-danger">账号管理</button>
+											<button type="button" onclick="location.href='{:url('teacher/evaluate',['id'=>$vo.id])}'" class="btn btn-danger">评价管理</button>
+											<button type="button" onclick="location.href='{:url('teacher/recharge',['id'=>$vo.id])}'" class="btn btn-danger">充值/扣款</button>
+										</div>
+										{/if}
+									</td>
+								</tr>
+								{/volist}
+							</tbody>
+						</table>
+					</div>
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="box" id="box"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--End Advanced Tables -->
+		</div>
+	</div>
+</div>
+{/block} {block name="script"}
+<script>
+	var setTotalCount = {$total};
+	var p = {$p};
+	window.onload = function() {
+		if(GetQueryString('search')!=null){
+			$('#search').val(GetQueryString('search'));
+		}
+	}
+	$('#box').paging({
+		initPageNo: {$p}, // 初始页码
+		totalPages: {$pageNum}, //总页数
+		totalCount: '共' + setTotalCount + '条数据', // 条目总数
+		slideSpeed: 300, // 缓动速度。单位毫秒
+		jump: false, //是否支持跳转
+		callback: function(page) { // 回调函数
+			if(page != p) {
+				if(GetQueryString('search')!=null){
+					window.location.replace("{:url('teacher/index')}" + '?p=' + page + '&state={$state}&search=' + GetQueryString('search'));
+				}else{
+					window.location.replace("{:url('teacher/index')}" + '?p=' + page + '&state={$state}');
+				}
+			}
+		}
+	})
+	
+	function GetQueryString(key){
+    		var url = window.location.search;
+   		var reg = new RegExp("(^|&)"+ key +"=([^&]*)(&|$)");
+    		var result = url.substr(1).match(reg);
+    		return result ? decodeURIComponent(result[2]) : null;
+	}
+</script>
+{/block}

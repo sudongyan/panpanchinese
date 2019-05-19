@@ -1,0 +1,118 @@
+{extend name="base:common" /} {block name="css"}
+{block name="body"}
+<div class="container"> 
+	<div class="row">
+		<div class="col-md-4">
+			<div class="panel panel-default">
+				<div class="media" style="background-color: #ebebeb;">
+					<div class="media-left">
+						<img class="media-object" src="{$student.avatar}" style="width: 100px;height: 100px;">
+					</div>
+					<div class="media-body" style="padding: 10px;">
+						<h3 class="media-heading">
+								{$student.nickName}
+							</h3>
+						<h5>ID: {$student.account}</h5>
+					</div>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-6" style="border-right-style:solid;border-color: #ebebeb;border-width: 1px;text-align: center;">
+							<img src="__STATIC__/img/logo.jpeg" style="width: 80%;">
+						</div>
+						<div class="col-md-6" style="text-align: center;">
+							<b>
+								<h4>{$Think.lang.my_index_5}</h4>
+							<span><font style="color: #9981b4;font-size: 45px;">{$student.alltime}</font> {$Think.lang.my_index_6}</span>
+							</b>
+						</div>
+					</div>
+					<hr />
+					<button type="button" class="btn btn-purple btn-lg btn-block" onclick="location.href='{:url('teacher/index')}'">{$Think.lang.my_index_14}</button>
+				</div>
+			</div>
+			<div class="panel panel-default" onclick="location.href='{:url('my/edit')}'" style="cursor:pointer">
+				<div class="panel-body">
+					<span class="glyphicon glyphicon-user" aria-hidden="true" style="color: #9981b4;"></span> {$Think.lang.my_index_15}
+				</div>
+			</div>
+			<div class="panel panel-default" onclick="location.href='{:url('my/order')}'" style="cursor:pointer">
+				<div class="panel-body">
+					<span class="glyphicon glyphicon-calendar" aria-hidden="true" style="color: #9981b4;"></span> {$Think.lang.my_index_16} 
+				</div>
+			</div>
+			<div class="panel panel-default" onclick="location.href='{:url('my/price_order')}'" style="cursor:pointer">
+				<div class="panel-body">
+					<span class="glyphicon glyphicon-credit-card" aria-hidden="true" style="color: #9981b4;"></span> {$Think.lang.my_index_17}
+				</div>
+			</div>
+			<div class="panel panel-default" onclick="location.href='http://jiaocai.panpanchinese.cn/FAQ/guide.html'" style="cursor:pointer">
+				<div class="panel-body">
+					<span class="glyphicon glyphicon-question-sign" aria-hidden="true" style="color: #9981b4;"></span> {$Think.lang.my_index_10}
+				</div>
+			</div>
+		</div>
+		<div class="col-md-8">
+			<h4>{$Think.lang.my_index_18}：{$allsurplus_class} {$Think.lang.my_index_8}</h4>
+			<div class="panel panel-default" style="border-left:7px solid #9981b4;">
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-2" style="text-align: center;padding: 0px;">
+							
+						</div>
+						<div class="col-md-1" style="text-align: center;padding: 0px;">
+							{$Think.lang.my_index_8}
+						</div>
+						<div class="col-md-2" style="text-align: center;padding: 0px;">
+							{$Think.lang.my_index_19}
+						</div>
+						<div class="col-md-2" style="text-align: center;padding: 0px;">
+							{$Think.lang.my_index_20}
+						</div>
+						<div class="col-md-1" style="text-align: center;padding: 0px;">
+							{$Think.lang.my_index_22}
+						</div>
+						<div class="col-md-2" style="text-align: center;padding: 0px;">
+							{$Think.lang.my_index_21}
+						</div>
+						<div class="col-md-2" style="text-align: center;padding: 0px;">
+							{$Think.lang.my_index_23}
+						</div>
+					</div>
+				</div>
+			</div>
+			{volist name="list" id="vo"}
+			<div class="panel panel-default" style="border-left:7px solid #9981b4;">
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-2" style="text-align: center;padding: 0px;">
+							<img src="{$vo.cover}" style="width: 80%;">
+						</div>
+						<div class="col-md-1" style="text-align: center;padding: 0px;">
+							<h2>{$vo.class}</h2>
+						</div>
+						<div class="col-md-2" style="text-align: center;padding: 0px;">
+							<h6>{$vo.start_time}</h6>
+							<hr />
+							<h6>{$vo.end_time}</h6>
+						</div>
+						<div class="col-md-2" style="text-align: center;padding: 0px;">
+							<h2>{$vo.used_class}</h2>
+						</div>
+						<div class="col-md-1" style="text-align: center;padding: 0px;">
+							<h2>{$vo.timeend_class}</h2>
+						</div>
+						<div class="col-md-2" style="text-align: center;padding: 0px;">
+							<h2>{$vo.surplus_class}</h2>
+						</div>
+						<div class="col-md-2" style="text-align: center;padding: 0px;">
+							<h2>{$vo.surplus_day}</h2>
+						</div>
+					</div>
+				</div>
+			</div>
+			{/volist}
+		</div>
+	</div>
+</div>
+{/block} {block name="script"}{/block}

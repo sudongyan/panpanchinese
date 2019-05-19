@@ -1,0 +1,207 @@
+{extend name="base:common" /} {block name="body"}
+<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<div class="panel panel-default">
+				<div class="media" style="background-color: #ebebeb;">
+					<div class="media-left">
+						<img class="media-object" src="{$student.avatar}" style="width: 100px;height: 100px;">
+					</div>
+					<div class="media-body" style="padding: 10px;">
+						<h3 class="media-heading">
+								{$student.nickName}
+							</h3>
+						<h5>ID: {$student.account}</h5>
+					</div>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-6" style="border-right-style:solid;border-color: #ebebeb;border-width: 1px;text-align: center;">
+							<img src="__STATIC__/img/logo.jpeg" style="width: 80%;">
+						</div>
+						<div class="col-md-6" style="text-align: center;">
+							<b>
+								<h4>{$Think.lang.my_index_5}</h4>
+							<span><font style="color: #9981b4;font-size: 45px;">{$student.alltime}</font> {$Think.lang.my_index_6}</span>
+							</b>
+						</div>
+					</div>
+					<hr />
+					<button type="button" class="btn btn-purple btn-lg btn-block" onclick="location.href='{:url('teacher/index')}'">{$Think.lang.my_index_14}</button>
+				</div>
+			</div>
+			<div class="panel panel-default" onclick="location.href='{:url('my/edit')}'" style="cursor:pointer">
+				<div class="panel-body">
+					<span class="glyphicon glyphicon-user" aria-hidden="true" style="color: #9981b4;"></span> {$Think.lang.my_index_15}
+				</div>
+			</div>
+			<div class="panel panel-default" onclick="location.href='{:url('my/order')}'" style="cursor:pointer">
+				<div class="panel-body">
+					<span class="glyphicon glyphicon-calendar" aria-hidden="true" style="color: #9981b4;"></span> {$Think.lang.my_index_16} 
+				</div>
+			</div>
+			<div class="panel panel-default" onclick="location.href='{:url('my/price_order')}'" style="cursor:pointer">
+				<div class="panel-body">
+					<span class="glyphicon glyphicon-credit-card" aria-hidden="true" style="color: #9981b4;"></span> {$Think.lang.my_index_17}
+				</div>
+			</div>
+			<div class="panel panel-default" onclick="location.href='http://jiaocai.panpanchinese.cn/FAQ/guide.html'" style="cursor:pointer">
+				<div class="panel-body">
+					<span class="glyphicon glyphicon-question-sign" aria-hidden="true" style="color: #9981b4;"></span> {$Think.lang.my_index_10}
+				</div>
+			</div>
+		</div>
+		<div class="col-md-8">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">{$Think.lang.my_index_15}<br><h6>{$Think.lang.my_index_44}</h6></h3>
+				</div>
+				<div class="panel-body">
+					<form class="form-horizontal" method="post">
+						<div class="panel panel-default">
+							<div class="panel-body" id="container">
+								<div class="media-body">
+									<h4 class="media-heading" style="margin-top: 40px;">{$Think.lang.web_common_12}</h4>
+								</div>
+								<div class="media-right" id="pickfiles">
+									<img id="img" class="media-object" src="{$student.avatar}" style="width: 100px;height: 100px;">
+									<input id="avatar" name="avatar" type="hidden" value="{$student.avatar}" />
+								</div>
+							</div>
+						</div>
+						<div class="panel panel-default">
+							<div class="panel-body">
+								<div class="input-group">
+								<input type="text" name="nickName" value="{$student.nickName}" placeholder="{$Think.lang.my_index_36}" class="form-control" style="background:transparent;border:0px" required="required">
+								<span class="input-group-addon glyphicon glyphicon-edit" aria-hidden="true" style="background-color: #ffffff;border: 0px;"></span>
+								</div>
+							</div>
+						</div>
+						<div class="panel panel-default">
+							<div class="panel-body">
+								<div class="input-group">
+								<input type="text" name="wx" value="{$student.wx}" placeholder="{$Think.lang.my_index_37}" class="form-control" style="background:transparent;border:0px" required="required">
+								<span class="input-group-addon glyphicon glyphicon-edit" aria-hidden="true" style="background-color: #ffffff;border: 0px;"></span>
+								</div>
+							</div>
+						</div>
+						<div class="panel panel-default">
+							<div class="panel-body">
+								<div class="input-group">
+								<input type="text" name="phone" value="{$student.phone}" placeholder="{$Think.lang.my_index_41}" class="form-control" style="background:transparent;border:0px" required="required">
+								<span class="input-group-addon glyphicon glyphicon-edit" aria-hidden="true" style="background-color: #ffffff;border: 0px;"></span>
+								</div>
+							</div>
+						</div>
+						<div class="panel panel-default">
+							<div class="panel-body">
+								<input type="text" value="{$student.account}" class="form-control" style="background:transparent;border:0px" readonly>
+							</div>
+						</div>
+						<div class="panel panel-default">
+							<div class="panel-body">
+								<div class="input-group">
+								<input type="password" name="password" value="{$student.password}" placeholder="{$Think.lang.my_index_47}" class="form-control" style="background:transparent;border:0px" required="required">
+								<span class="input-group-addon glyphicon glyphicon-edit" aria-hidden="true" style="background-color: #ffffff;border: 0px;"></span>
+								</div>
+							</div>
+						</div>
+						<div class="panel panel-default">
+							<div class="panel-body">
+							<select class="form-control" name="time_zone" style="background:transparent;border:0px">
+								{volist name="TimezoneList" id="vo"}
+								{if condition="$vo.id == $student.time_zone"}
+								<option value="{$vo.id}" selected="selected">{$vo.name_ko}</option>
+								{else /}
+								<option value="{$vo.id}">{$vo.name_ko}</option>
+								{/if}
+								{/volist}
+							</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-12">
+								<button type="submit" class="btn btn-purple pull-right" style="width: 200px;">{$Think.lang.web_common_18}</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{/block} {block name="script"}
+<script src="__STATIC__/Plupload/moxie.js"></script>
+<script src="__STATIC__/Plupload/plupload.dev.js"></script>
+<script src="__STATIC__/Plupload/i18n/zh_CN.js"></script>
+<script src="__STATIC__/js/qiniu.min.js"></script>
+<script>
+	var domain = "http://img.panpanchinese.cn/";
+	//引入Plupload 、qiniu.js后
+	var uploader = Qiniu.uploader({
+		runtimes: 'html5,flash,html4', //上传模式,依次退化
+		browse_button: 'pickfiles', //上传选择的点选按钮，**必需**
+		uptoken_url: "{:url('image/gettoken')}", //Ajax请求upToken的Url，**强烈建议设置**（服务端提供）
+		// uptoken : '', //若未指定uptoken_url,则必须指定 uptoken ,uptoken由其他程序生成
+		unique_names: true, // 默认 false，key为文件名。若开启该选项，SDK为自动生成上传成功后的key（文件名）。
+		// save_key: true,   // 默认 false。若在服务端生成uptoken的上传策略中指定了 `sava_key`，则开启，SDK会忽略对key的处理
+		domain: 'http://img.panpanchinese.cn/', //bucket 域名，下载资源时用到，**必需**
+		get_new_uptoken: true, //设置上传文件的时候是否每次都重新获取新的token
+		container: 'container', //上传区域DOM ID，默认是browser_button的父元素，
+		max_file_size: '100mb', //最大文件体积限制
+		multi_selection: false,
+		flash_swf_url: '__STATIC__/Plupload/Moxie.swf', //引入flash,相对路径
+		max_retries: 3, //上传失败最大重试次数
+		dragdrop: true, //开启可拖曳上传
+		drop_element: 'container', //拖曳上传区域元素的ID，拖曳文件或文件夹后可触发上传
+		chunk_size: '4mb', //分块上传时，每片的体积
+		auto_start: true, //选择文件后自动上传，若关闭需要自己绑定事件触发上传
+		init: {
+			'FilesAdded': function(up, files) {
+				plupload.each(files, function(file) {
+					// 文件添加进队列后,处理相关的事情
+					thename = file.name;
+					if(thename.indexOf(".jpg") == -1 && thename.indexOf(".png") == -1) {
+						alert("照片上传：文件类型必须是JPG、PNG");
+						uploader.stop();
+						uploader.removeFile(file);
+					}
+				});
+			},
+			'BeforeUpload': function(up, file) {
+				// 每个文件上传前,处理相关的事情
+			},
+			'UploadProgress': function(up, file) {
+				// 每个文件上传时,处理相关的事情
+			},
+			'FileUploaded': function(up, file, info) {
+				// 每个文件上传成功后,处理相关的事情
+				// 其中 info.response 是文件上传成功后，服务端返回的json，形式如
+				// {
+				//    "hash": "Fh8xVqod2MQ1mocfI4S4KpRL6D98",
+				//    "key": "gogopher.jpg"
+				//  }
+				// 参考http://developer.qiniu.com/docs/v6/api/overview/up/response/simple-response.html
+				var domain = up.getOption('domain');
+				var res = JSON.parse(info.response);
+				$('#avatar').val(domain + res.key + '?imageView2/1/w/200/h/200/interlace/1');
+				$("#img").attr('src', domain + res.key + '?imageView2/1/w/200/h/200/interlace/1');
+			},
+			'Error': function(up, err, errTip) {
+				//上传出错时,处理相关的事情
+			},
+			'UploadComplete': function() {
+				//队列文件处理完毕后,处理相关的事情
+			},
+			'Key': function(up, file) {
+				// 若想在前端对每个文件的key进行个性化处理，可以配置该函数
+				// 该配置必须要在 unique_names: false , save_key: false 时才生效
+
+				var key = "";
+				// do something with key here
+				return key
+			}
+		}
+	});
+</script>
+{/block}

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>Personal Info</title>
+		<link href="__STATIC__/css/aui.css" rel="stylesheet" />
+		<link href="__STATIC__/css/style.css" rel="stylesheet" />
+		<style>
+			html,
+			body {
+				background-color: #ffffff;
+			}
+		</style>
+		{block name="css"}{/block}
+	</head>
+
+	<body>
+		<header class="aui-bar aui-bar-nav">
+			<a class="aui-pull-left aui-btn" onclick="javascript:history.back(-1);">
+				<span class="aui-iconfont aui-icon-left"></span>
+			</a>
+			<div class="aui-title">Credits</div>
+		</header>
+		<div class="aui-content" align="center" style="margin-top: 1rem;">
+			<h3 class="aui-text-purple" style="font-size: 3rem;">课程券</h3>
+		</div>
+		<div class="aui-content-padded">
+			<div class="aui-row-padded">
+				<div class="aui-col-xs-12">
+					<h3>剩余<span class="aui-pull-right">{$student.balance}张</span></h3>
+				</div>
+				<div class="aui-col-xs-12">
+					<h3>已用<span class="aui-pull-right">{$student.oldbalance}张</span></h3>
+				</div>
+				<div class="aui-hr" style="margin-top: 0.5rem;margin-bottom: 0.5rem;"></div>
+				<div class="aui-col-xs-12">
+					<h3>上课时间<span class="aui-pull-right">{$student.validity_start} - {$student.validity_end}</span></h3>
+				</div>
+			</div>
+			<p style="margin-top: 1rem;">
+				<div class="aui-btn aui-btn-purple aui-btn-block">账户充值</div>
+			</p>
+		</div>
+		<div class="aui-content-padded" style="background-color: #EEEEEE">
+			<div class="aui-content-padded" style="padding-top: 1rem;padding-bottom: 1rem;">
+				<h2>수강권 안내사항</h2>
+				<br />
+				<h4 align="left">
+					<ul style="list-style-position: outside;">
+						<li style="list-style-type:disc;margin-left: 1rem;">수강권은 판판차이니즈 홈페이지에서 구입 가능합니다.</li>
+						<li style="list-style-type:disc;margin-left: 1rem;">수강권 재구매시 1시간 후에 횟수가 충전 됩니다.</li>
+						<li style="list-style-type:disc;margin-left: 1rem;">수강권은 수강 기간이 지난 후에는 자동 소멸됩니다.</li>
+					</ul>
+				</h4>
+			</div>
+		</div>
+		<script src="__STATIC__/js/jquery-1.10.2.js"></script>
+	</body>
+
+</html>

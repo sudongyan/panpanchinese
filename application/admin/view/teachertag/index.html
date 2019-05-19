@@ -1,0 +1,233 @@
+﻿{extend name="Base:common" /} {block name="body"}
+
+<div class="header">
+	<h1 class="page-header">
+		老师标签管理
+	</h1>
+	<ol class="breadcrumb">
+		<li>
+			<a href="{:url('index/index')}">首页</a>
+		</li>
+		<li>
+			<a href="{:url('teacher/index')}">老师管理</a>
+		</li>
+		<li class="active">老师标签管理</li>
+	</ol>
+
+</div>
+<div id="page-inner">
+	<div class="row">
+		<div class="col-md-12">
+			<!-- Advanced Tables -->
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-lg-12"> 
+							<button type="button" class="btn btn-danger pull-right" data-toggle="modal" data-target="#addTag">新增标签</button>
+						</div>
+					</div>
+					<!-- /input-group -->
+				</div>
+				<div class="panel-body">
+					<div class="table-responsive">
+						<table class="table table-striped table-bordered table-hover">
+							<thead>
+								<tr>
+									<th>标签名称（中文）</th>
+									<th>标签名称（英文）</th>
+									<th>标签名称（韩文）</th>
+									<th>标签状态</th>
+									<th width="100">标签管理</th>
+								</tr>
+							</thead>
+							<tbody>
+								{volist name="list" id="vo"}
+								<tr>
+									<td class="center">{$vo.name_cn}</td>
+									<td class="center">{$vo.name_en}</td>
+									<td class="center">{$vo.name_ko}</td>
+									<td class="center">{if condition="$vo.state == 0"}已关闭{else/}可使用{/if}</td>
+									<td class="center">
+										{if condition="($Think.session.teacher eq 1) OR ($Think.session.id eq 1)"}
+										<div class="btn-group" role="group" aria-label="...">
+											<button type="button" onclick="editTag('{$vo.id}','{$vo.name_cn}','{$vo.name_ko}','{$vo.name_en}','{$vo.state}')" class="btn btn-danger">标签管理</button>
+										</div>
+										{/if}
+									</td>
+								</tr>
+								{/volist}
+							</tbody>
+						</table>
+					</div>
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="box" id="box"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--End Advanced Tables -->
+		</div>
+	</div>
+</div>
+<div id="addTag" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title">新增标签</h4>
+      </div>
+      <div class="modal-body">
+		<div class="form-group">
+        <input type="text" class="form-control" id="addTagCn" placeholder="标签名称（中文）">
+		</div>
+		<div class="form-group">
+        <input type="text" class="form-control" id="addTagKo" placeholder="标签名称（韩文）">
+		</div>
+		<div class="form-group">
+        <input type="text" class="form-control" id="addTagEn" placeholder="标签名称（英文）">
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" onclick="addTag()">保存</button> 
+      </div>
+    </div>
+  </div>
+</div>
+<div id="editTag" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title">标签管理</h4>
+      </div>
+      <div class="modal-body">
+      	<input type="hidden" id="editTagId" />
+		<div class="form-group">
+        <input type="text" class="form-control" id="editTagCn" placeholder="标签名称（中文）">
+		</div>
+		<div class="form-group">
+        <input type="text" class="form-control" id="editTagKo" placeholder="标签名称（韩文）">
+		</div>
+		<div class="form-group">
+        <input type="text" class="form-control" id="editTagEn" placeholder="标签名称（英文）">
+		</div>
+		<div class="form-group">
+      	<select id="editTagState" class="form-control">
+			<option value="0">已关闭</option>
+			<option value="1">可使用</option>
+		</select>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" onclick="update()">保存</button> 
+      </div>
+    </div>
+  </div>
+</div>
+{/block} {block name="script"}
+<script>
+	var setTotalCount = {$total};
+	var p = {$p};
+	$('#box').paging({
+		initPageNo: {$p}, // 初始页码
+		totalPages: {$pageNum}, //总页数
+		totalCount: '共' + setTotalCount + '条数据', // 条目总数
+		slideSpeed: 300, // 缓动速度。单位毫秒
+		jump: false, //是否支持跳转
+		callback: function(page) { // 回调函数
+			if(page != p) {
+				window.location.replace("{:url('teachertag/index')}" + '?p=' + page);
+			}
+		}
+	})
+	
+	function GetQueryString(key){
+    		var url = window.location.search;
+   		var reg = new RegExp("(^|&)"+ key +"=([^&]*)(&|$)");
+    		var result = url.substr(1).match(reg);
+    		return result ? decodeURIComponent(result[2]) : null;
+	}
+</script>
+<script>
+	//新增标签
+	function addTag() {
+		var cn = $('#addTagCn').val();
+		var ko = $('#addTagKo').val();
+		var en = $('#addTagEn').val();
+		if(cn.length < 1||ko.length < 1||en.length < 1){
+			alert('请正确输入Tag名称');
+			return false;
+		}
+		info = '是否新增?';
+		if(confirm(info)) {
+			$.ajax({
+				type: "POST",
+				url: "{:url('teachertag/add')}",
+				data: {
+					name_cn: cn,
+					name_ko: ko,
+					name_en: en
+				},
+				success: function(result) {
+					$('#addTag').modal('hide');
+					if(result == 1) {
+						location.reload();
+					} else {
+						alert('发生错误');
+					}
+				}
+			});
+		}
+	}
+</script>
+<script>
+	//更新
+	function editTag(id,cn,ko,en,state) {
+		$('#editTagId').val(id);
+		$("#editTagCn").val(cn);
+		$('#editTagKo').val(ko);
+		$('#editTagEn').val(en);
+		$("#editTagState").val(state);
+		$('#editTag').modal('show');
+	}
+</script>
+<script>
+	//确认更新
+	function update() {
+		var id = $('#editTagId').val();
+		var 	cn = $("#editTagCn").val();
+		var 	ko = $('#editTagKo').val();
+		var 	en = $('#editTagEn').val();
+		var state = $('#editTagState').val();
+		if(cn.length < 1||ko.length < 1||en.length < 1){
+			alert('请正确输入标签名称');
+			return false;
+		}
+		info = '是否修改?';
+		if(confirm(info)) {
+			$.ajax({
+				type: "POST",
+				url: "{:url('teachertag/edit')}",
+				data: {
+					id: id,
+					name_cn: cn,
+					name_ko: ko,
+					name_en: en,
+					state: state
+				},
+				success: function(result) {
+					$('#editTag').modal('hide');
+					if(result == 1) {
+						location.reload();
+					} else {
+						alert('发生错误');
+					}
+				}
+			});
+		}
+	}
+</script>
+{/block}

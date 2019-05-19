@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>{$Think.lang.my_index_15}</title>
+		<link href="__STATIC__/css/aui.css" rel="stylesheet" />
+		<link href="__STATIC__/css/style.css" rel="stylesheet" /> {block name="css"}{/block}
+	</head>
+
+	<body>
+		<div class="aui-content aui-margin-b-15">
+			<ul class="aui-list aui-media-list">
+				<li class="aui-list-item">
+					<div class="aui-media-list-item-inner">
+						<div class="aui-list-item-media">
+							<img class="aui-img-round" src="{$student.avatar}">
+						</div>
+						<div class="aui-list-item-inner">
+							<div class="aui-list-item-text">
+								<div class="aui-list-item-title" style="color: #000;margin-top: 1rem;">{$student.nickName}</div>
+								<div class="aui-list-item-right" onclick="location.href='{:url('my/edit')}'"><img style="height: 1rem;" src="__STATIC__/img/icon-edit.png"></div>
+							</div>
+							<div class="aui-list-item-text">
+								{$Think.lang.my_index_5} {$student.alltime}{$Think.lang.my_index_6}
+							</div>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="aui-content" style="margin-top: -0.1rem;margin-bottom: 1px;">
+			<ul class="aui-list aui-list-in">
+				<li class="aui-list-item aui-list-item-middle" onclick="location.href='{:url('my/order')}'">
+					<div class="aui-list-item-inner aui-list-item-arrow">
+						<div class="aui-list-item-title"><img style="height: 1rem;float:left;margin-right: 0.5rem;" src="__STATIC__/img/icon-order.png"> {$Think.lang.my_index_1}</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<section class="aui-grid aui-margin-b-15">
+			<div class="aui-row">
+				<div class="aui-col-xs-4" onclick="location.href='{:url('my/order',['state'=>0])}'">
+					{$order.orderNum0}
+					<div class="aui-grid-label">{$Think.lang.my_index_2}</div>
+				</div>
+				<div class="aui-col-xs-4" onclick="location.href='{:url('my/order',['state'=>3])}'">
+					{$order.orderNum3}
+					<div class="aui-grid-label">{$Think.lang.my_index_3}</div>
+				</div>
+				<div class="aui-col-xs-4" onclick="location.href='{:url('my/order',['state'=>1])}'">
+					{$order.orderNum1}
+					<div class="aui-grid-label">{$Think.lang.my_index_4}</div>
+				</div>
+			</div>
+		</section>
+		<div class="aui-content aui-margin-b-15" onclick="location.href='{:url('my/price_order')}'">
+			<ul class="aui-list aui-list-in">
+				<li class="aui-list-item aui-list-item-middle">
+					<div class="aui-list-item-inner aui-list-item-arrow">
+						<div class="aui-list-item-title"><img style="height: 1rem;float:left;margin-right: 0.5rem;" src="__STATIC__/img/icon-account.png"> {$Think.lang.my_index_7}</div>
+						<div class="aui-list-item-right">{$Think.lang.my_index_8} {$student.balance}{$Think.lang.my_index_9}</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="aui-content aui-margin-b-15" onclick="location.href='http://jiaocai.panpanchinese.cn/FAQ/guide.html'">
+			<ul class="aui-list aui-list-in">
+				<li class="aui-list-item aui-list-item-middle">
+					<div class="aui-list-item-inner aui-list-item-arrow">
+						<div class="aui-list-item-title"><img style="height: 1rem;float:left;margin-right: 0.5rem;" src="__STATIC__/img/icon-help.png"> {$Think.lang.my_index_10}</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="aui-content aui-margin-b-15" onclick="location.href='{:url('my/timezone')}'">
+			<ul class="aui-list aui-list-in">
+				<li class="aui-list-item aui-list-item-middle">
+					<div class="aui-list-item-inner aui-list-item-arrow">
+						<div class="aui-list-item-title"><img style="height: 1rem;float:left;margin-right: 0.5rem;" src="__STATIC__/img/icon-timezone.png"> {$Think.lang.my_index_11}</div>
+						<div class="aui-list-item-right">{$timezone}</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<!--
+		<div class="aui-content aui-margin-b-15" onclick="location.href='{:url('my/lang')}'">
+			<ul class="aui-list aui-list-in">
+				<li class="aui-list-item aui-list-item-middle">
+					<div class="aui-list-item-inner aui-list-item-arrow">
+						<div class="aui-list-item-title"><img style="height: 1rem;float:left;margin-right: 0.5rem;" src="__STATIC__/img/icon-timezone.png"> {$Think.lang.web_common_24}</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+        -->
+		<div class="aui-content aui-margin-b-15" onclick="location.href='{:url('my/password')}'">
+			<ul class="aui-list aui-list-in">
+				<li class="aui-list-item aui-list-item-middle">
+					<div class="aui-list-item-inner aui-list-item-arrow">
+						<div class="aui-list-item-title"><img style="height: 1rem;float:left;margin-right: 0.5rem;" src="__STATIC__/img/icon-password.png"> {$Think.lang.my_index_12}</div>
+						<div class="aui-list-item-right">{$Think.lang.my_index_13}</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="aui-content-padded">
+			<p>
+				<button type="button" class="aui-btn aui-btn-purple aui-btn-block" style="margin-top: 2rem;" onclick="location.href='{:url('my/out')}'">{$Think.lang.web_common_5}</button>
+			</p>
+		</div>
+		<div style="width: 100%;height: 50px;"></div>
+		<footer class="aui-bar aui-bar-tab" id="footer" style="border-top:1px solid #e2e2e2;">
+			<div class="aui-bar-tab-item aui-active" onclick="location.href='{:url('my/index')}'" tapmode>
+				<div class="aui-bar-tab-label"><img style="height: 2rem;margin:auto;" src="__STATIC__/img/tab-1-2{if $Think.cookie.think_var == 'zh-cn' /}-cn{elseif $Think.cookie.think_var == 'en-us' /}-en{/if}.png"></div>
+			</div>
+			<div class="aui-bar-tab-item" onclick="location.href='{:url('teacher/index')}'" tapmode>
+				<div class="aui-bar-tab-label"><img style="height: 2rem;margin:auto;" src="__STATIC__/img/tab-2-1{if $Think.cookie.think_var == 'zh-cn' /}-cn{elseif $Think.cookie.think_var == 'en-us' /}-en{/if}.png"></div>
+			</div>
+			<div class="aui-bar-tab-item" onclick="location.href='{:url('course/index')}'" tapmode>
+				<div class="aui-bar-tab-label"><img style="height: 2rem;margin:auto;" src="__STATIC__/img/tab-3-1{if $Think.cookie.think_var == 'zh-cn' /}-cn{elseif $Think.cookie.think_var == 'en-us' /}-en{/if}.png"></div>
+			</div>
+			<div class="aui-bar-tab-item" onclick="location.href='https://panpanchinese.com/order'" tapmode>
+				<div class="aui-bar-tab-label"><img style="height: 2rem;margin:auto;" src="__STATIC__/img/tab-4-1{if $Think.cookie.think_var == 'zh-cn' /}-cn{elseif $Think.cookie.think_var == 'en-us' /}-en{/if}.png"></div>
+			</div>
+		</footer>
+	</body>
+	<script src="__STATIC__/js/jquery-1.10.2.js"></script>
+	<script src="__STATIC__/js/aui-dialog.js"></script>
+	<script>
+		var newuser = {$new};
+		var dialog = new auiDialog();
+		$(function() {
+			if(newuser == 1){
+				dialog.alert({
+					msg:"{$Think.lang.my_index_50} <br/><b>{$Think.lang.my_index_51}</b>{$Think.lang.my_index_52}<br>{$Think.lang.my_index_53}",
+					buttons:['{$Think.lang.my_index_55}','{$Think.lang.my_index_54}']
+				},function(ret){
+					if(ret.buttonIndex == 2){
+						location.href='http://jiaocai.panpanchinese.cn/FAQ/guide.html';
+					}
+				})
+			}
+		});
+	</script>
+	<!-- Global site tag (gtag.js) - Google Ads: 789908941 -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=AW-789908941"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-789908941');
+</script>
+<script>
+  gtag('event', 'page_view', {
+    'send_to': 'AW-789908941',
+    'user_id': 'replace with value'
+  });
+</script>
+	<!-- Event snippet for 판판 전환 conversion page -->
+	<script>
+  		gtag('event', 'conversion', {'send_to': 'AW-789908941/hfF-CPH22I8BEM2b1PgC'});
+	</script>
+
+</html>

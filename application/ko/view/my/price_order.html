@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>{$Think.lang.my_index_7}</title>
+		<link href="__STATIC__/css/aui.css" rel="stylesheet" />
+		<link href="__STATIC__/css/style.css" rel="stylesheet" /> {block name="css"}{/block}
+	</head>
+
+	<body>
+		<header class="aui-bar aui-bar-nav">
+			<a class="aui-pull-left aui-btn" onclick="javascript:history.back(-1);">
+				<span class="aui-iconfont aui-icon-left"></span>
+			</a>
+			<div class="aui-title">{$Think.lang.my_index_7}</div>
+		</header>
+		<!--
+		<div class="aui-bar aui-bar-btn aui-bar-btn-full">
+			<div class="aui-bar-btn-item aui-active">余额</div>
+			<div class="aui-bar-btn-item">历史</div>
+		</div>
+		-->
+		<div class="aui-content aui-margin-b-15" id="list">
+			{volist name="list" id="vo"}
+			<ul class="aui-list aui-media-list aui-margin-b-15">
+				<li class="aui-list-item">
+					<div class="aui-info">
+						<div class="aui-info-item">
+							<span>{$Think.lang.my_index_19}：{$vo.start_time} ~ {$vo.end_time}</span>
+						</div>
+					</div>
+					<div class="aui-hr"></div>
+					<div class="aui-media-list-item-inner">
+						<div class="aui-list-item-media" style="width: 35%;">
+							<img src="{$vo.cover}">
+						</div>
+						<div class="aui-list-item-inner">
+							<div class="aui-list-item-text">
+								{$Think.lang.my_index_8}：{$vo.class}
+							</div>
+							<div class="aui-list-item-text">
+								{$Think.lang.my_index_20}：{$vo.used_class}
+							</div>
+							<div class="aui-list-item-text">
+								{$Think.lang.my_index_21}：{$vo.surplus_class}
+							</div>
+							<div class="aui-list-item-text">
+								{$Think.lang.my_index_23}：{$vo.surplus_day}
+							</div>
+						</div>
+					</div>
+				</li>
+			</ul>
+			{/volist}
+		</div>
+		<script src="__STATIC__/js/jquery-1.10.2.js"></script>		<!-- Global site tag (gtag.js) - Google Ads: 789908941 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-789908941"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-789908941');
+</script>
+<script>
+  gtag('event', 'page_view', {
+    'send_to': 'AW-789908941',
+    'user_id': 'replace with value'
+  });
+</script>
+	</body>
+
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>预约上课</title>
+		<link href="__STATIC__/css/aui.css" rel="stylesheet" />
+		<link href="__STATIC__/css/style.css" rel="stylesheet" /> {block name="css"}{/block}
+		<style>
+			#timelist .aui-btn {
+				margin-bottom: 0.2rem;
+			}
+			
+			.aui-bar-btn-item {
+				border-color: #9981b4;
+			}
+			
+			.aui-bar-btn-item.aui-active {
+				background-color: #9981b4;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="aui-bar aui-bar-nav">
+			<a class="aui-pull-left aui-btn" onclick="javascript:history.back(-1);">
+				<span class="aui-iconfont aui-icon-left"></span>
+			</a>
+			<div class="aui-title">选择教材</div>
+		</header>
+		<form class="aui-content-padded aui-margin-b-15" method="post">
+			<input type="hidden" name="id" value="{$id}" />
+			<ul class="aui-list aui-form-list aui-media-list aui-margin-b-15">
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label">
+							时间
+						</div>
+						<div class="aui-list-item-input">
+							{$Curriculum.day} {$Curriculum.interval}
+						</div>
+					</div>
+				</li>
+			</ul>
+			<ul class="aui-list aui-form-list aui-media-list">
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label">
+							分类
+						</div>
+						<div class="aui-list-item-input">
+							<select onchange="thecourse(this.value)">
+								<option value="0">请选择分类</option>
+								{volist name="CourseType" id="vo"}
+								<option value="{$vo.id}">{$vo.name}</option>
+								{/volist}
+							</select>
+						</div>
+                   		<div class="aui-list-item-label-icon">
+                        		<i class="aui-iconfont aui-icon-right"></i>
+                    		</div>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label">
+							教材
+						</div>
+						<div class="aui-list-item-input">
+							<select name="course" id="course" onchange="theperiod(this)">
+							</select>
+						</div>
+                   		<div class="aui-list-item-label-icon">
+                        		<i class="aui-iconfont aui-icon-right"></i>
+                    		</div>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label">
+							课时
+						</div> 
+						<div class="aui-list-item-input">
+							<select name="class" id="period">
+							</select>
+						</div>
+                   		<div class="aui-list-item-label-icon">
+                        		<i class="aui-iconfont aui-icon-right"></i>
+                    		</div>
+					</div>
+				</li>
+			</ul>
+			<p>
+				<button type="button" class="aui-btn aui-btn-purple aui-btn-block" onclick="enroll();" style="margin-top: 1rem;">提交预约</button>
+			</p>
+		</form>
+		<script src="__STATIC__/js/jquery-1.10.2.js"></script>
+		<script src="__STATIC__/js/aui-dialog.js"></script>
+		<script src="__STATIC__/js/aui-toast.js"></script>
+		<script>
+			var dialog = new auiDialog();
+			{volist name="CourseType" id="vo" key="k"}
+			{if $k == 1}
+			 var courseTypeId = {$vo.id};
+			{/if}
+			{/volist}
+			window.onload = function() {
+				thecourse(0);
+			}
+
+			function thecourse(type) {
+				if(type == '0'){
+					document.getElementById("course").innerHTML = '<option value="0">请选择教材</option>';
+					document.getElementById("period").innerHTML = '<option value="0">请选择课时</option>';
+				}else{
+				$.getJSON("{:url('teacher/course')}" + "?type=" + type, function(result) {
+					data = result.data;
+					document.getElementById("course").innerHTML = '<option value="0">请选择教材</option>';
+					document.getElementById("period").innerHTML = '';
+					for(var n = 0; n < data.length; n++) {
+						document.getElementById("course").innerHTML += '<option value="' + data[n].id + '" data="' + data[n].period + '">' + data[n].name_en + '</option>';
+						if(n == 0) {
+							theperiod(data[n].period);
+						}
+					}
+				});
+				}
+			}
+
+			function theperiod(obj) {
+					document.getElementById("period").innerHTML = '<option value="0">请选择课时</option>';
+					for(var n = 1; n <= $("#course").find("option:selected").attr("data"); n++) {
+						document.getElementById("period").innerHTML += '<option value="' + n + '">' + n + '</option>';
+					}
+			}
+			
+			function enroll(){
+				var course = document.getElementById("course").value;
+				var theclass = document.getElementById("period").value;
+				if(course == 0 || theclass == 0){
+					dialog.alert({
+						title: "알림",
+						msg: '선택이 완료되지 않았습니다',
+						buttons: ['확인']
+					});
+					return;
+				}
+				dialog.alert({
+					title: "알림",
+					msg: '수업을 예약 하시겠습니까?',
+					buttons: ['네','아니요']
+				}, function(ret) {
+					if(ret.buttonIndex == 1){
+						toast.loading({
+		                    title:"loading"
+		                });
+						$.ajax({
+							type: "POST",
+							url: "{:url('teacher/enroll')}",
+							data: {
+								id: {$id},
+								course:course,
+								class:theclass
+							},
+							datatype: "json",
+							success: function(result) {
+								toast.hide();
+								if(result.data == 1) {
+									dialog.alert({
+										title: "提示",
+										msg: '预约成功',
+										buttons: ['确认']
+									}, function(ret) {
+										history.back(-1);
+									})
+								} else {
+									dialog.alert({
+										title: "提示",
+										msg: '预约失败',
+										buttons: ['确认']
+									}, function(ret) {
+										history.back(-1);
+									})
+								}
+							},
+							error: function() {
+								alert("error");
+							}
+						});
+					}
+				});
+			}
+		</script>
+	</body>
+
+</html>

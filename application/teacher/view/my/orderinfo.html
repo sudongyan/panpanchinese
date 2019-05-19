@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>订单详情</title>
+		<link href="__STATIC__/css/aui.css" rel="stylesheet" />
+		<link href="__STATIC__/css/style.css" rel="stylesheet" /> {block name="css"}{/block}
+	</head>
+
+	<body>
+		<header class="aui-bar aui-bar-nav">
+			<a class="aui-pull-left aui-btn" onclick="javascript:history.back(-1);">
+				<span class="aui-iconfont aui-icon-left"></span>
+			</a>
+			<div class="aui-title">订单详情</div>
+		</header>
+		<div class="aui-content aui-margin-b-15">
+			<ul class="aui-list aui-media-list aui-margin-b-15">
+				<li class="aui-list-item">
+					<div class="aui-info">
+						<div class="aui-info-item">
+							<h3>课程信息</h3>
+						</div>
+					</div>
+					<div class="aui-media-list-item-inner">
+						<div class="aui-list-item-inner">
+							<div class="aui-list-item-text">
+								分类：{$order.course_type}
+							</div>
+							<div class="aui-list-item-text">
+								教材：{$order.course}
+							</div>
+							<div class="aui-list-item-text">
+								课时：第{$order.class}课
+							</div>
+							<div class="aui-list-item-text">
+								课程：{$order.course_period}
+							</div>
+						</div>
+					</div>
+					<div class="aui-hr"></div>
+					<div class="aui-hr"></div>
+					<div class="aui-info">
+						<div class="aui-info-item">
+							<h3>学生信息</h3>
+						</div>
+					</div>
+					<div class="aui-media-list-item-inner">
+						<div class="aui-list-item-inner">
+							<div class="aui-list-item-text">
+								昵称：{$student.nickName}
+							</div>
+							<div class="aui-list-item-text">
+								微信：{$student.wx}
+							</div>
+							<div class="aui-list-item-text">
+								电话：{$student.wx}
+							</div>
+						</div>
+					</div>
+					<div class="aui-hr"></div>
+					<div class="aui-hr"></div>
+					<div class="aui-info">
+						<div class="aui-info-item">
+							<h3>上课要求</h3>
+						</div>
+					</div>
+					<div class="aui-media-list-item-inner">
+						<div class="aui-list-item-inner">
+							<div class="aui-list-item-text">
+								{$order.demand_cn}
+							</div>
+						</div>
+					</div>
+					<div class="aui-hr"></div>
+					<div class="aui-hr"></div>
+					<div class="aui-info">
+						<div class="aui-info-item">
+							<h3>上课时间</h3>
+						</div>
+						<div class="aui-info-item" style="margin-right: 0.8rem;">
+							{$order.start_time}
+						</div>
+					</div>
+					<div class="aui-info">
+						<div class="aui-info-item">
+							<h3>类型</h3>
+						</div>
+						<div class="aui-info-item" style="margin-right: 0.8rem;">
+							{if $order.PriceType == 3}
+							试听券
+							{else /}
+							课程券
+							{/if}
+						</div>
+					</div>
+					<div class="aui-info">
+						<div class="aui-info-item">
+							<h3>订单状态</h3>
+						</div>
+						<div class="aui-info-item" style="margin-right: 0.8rem;">
+							{switch name="order.state" } {case value="0"} 待开始 {/case} {case value="3"} 待评价 {/case} {case value="2"} 已取消 {/case} {default /} 已完成 {/switch}
+						</div>
+					</div>
+					{switch name="order.state" } {case value="0"}
+					<div class="aui-info">
+						<div class="aui-info-item">
+							<h3>订单管理</h3>
+						</div>
+						<div class="aui-info-item" style="margin-right: 0.8rem;">
+							<div class="aui-btn aui-btn-purple" onclick="cancel({$order.id});">取消订单</div>
+						</div>
+					</div>
+					{/case} {case value="3"}
+					<div class="aui-info">
+						<div class="aui-info-item">
+							<h3>订单管理</h3>
+						</div>
+						<div class="aui-info-item" style="margin-right: 0.8rem;">
+							请提醒学生进行评价
+						</div>
+					</div>
+					{/case} {case value="2"}
+					<div class="aui-info">
+						<div class="aui-info-item">
+							<h3>订单管理</h3>
+						</div>
+						<div class="aui-info-item" style="margin-right: 0.8rem;">
+							{$order.reason_type}
+						</div>
+					</div>
+					{/case} {default /}
+					<div class="aui-info">
+						<div class="aui-info-item">
+							<h3>服务评价</h3>
+						</div>
+						<div class="aui-info-item" style="margin-right: 0.8rem;">
+							{for start="1" end="$order.score"}<i class="aui-iconfont aui-icon-star"></i> {/for}
+						</div>
+					</div>
+					<div class="aui-media-list-item-inner">
+						<div class="aui-list-item-inner">
+							<div class="aui-list-item-text">
+								{$order.score_info}
+							</div>
+						</div>
+					</div>
+					{/switch}
+				</li>
+			</ul>
+		</div>
+		<script src="__STATIC__/js/jquery-1.10.2.js"></script>
+		<script src="__STATIC__/js/aui-dialog.js"></script>
+		<script>
+			var dialog = new auiDialog();
+			function cancel(id){
+				dialog.alert({
+					title:"取消预约",
+					msg:'取消原因',
+					input:true,
+					buttons:['取消','确定']
+				},function(ret){
+					if(ret.buttonIndex == 2){
+						$.ajax({
+							type: "POST",
+							url: "{:url('timetable/cancel')}",
+							data: {
+								id: id,
+								reason:ret.text
+							},
+							success: function(result) {
+								if(result.data == 1) {
+									thereload();
+								} else {
+									alert('发生错误');
+								}
+							}
+						});
+					}
+				})
+			}
+			
+			function thereload(){
+				setTimeout(function() {
+					dialog.alert({
+						title: "提示",
+						msg: '取消成功',
+						buttons: ['确认']
+					}, function(ret) {
+						location.reload();
+					})
+				},500);
+			}
+		</script>
+	</body>
+
+</html>

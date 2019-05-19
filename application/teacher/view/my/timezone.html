@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>设置时区</title>
+		<link href="__STATIC__/css/aui.css" rel="stylesheet" />
+		<link href="__STATIC__/css/style.css" rel="stylesheet" />
+		<style>
+			html,
+			body {
+				background-color: #ffffff;
+			}
+			
+			.aui-list .aui-list-item {
+				border-radius: 5px;
+				border: 1px solid #cbcbcb;
+				margin-top: 1rem;
+			}
+		</style>
+		{block name="css"}{/block}
+	</head>
+
+	<body>
+		<header class="aui-bar aui-bar-nav">
+			<a class="aui-pull-left aui-btn" onclick="javascript:history.back(-1);">
+				<span class="aui-iconfont aui-icon-left"></span>
+			</a>
+			<div class="aui-title">设置时区</div>
+		</header>
+		<form class="aui-content-padded aui-margin-b-15" method="post">
+			<ul class="aui-list aui-form-list">
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label">
+							时区
+						</div>
+						<div class="aui-list-item-input">
+							<select name="time_zone">
+								{volist name="TimezoneList" id="vo"}
+								{if condition="$vo.id == $teacher.time_zone"}
+								<option value="{$vo.id}" selected="selected">{$vo.name_cn}</option>
+								{else /}
+								<option value="{$vo.id}">{$vo.name_cn}</option>
+								{/if}
+								{/volist}
+							</select>
+						</div>
+					</div>
+				</li>
+			</ul>
+			<p>
+				<button type="submit" class="aui-btn aui-btn-purple aui-btn-block" style="margin-top: 1rem;">保存</button>
+			</p>
+		</form>
+	</body>
+
+</html>

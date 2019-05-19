@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta content="" name="description" />
+		<meta content="webthemez" name="author" />
+		<title>一对一课程管理系统</title>
+		<!-- Bootstrap Styles-->
+		<link href="__STATIC__/css/bootstrap.css" rel="stylesheet" />
+		<!-- FontAwesome Styles-->
+		<link href="__STATIC__/css/font-awesome.css" rel="stylesheet" />
+		<!-- Morris Chart Styles-->
+		<link href="__STATIC__/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
+		<!-- Custom Styles-->
+		<link href="__STATIC__/css/custom-styles.css" rel="stylesheet" />
+		<!-- page-->
+		<link href="__STATIC__/css/paging.css" rel="stylesheet" />
+		{block name="css"}{/block}
+	</head>
+
+	<body>
+		<div id="wrapper">
+			<nav class="navbar navbar-default top-navbar" role="navigation">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+					<a class="navbar-brand" href="{:url('index/index')}"><strong>一对一课程</strong></a>
+
+					<div id="sideNav" href="">
+						<i class="fa fa-bars icon"></i>
+					</div>
+				</div>
+
+				<ul class="nav navbar-top-links navbar-right">
+					<li class="dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+							<i class="fa fa-user fa-fw"></i> <i class="fa">{$Think.session.account}</i> <i class="fa fa-caret-down"></i>
+						</a>
+						<ul class="dropdown-menu dropdown-user">
+							<li>
+								<a href="{:url('admin/password')}"><i class="fa fa-gear fa-fw"></i> 修改密码</a>
+							</li>
+							<li class="divider"></li>
+							<li>
+								<a href="{:url('login/out')}"><i class="fa fa-sign-out fa-fw"></i> 退出登录</a>
+							</li>
+						</ul>
+						<!-- /.dropdown-user -->
+					</li>
+					<!-- /.dropdown -->
+				</ul>
+			</nav>
+			<!--/. NAV TOP  -->
+			<nav class="navbar-default navbar-side" role="navigation">
+				<div class="sidebar-collapse">
+					<ul class="nav" id="main-menu">
+						{if condition="($Think.session.authentication eq 1) OR ($Think.session.id eq 1)"}
+						<li>
+							<a id="authentication-menu" href="{:url('authentication/index',['state'=>0])}"><i class="fa fa-list"></i> 入驻申请</a>
+						</li>
+						{/if}
+						{if condition="($Think.session.order eq 1) OR ($Think.session.id eq 1)"}
+						<li>
+							<a id="order-menu" href="{:url('order/index')}"><i class="fa fa-list"></i> 预约管理</a>
+						</li>
+						{/if}
+						{if condition="($Think.session.teacher eq 1) OR ($Think.session.id eq 1)"}
+						<li>
+							<a id="teacher-menu" href="{:url('teacher/index')}"><i class="fa fa-list"></i> 老师管理</a>
+						</li>
+						{/if}
+						{if condition="($Think.session.student eq 1) OR ($Think.session.id eq 1)"}
+						<li>
+							<a id="student-menu" href="{:url('student/index')}"><i class="fa fa-list"></i> 学员管理</a>
+						</li>
+						{/if}
+						<li>
+							<a id="curriculum-menu" href="{:url('curriculum/index')}"><i class="fa fa-list"></i> 课程管理</a>
+						</li>
+						{if condition="($Think.session.course eq 1) OR ($Think.session.id eq 1)"}
+						<li>
+							<a id="course-menu" href="{:url('course/index')}"><i class="fa fa-list"></i> 教材管理</a>
+						</li>
+						{/if}
+						{if condition="($Think.session.timezone eq 1) OR ($Think.session.id eq 1)"}
+						<li>
+							<a id="timezone-menu" href="{:url('timezone/index')}"><i class="fa fa-list"></i> 时区管理</a>
+						</li>
+						{/if}
+						<li>
+							<a id="settlement-menu" href="{:url('settlement/index')}"><i class="fa fa-list"></i> 结算管理</a>
+						</li>
+						<li>
+							<a id="recharge-menu" href="{:url('recharge/index')}"><i class="fa fa-list"></i> 充值管理</a>
+						</li>
+						{if condition="$Think.session.id eq 1"}
+						<li>
+							<a id="price-menu" href="{:url('price/index')}"><i class="fa fa-list"></i> 套餐管理</a>
+						</li>
+						{/if}
+						{if condition="$Think.session.id == 1"}
+						<li>
+							<a id="admin-menu" href="{:url('admin/index')}"><i class="fa fa-list"></i> 管理员</a>
+						</li>
+						{/if}
+					</ul>
+
+				</div>
+
+			</nav>
+			<div id="page-wrapper">
+				{block name="body"}{/block}
+			</div>
+		</div>
+		<!-- /. WRAPPER  -->
+		<!-- JS Scripts-->
+		<!-- jQuery Js -->
+		<script src="__STATIC__/js/jquery-1.10.2.js"></script>
+		<!-- Bootstrap Js -->
+		<script src="__STATIC__/js/bootstrap.min.js"></script>
+		<!-- Metis Menu Js -->
+		<script src="__STATIC__/js/jquery.metisMenu.js"></script>
+		<!-- Custom Js -->
+		<script src="__STATIC__/js/custom-scripts.js"></script>
+		<!-- page -->
+		<script src="__STATIC__/js/paging.js"></script>
+		{block name="script"}{/block}
+		<!--去掉按钮或链接点击边框-->
+		<script type="text/javascript">
+			$("a,button,input:submit,input:button").focus(function() {
+				this.blur()
+			});
+		</script>
+		<script>
+			$(function() {
+				//导航选中
+				var url = window.location.href;
+				if(url.indexOf('/admin/admin') != -1) {
+					$('#admin-menu').addClass('active-menu');
+				}else if(url.indexOf('/admin/price/') != -1){
+					$('#price-menu').addClass('active-menu');
+				}else if(url.indexOf('/admin/teacher/') != -1){
+					$('#teacher-menu').addClass('active-menu');
+				}else if(url.indexOf('/admin/teachertag') != -1){
+					$('#teacher-menu').addClass('active-menu');
+				}else if(url.indexOf('/admin/student') != -1){
+					$('#student-menu').addClass('active-menu');
+				}else if(url.indexOf('/admin/timezone') != -1){
+					$('#timezone-menu').addClass('active-menu');
+				}else if(url.indexOf('/admin/course') != -1){
+					$('#course-menu').addClass('active-menu');
+				}else if(url.indexOf('/admin/curriculum') != -1){
+					$('#curriculum-menu').addClass('active-menu');
+				}else if(url.indexOf('/admin/order') != -1){
+					$('#order-menu').addClass('active-menu');
+				}else if(url.indexOf('/admin/settlement') != -1){
+					$('#settlement-menu').addClass('active-menu');
+				}else if(url.indexOf('/admin/recharge') != -1){
+					$('#recharge-menu').addClass('active-menu');
+				}else if(url.indexOf('/admin/authentication') != -1){
+					$('#authentication-menu').addClass('active-menu');
+				}else{
+					$('#index-menu').addClass('active-menu');
+				}
+			});
+		</script>
+	</body>
+
+</html>

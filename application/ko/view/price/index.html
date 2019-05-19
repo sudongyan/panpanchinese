@@ -1,0 +1,487 @@
+{extend name="base:common" /} {block name="css"}
+<style>
+   @font-face {
+  		font-family: 'JejuGothic';
+  		font-style: normal;
+ 		font-weight: 400;
+  		src: url(//fonts.gstatic.com/ea/jejugothic/v3/JejuGothic-Regular.eot);
+  		src: url(//fonts.gstatic.com/ea/jejugothic/v3/JejuGothic-Regular.eot?#iefix) format('embedded-opentype'),
+       		url(//fonts.gstatic.com/ea/jejugothic/v3/JejuGothic-Regular.woff2) format('woff2'),
+       		url(//fonts.gstatic.com/ea/jejugothic/v3/JejuGothic-Regular.woff) format('woff'),
+       		url(//fonts.gstatic.com/ea/jejugothic/v3/JejuGothic-Regular.ttf) format('truetype');
+}
+	.JejuGothic { 
+  		font-family: JejuGothic;
+	}
+	@media (max-width:767px) {
+	html,
+	body {
+		background-color: #ffffff;
+	}
+	#bg1{
+		padding: 0px;
+		margin: 0px;
+		border: 0px;
+		width: 100%;
+	}
+	#bg2{
+		padding: 0px;
+		margin: 0px;
+		border: 0px;
+		width: 100%;
+	}
+	
+	}
+	
+	.classlist:focus {
+		border-radius:0px;
+		border:2px solid #9981b4;
+	}
+	
+	.price img {
+		opacity: 1;
+		filter(alpha=100)
+	}
+	
+	.price img:hover {
+		opacity: 0.8;
+		filter(alpha=80)
+	}
+	
+	.help ul li {
+		margin-top: 15px;
+	}
+</style>
+{/block} {block name="body"}
+<div class="container">
+	<div class="panel panel-default" id="bg1">
+				<div class="panel-body" id="bg2">
+<div class="visible-xs-block visible-sm-block">
+	<div style="margin-top: 40px;width: 100%;">
+		<img src="__STATIC__/img/price2.png" style="width: 100%;" />
+	</div>
+</div>
+	<div class="visible-lg-block visible-md-block" style="padding: 50px;">
+	<h4 style="text-align: center;"><span style="font-size: 60px; color: rgb(232, 63, 82);" class="JejuGothic">가성비 최강! 비교 불가!</span></h4>
+	<p style="text-align: center;"><span style="font-size: 24px; color: rgb(28, 62, 90);" class="JejuGothic">가격 거품 제거로, 기존 전화중국어의 1/2 비용으로 제공합니다.</span></p>
+	<div class="center-block" style="width:40px;">
+		<hr style="border-top-width:1px; border-color:#373737;" />
+	</div>
+	<h4 style="margin-top:-10px;  text-align: center;"><span style="font-size: 45px; color: rgb(55, 55, 55);" class="JejuGothic">&nbsp;일대일 중국어 최저가 기회</span></h4>
+	<p style="margin-top: 10px; text-align: center;"><span style="font-size: 24px; color: rgb(145, 145, 145);" class="JejuGothic">&nbsp; 검증된 튜터, 실전 회화 교재, 자유 수업시간, 맞춤 수업</span></p>
+	<br />
+	<img src="__STATIC__/img/price.png" style="width: 100%;" />
+	</div>
+	<h1 class="text-center visible-lg-block visible-md-block JejuGothic" style="margin-top: 70px;">{$Think.lang.price_1}</h1>
+	<div class="row" style="padding-top: 50px;">
+		<div class="col-md-6">
+			<div style="width: 100%;">
+			<h3 class="w100 text-center JejuGothic" style="margin-bottom: 40px;float: right;">{$Think.lang.price_2}</h3>
+			<div class="w100 row center-block" style="width: 60%;float: right;">
+				<div class="col-xs-4"><img src="__STATIC__/img/30fen.png" class="img-responsive" style="padding: 10px;"></div>
+				<div class="col-xs-8">
+					<select class="form-control classlist" style="height: 80px;border-radius:0px;font-size:18px;font-family: JejuGothic;color:#6f568b;">
+						<option class="JejuGothic"> 1{$Think.lang.my_index_9} 30{$Think.lang.my_index_6}</option>
+					</select>
+				</div>
+			</div>
+			<div class="w100 row center-block" style="margin-top: 20px;width: 60%;float: right;">
+				<div class="col-xs-4"><img src="__STATIC__/img/cishu.png" class="img-responsive" style="padding: 10px;"></div>
+				<div class="col-xs-8">
+					<select id="classlist" class="form-control classlist" style="height: 80px;border-radius:0px;font-size:18px;font-family: JejuGothic;color:#6f568b;" onchange="theprice(this.value)">
+						{volist name="classlist" id="vo"}
+						<option value="{$vo.period}" class="JejuGothic"> {$Think.lang.week_1_l} {$vo.period}{$Think.lang.my_index_9}</option>
+						{/volist}
+					</select>
+				</div>
+			</div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="visible-xs-block visible-sm-block" style="margin-top: 350px;"></div>
+			<h3 class="text-center w100 JejuGothic" style="margin-bottom: 40px;">
+				{$Think.lang.price_3}
+				<div class="btn-group">
+				<button type="button" class="btn btn-danger btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    				<font id="currency">KRW</font> <span class="caret"></span>
+  				</button>
+    				<ul class="dropdown-menu" style="min-width: 70px;">
+    				<li><a onclick="currency(0)">KRW</a></li>
+    				<li role="separator" class="divider"></li>
+    				<li><a onclick="currency(1)">CNY</a></li>
+    				<li role="separator" class="divider"></li>
+    				<li><a onclick="currency(2)">USD</a></li>
+    				</ul>
+    				</div>
+			</h3>
+			<div id="pricelist">
+			</div>
+		</div>
+	</div>
+	<div class="visible-lg-block visible-md-block" style="font-family: JejuGothic;">
+	<h2 class="text-center" style="margin-top: 70px;" style="font-family: JejuGothic;">{$Think.lang.price_4}</h2>
+	<h4 class="text-center" style="color: #656565;" style="font-family: JejuGothic;">1{$Think.lang.my_index_9} 30{$Think.lang.my_index_6} | {$Think.lang.week_1_l} <font id="monthtext">100</font>{$Think.lang.my_index_9}({$Think.lang.price_5}<font id="allclasstext">100</font>{$Think.lang.my_index_9}) | <font id="allmontext">100</font>{$Think.lang.price_6}</h4>
+	<div class="center-block" style="margin-top: 80px;width: 70%;">
+    		<h3>{$Think.lang.price_7}</h3>
+    		<h3 id="moneytext" class="pull-right" style="margin-top: -30px;"></h3>
+    	</div>
+	<div class="center-block" style="width: 70%;">
+    		<h3>{$Think.lang.price_8}</h3>
+    		<h3 id="dmoneytext" class="pull-right" style="margin-top: -30px;color: red;"></h3>
+    	</div>
+    	<hr style="background-color: #000000;width: 70%;border: 0;border-bottom: 2px solid black;" />
+	<div class="center-block" style="width: 70%;">
+    		<h2>{$Think.lang.price_9}</h2>
+    		<h1 id="allmoneytext" class="pull-right" style="margin-top: -45px;color: #46246c;"></h1>
+    	</div>
+	{if $Think.session.ko_id != null }
+	<form id="postpay" class="form-horizontal" method="get" action="{:url('pay/order')}" onsubmit="return validate(this)">
+		<input id="price_id" name="price_id" type="hidden" />
+		<input id="paytype" name="type" value="0" type="hidden" />
+		<button type="submit" class="btn btn-danger btn-lg center-block" style="margin-top: 70px;width: 250px;height:60px;background-color: #d22f0e;" style="font-family: JejuGothic;">{$Think.lang.price_10} <span class="glyphicon glyphicon-arrow-right" aria-hidden="true" style="margin-left: 20px;"></span></button>
+	</form>
+	{else /}
+	<button type="button" onclick="openlogin()" class="btn btn-danger btn-lg center-block" style="margin-top: 70px;width: 250px;height:60px;background-color: #d22f0e;" style="font-family: JejuGothic;">{$Think.lang.price_10} <span class="glyphicon glyphicon-arrow-right" aria-hidden="true" style="margin-left: 20px;"></span></button> 
+	{/if}
+	</div>
+	<div class="visible-xs-block visible-sm-block JejuGothic" style="margin-bottom: 30px;">
+	<h2 class="text-center JejuGothic" style="margin-top: 70px;">{$Think.lang.price_4}</h2>
+	<h4 class="text-center JejuGothic" style="color: #656565;">1{$Think.lang.my_index_9} 30{$Think.lang.my_index_6} | {$Think.lang.week_1_l} <font id="monthtext2">100</font>{$Think.lang.my_index_9}({$Think.lang.my_index_9}<font id="allclasstext2">100</font>{$Think.lang.my_index_9}) | <font id="allmontext2">100</font>{$Think.lang.price_6}</h4>
+	<div class="center-block" style="margin-top: 80px;">
+    		<h4>{$Think.lang.price_7}</h4>
+    		<h3 id="moneytext2" class="pull-right" style="margin-top: -30px;"></h3>
+    	</div>
+	<div class="center-block">
+    		<h4>{$Think.lang.price_8}</h4>
+    		<h3 id="dmoneytext2" class="pull-right" style="margin-top: -30px;color: red;"></h3>
+    	</div>
+    	<hr style="background-color: #000000;border: 0;border-bottom: 2px solid black;" />
+	<div class="center-block">
+    		<h4>{$Think.lang.price_9}</h4>
+    		<h2 id="allmoneytext2" class="pull-right" style="margin-top: -42px;color: #46246c;"></h2>
+    	</div>
+	{if $Think.session.ko_id != null }
+	<button type="button" id="paybutton" onclick="document.getElementById('postpay').submit();" class="btn btn-danger btn-lg center-block" style="margin-top: 70px;width: 250px;height:60px;background-color: #a80000;font-size: 24px;" style="font-family: JejuGothic;">{$Think.lang.price_10} <span class="glyphicon glyphicon-arrow-right" aria-hidden="true" style="margin-left: 20px;"></span></button>
+	{else /}
+	<button type="button" id="paybutton2" onclick="openlogin()" class="btn btn-danger btn-lg center-block" style="margin-top: 70px;width: 250px;height:60px;background-color: #a80000;font-size: 24px;" style="font-family: JejuGothic;">{$Think.lang.price_10} <span class="glyphicon glyphicon-arrow-right" aria-hidden="true" style="margin-left: 20px;"></span></button> 
+	{/if}
+</div>
+	<div class="row" style="padding-top: 50px;">
+		<div class="col-md-12">
+			<h3 class="w100 text-center JejuGothic" style="margin-bottom: 40px;float: right;">{$Think.lang.price_11}</h3>
+			<div id="type-0" class="w100 radio center-block thetype" style="height: 80px;width:60%;border:2px solid #cecece;line-height: 75px;border-radius:5px;margin-bottom: 20px;float: right;">
+				<label style="width: 100%;">
+					<input type="radio" onchange="clicktype(0)" style="margin-top: 30px;margin-left: 5px;" name="type" value="0">
+					<h4 style="margin-left: 25px;margin-top: 25px;" class="JejuGothic">{$Think.lang.price_12}</h4>
+				</label>
+			</div>
+			<div id="type-1" class="w100 radio center-block thetype" style="height: 80px;width:60%;border:2px solid #cecece;line-height: 75px;border-radius:5px;margin-bottom: 20px;float: right;">
+				<label style="width: 100%;">
+					<input type="radio" onchange="clicktype(1)" style="margin-top: 30px;margin-left: 5px;" name="type" value="1">
+					<h4 style="margin-left: 25px;margin-top: 25px;" class="JejuGothic">{$Think.lang.price_13}</h4>
+				</label>
+			</div>
+			<div id="type-2" class="w100 radio center-block thetype" style="height: 80px;width:60%;border:2px solid #cecece;line-height: 75px;border-radius:5px;margin-bottom: 20px;float: right;">
+				<label style="width: 100%;">
+					<input type="radio" onchange="clicktype(2)" style="margin-top: 30px;margin-left: 5px;" name="type" value="2">
+					<h4 style="margin-left: 25px;margin-top: 25px;" class="JejuGothic">{$Think.lang.price_14}</h4>
+				</label>
+			</div>
+			<div id="type-3" class="w100 radio center-block thetype" style="height: 80px;width:60%;border:2px solid #cecece;line-height: 75px;border-radius:5px;margin-bottom: 20px;float: right;">
+				<label style="width: 100%;">
+					<input type="radio" onchange="clicktype(3)" style="margin-top: 30px;margin-left: 5px;" name="type" value="3" checked>
+					<h4 style="margin-left: 25px;margin-top: 25px;" class="JejuGothic">{$Think.lang.price_15}</h4>
+				</label>
+			</div>
+		</div>
+	</div>
+			<div class="panel panel-default w70 zz" id="typeinfo" style="display: none;">
+				<div class="panel-heading">
+					<h3 class="panel-title" style="font-family: JejuGothic;">주문 요청<br><h6 style="font-family: JejuGothic;">아래 계좌정보로 입금해주시면 결제완료 처리가 됩니다.</h6></h3>
+				</div>
+				<div class="panel-body" style="font-family: JejuGothic;" >
+					<p style="font-family: JejuGothic;">수강권은 업무시간 중 입금하시면 1시간 이내에 등록됩니다 업무 종료 후 입금시 최대 24시간까지 걸릴 수 있습니다.</p>
+					<br />
+					<strong>
+					<ul class="list-group">
+  						<li class="list-group-item" style="font-family: JejuGothic;color: #a4a4a4;">계좌정보</li>
+  						<li class="list-group-item" style="font-family: JejuGothic;">기업은행</li>
+  						<li class="list-group-item" style="font-family: JejuGothic;">93202851904011</li>
+  						<li class="list-group-item" style="font-family: JejuGothic;">판판차이니즈</li>
+					</ul>
+    					</strong>
+					<form id="zzform" class="form-horizontal" method="post" action="{:url('pay/index')}">
+						<input id="typeinfo_price_id" name="price_id" type="hidden" />
+						<input name="type" value="1" type="hidden" />
+						<div class="form-group">
+							<label class="col-sm-4 control-label" style="font-family: JejuGothic;">결제금액</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" id="typeinfo-money" disabled>
+							</div>
+						</div>
+						<div class="form-group" style="display: none;">
+							<label class="col-sm-4 control-label" style="font-family: JejuGothic;">입금자 정보</label>
+							<div class="col-sm-8">
+								<input type="text" name="payer_info" class="form-control">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label" style="font-family: JejuGothic;">입금자 성명</label>
+							<div class="col-sm-8">
+								<input type="text" id="payer_name" name="payer_name" class="form-control" required="required">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label"></label>
+							<div class="col-sm-8">
+								{if $Think.session.ko_id != null }
+								<button type="button" onclick="zzform()" class="btn btn-danger center-block" style="width: 150px;background-color: #a80000;" style="font-family: JejuGothic;">{$Think.lang.price_10}</button>
+								{else /}
+								<button type="button" onclick="openlogin()" class="btn btn-danger center-block" style="width: 150px;background-color: #a80000;" style="font-family: JejuGothic;">{$Think.lang.price_10}</button>
+								{/if}
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+<div class="visible-xs-block visible-sm-block JejuGothic" style="margin-bottom: 30px;">
+	<div class="panel panel-default" style="background-color: #dadada;margin-top: 80px;">
+		<div class="panel-body help">
+			<h4 style="font-family: JejuGothic;">{$Think.lang.price_17}</h4>
+			<h5 style="margin-left: -25px;">
+			<ul>
+				<li style="font-family: JejuGothic;">{$Think.lang.price_18}(<a style="word-wrap:break-word;" style="font-family: JejuGothic;" href="http://panpanchinese.com/order">panpanchinese.com/order</a>){$Think.lang.price_19}</li>
+				<li style="font-family: JejuGothic;">{$Think.lang.price_20}</li>
+				<li style="font-family: JejuGothic;">{$Think.lang.price_21}</li>
+				<li style="font-family: JejuGothic;">{$Think.lang.price_22}</li>
+				<li style="font-family: JejuGothic;">{$Think.lang.price_23}</li>
+				<li style="font-family: JejuGothic;">{$Think.lang.price_24}</li>
+				<li style="font-family: JejuGothic;">{$Think.lang.price_25}</li>
+				<li style="font-family: JejuGothic;">({$Think.lang.price_26} : <a style="word-wrap:break-word;" style="font-family: JejuGothic;" href="http://jiaocai.panpanchinese.cn/FAQ/guide.html">http://jiaocai.panpanchinese.cn/FAQ/guide.html</a>)</li>
+				<li style="font-family: JejuGothic;">{$Think.lang.price_27}</li>
+				<li style="font-family: JejuGothic;">{$Think.lang.price_28}</li>
+			</ul>
+			</h5>
+		</div>
+	</div>
+</div>
+</div>
+	</div></div>
+<div class="modal fade" id="zzmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="font-family: JejuGothic;">
+	<div class="modal-dialog" role="document">
+    		<div class="modal-content">
+    			<div class="modal-body">
+    				<h1 class="text-center" style="margin-top: 30px;">주문완료</h1>
+    				<h4 class="text-center" style="margin-top: 30px;">아래의 계좌 정보로 입금해 주시면</h4>
+    				<h4 class="text-center">수강권 등록이 완료됩니다.</h4>
+    				<div class="center-block" style="margin-top: 80px;width: 70%;">
+    					<h4>기업 은행</h4>
+    					<h4 class="pull-right" style="margin-top: -30px;">93202851904011</h4>
+    				</div>
+    				<div class="center-block" style="width: 70%;">
+    					<h4>계좌 명</h4>
+    					<h4 class="pull-right" style="margin-top: -30px;">판판차이니즈</h4>
+    				</div>
+    				<div class="center-block" style="width: 70%;">
+    					<h4>입금 요청 금액</h4>
+    					<h4 id="typeinfo-money-m" class="pull-right" style="margin-top: -30px;">원</h4>
+    				</div>
+				{if $Think.session.ko_id != null }
+    				<button type="button" onclick="$('#zzform').submit()" class="btn btn-danger center-block" style="width:100px;background-color: #757575;border-color:#080808;margin-top: 70px;">{$Think.lang.web_common_18}</button>
+				{else /}
+    				<button type="button" onclick="openlogin()" class="btn btn-danger center-block" style="width:100px;background-color: #757575;border-color:#080808;margin-top: 70px;">{$Think.lang.web_common_18}</button>
+				{/if}
+    				<p  class="text-center" style="margin-top: 10px;color: #757575;">수강권은 업무 시간중 입금하시면 3시간 이내에 등록됩니다.</p>
+    			</div>
+    		</div>
+  	</div>
+</div>
+{/block} {block name="script"}
+
+<script>
+	var windowsW = $(window).width();
+	var thecurrency = 0;
+	var currencyshow = '원';
+	window.onload = function() {
+		var themonth = document.getElementById("classlist").value;
+		theprice(themonth);
+		if(windowsW < 768) {
+			$(".w100").css("width", "100%");
+			$(".w70").css("width", "100%");
+			$(".zz").css("margin-top", "0px");
+		}else{
+			$(".w100").css("width", "60%");
+			$(".w70").css("width", "70%");
+			$(".zz").css("margin-top", "95px");		
+		}
+		{if $Think.cookie.think_var == 'ko-kr'}
+		currency(0);
+		{elseif $Think.cookie.think_var == 'zh-cn' /}
+		currency(1);
+		{else /}
+		currency(2);
+		{/if}
+	}
+
+	function theprice(month) {
+		$.getJSON("{:url('price/month_list')}" + "?month=" + month, function(result) {
+			data = result.data;
+			document.getElementById("pricelist").innerHTML = '';
+			for(var n = 0; n < data.length; n++) {
+				var thestyle = 'border:2px solid #cecece;';
+				var thechecked = '';
+				var discount = (100 - data[n].discount) * 0.01;
+				if(thecurrency == 0){
+					data[n].money = data[n].money;
+					data[n].dmoney = data[n].dmoney;
+					currencyshow = '원';
+				}
+				if(thecurrency == 1){
+					data[n].money = data[n].cn_money;
+					data[n].dmoney = data[n].cn_dmoney;
+					currencyshow = 'CNY';
+				}
+				if(thecurrency == 2){
+					data[n].money = data[n].usd_money;
+					data[n].dmoney = data[n].usd_dmoney;
+					currencyshow = 'USD';
+				}
+				var monthmoney = 0;
+				var allmoney = 0;
+				if(thecurrency == 0){
+					monthmoney = Math.ceil((data[n].money - data[n].dmoney) / data[n].mon);
+					allmoney = Math.ceil(data[n].money - data[n].dmoney);
+				}else{
+					monthmoney = (((data[n].money - data[n].dmoney) / data[n].mon)).toFixed(2);
+					allmoney = ((data[n].money * 100 - data[n].dmoney * 100) / 100).toFixed(2);
+					
+				}
+				if(n == 0) {
+					$('#price_id').val(data[n].id);
+					$('#typeinfo_price_id').val(data[n].id);
+					thestyle = 'border:2px solid #9981b4;';
+					thechecked = 'checked';
+					document.getElementById("typeinfo-money").value = addCommas(allmoney) + currencyshow;
+					document.getElementById("typeinfo-money-m").innerHTML = addCommas(allmoney) + currencyshow;
+					document.getElementById("moneytext").innerHTML = addCommas(data[n].money) + currencyshow;
+					document.getElementById("dmoneytext").innerHTML = '-' + addCommas(data[n].dmoney) + currencyshow;
+					document.getElementById("allmoneytext").innerHTML = addCommas(allmoney) + currencyshow;
+					document.getElementById("moneytext2").innerHTML = addCommas(data[n].money) + currencyshow;
+					document.getElementById("dmoneytext2").innerHTML = '<small style="color:#888888;">' + data[n].discount + '%{$Think.lang.price_29}</small> -' + addCommas(data[n].dmoney) + currencyshow;
+					document.getElementById("allmoneytext2").innerHTML = addCommas(allmoney) + currencyshow;
+					document.getElementById("allmontext").innerHTML = data[n].mon;
+					document.getElementById("allmontext2").innerHTML = data[n].mon;
+					document.getElementById("allclasstext").innerHTML = data[n].class;
+					document.getElementById("allclasstext2").innerHTML = data[n].class;
+				}
+				var w100;
+				if(windowsW >= 768) {
+					w100 = 'width:60%;';
+				}else{
+					w100 = 'width:100%;';
+				}
+				document.getElementById("pricelist").innerHTML +=
+					'<div style="padding-left: 20px;margin-top: 25px;">' +
+					'<div id="price-' + data[n].id + '" class="w100 radio priceclass" style="height: 80px;' + w100 + thestyle + 'line-height: 75px;border-radius:5px;margin-bottom: 20px;padding-top:50px;padding-bottom:50px;"><div style="left: -35px;top: -35px;position:absolute;"><img src="__STATIC__/img/l.png" style="width:70px;padding: 10px;" /><h5 style="color:#ffffff;left: 22px;top: 12px;position:absolute;">' + data[n].discount + '%</h5></div><label style="width: 100%;"><div class="pull-left">' +
+					'<input type="radio" onchange="clickprice(' + monthmoney + ',' + allmoney + ',' + data[n].money + ',' + data[n].dmoney + ',' + data[n].class + ',' + data[n].mon + ',' + data[n].discount + ')" style="margin-top: -25px;margin-left: 0px;" name="price" value="' + data[n].id + '" ' + thechecked + '>' +
+					'<h4  class="JejuGothic" style="margin-left: 25px;margin-top: -40px;">' + data[n].mon + '{$Think.lang.price_6}<br/><h6 style="margin-left: 25px;color: #ababab;" class="JejuGothic">({$Think.lang.price_5} ' + data[n].class + '{$Think.lang.my_index_9})</h6></h4>' +
+					'</div><div class="pull-right" style="margin-top: -52px;">' +
+					'<h2 style="margin-right: 25px;color:#6f568b;margin-top:0px"  class="JejuGothic">' + addCommas(monthmoney) + currencyshow +'<font style="color: #ababab;font-size:14px;font-weight: normal;font-family: JejuGothic;">/{$Think.lang.week_1_l}</font></h2>' +
+					'<h6 style="color: #ababab;margin-right: 25px;" class="JejuGothic text-right">({$Think.lang.price_5} ' + addCommas(allmoney) + currencyshow + ')</h6></div></label></div></div>';
+			}
+		});
+		document.getElementById("monthtext").innerHTML = month;
+		document.getElementById("monthtext2").innerHTML = month;
+	}
+
+	function clickprice(monthmoney, allmoney,money,dmoney,theclass,mon,discount) {
+		$('.priceclass').css('border', '2px solid #cecece');
+		var theprice = $("input[name='price']:checked").val();
+		$('#price_id').val(theprice);
+		$('#typeinfo_price_id').val(theprice);
+		$('#price-' + theprice).css('border', '2px solid #9981b4');
+		document.getElementById("typeinfo-money").value = addCommas(allmoney) + currencyshow;
+		document.getElementById("typeinfo-money-m").innerHTML = addCommas(allmoney) + currencyshow;
+		document.getElementById("moneytext").innerHTML = addCommas(money) + currencyshow;
+		document.getElementById("dmoneytext").innerHTML = '-' + addCommas(dmoney) + currencyshow;
+		document.getElementById("allmoneytext").innerHTML = addCommas(allmoney) + currencyshow;
+		document.getElementById("moneytext2").innerHTML = addCommas(money) + currencyshow;
+		document.getElementById("dmoneytext2").innerHTML = '<small style="color:#888888;">' + discount + '%{$Think.lang.price_29}</small> -' + addCommas(dmoney) + currencyshow;
+		document.getElementById("allmoneytext2").innerHTML = addCommas(allmoney) + currencyshow;
+		document.getElementById("allclasstext").innerHTML = theclass;
+		document.getElementById("allclasstext2").innerHTML = theclass;
+		document.getElementById("allmontext").innerHTML = mon;
+		document.getElementById("allmontext2").innerHTML = mon;
+	}
+
+	function clicktype(thetype) {
+		$('.thetype').css('border', '2px solid #cecece');
+		$("input:radio[name=type][value=" + thetype + "]").attr("checked",true); 
+		$('#type-' + thetype).css('border', '2px solid #9981b4');
+		$('#paytype').val(thetype);
+			document.getElementById("typeinfo").style.display = 'none';
+			$('#paybutton').show();
+			$('#paybutton2').show();
+	}
+
+	function openlogin() {
+		location.href='{:url('my/login')}';
+	}
+
+	function validate(data) {
+		var thetype = $("input[name='type']:checked").val();
+		if(thetype != 0 && thetype != 1 && thetype != 2 && thetype != 3) {
+			alert('{$Think.lang.price_16}');
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	function addCommas(nStr) {
+		nStr += '';
+		x = nStr.split('.');
+		x1 = x[0];
+		x2 = x.length > 1 ? '.' + x[1] : '';
+		var rgx = /(\d+)(\d{3})/;
+		while(rgx.test(x1)) {
+			x1 = x1.replace(rgx, '$1' + ',' + '$2');
+		}
+		return x1 + x2;
+	}
+	
+	function zzform(){
+		$('#zzmodal').modal('show')
+	}
+	
+	function currency(currency){
+		if(currency == 0){
+			thecurrency = 0;
+			document.getElementById("currency").innerHTML = 'KRW';
+			clicktype(3);
+			document.getElementById("type-0").style.display = 'none';
+			document.getElementById("type-1").style.display = 'block';
+			document.getElementById("type-2").style.display = 'none';
+			document.getElementById("type-3").style.display = 'block';
+		}else if(currency == 1){
+			document.getElementById("currency").innerHTML = 'CNY';
+			thecurrency = 1;
+			clicktype(2);
+			document.getElementById("type-0").style.display = 'none';
+			document.getElementById("type-1").style.display = 'none';
+			document.getElementById("type-2").style.display = 'block';
+			document.getElementById("type-3").style.display = 'none';
+		}else{
+			document.getElementById("currency").innerHTML = 'USD';
+			thecurrency = 2;
+			clicktype(0);
+			document.getElementById("type-0").style.display = 'block';
+			document.getElementById("type-1").style.display = 'none';
+			document.getElementById("type-2").style.display = 'none';
+			document.getElementById("type-3").style.display = 'none';
+		}
+		
+		theprice(document.getElementById("classlist").value);
+	}
+</script>
+{/block}

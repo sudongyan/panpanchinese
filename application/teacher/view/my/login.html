@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>账号登录</title>
+		<link href="__STATIC__/css/aui.css" rel="stylesheet" />
+		<link href="__STATIC__/css/style.css" rel="stylesheet" />
+		<style>
+			html,
+			body {
+				background-color: #ffffff;
+			}
+		</style>
+		{block name="css"}{/block}
+	</head>
+
+	<body>
+		<form class="aui-content-padded aui-margin-b-15" method="post">
+			<div align="center">
+				<img src="__STATIC__/img/logo.jpeg" style="width: 55%;" />
+			</div>
+			<ul class="aui-list aui-form-list">
+				<li class="aui-list-item" style="border:1px solid #cbcbcb;border-radius:5px;">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-input">
+							<input type="text" name="account" placeholder="登录账号" required="required">
+						</div>
+					</div>
+				</li>
+				<li class="aui-list-item" style="border:1px solid #cbcbcb;margin-top: 1rem;border-radius:5px;">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-input">
+							<input type="password" name="password" placeholder="登录密码" required="required">
+						</div>
+					</div>
+				</li>
+			</ul>
+			<p>
+				<button type="submit" class="aui-btn aui-btn-purple aui-btn-block" style="margin-top: 2rem;">登录</button>
+			</p>
+			<div style="text-align: center;margin-top: 2rem;">
+				<a href="{:url('my/enter')}" class="aui-text-purple">老师入驻申请</a>
+			</div>
+		</form>
+	</body>
+
+</html>

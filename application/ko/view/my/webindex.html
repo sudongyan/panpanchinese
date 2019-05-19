@@ -1,0 +1,285 @@
+{extend name="base:common" /} {block name="css"}
+<style>/*dialog*/
+.aui-dialog {
+	width: 33.5rem;
+	text-align: center;
+	position: fixed;
+	z-index: 999;
+	left: 50%;
+	margin-left: -16.75rem;
+	margin-top: 0;
+	top: 45%;
+	border-radius: 0.3rem;
+	border: 2px solid #dddddd;
+	opacity: 0;
+	background-color: #ffffff;
+	-webkit-transform: translate3d(0, 0, 0) scale(1.2);
+          	transform: translate3d(0, 0, 0) scale(1.2);
+ 	-webkit-transition-property: -webkit-transform, opacity;
+          	transition-property: transform, opacity;
+    /*display: none;*/
+}
+.aui-dialog-header {
+    padding: 0.5rem 0.75rem 0 0.75rem;
+    text-align: center;
+    font-size: 1.5em;
+    color: #212121;
+}
+.aui-dialog-body {
+    padding: 0.75rem;
+    overflow: hidden;
+    font-size: 1.1em;
+    color: #757575;
+}
+.aui-dialog-body input {
+	border: 1px solid #dddddd;
+	height: 1.8rem;
+	line-height: 1.8rem;
+	min-height: 1.8rem;
+	padding-left: 0.25rem;
+	padding-right: 0.25rem;
+}
+.aui-dialog-footer {
+    position: relative;
+    font-size: 1em;
+    border-top: 1px solid #dddddd;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: center;
+	-webkit-justify-content: center;
+			justify-content: center;
+}
+.aui-dialog-btn {
+	position: relative;
+	display: block;
+    width: 100%;
+	padding: 0 0.25rem;
+	height: 3rem;
+	font-size: 1.5rem;
+	line-height: 3rem;
+	text-align: center;
+	color: #0894ec;
+	border-right: 1px solid #dddddd;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	-webkit-box-sizing: border-box;
+			box-sizing: border-box;
+	-webkit-box-flex: 1;
+			box-flex: 1;
+}
+.aui-dialog-btn:last-child {
+	border-right: none;
+}
+.aui-dialog.aui-dialog-in {
+	opacity: 1;
+	-webkit-transition-duration: 300ms;
+	      transition-duration: 300ms;
+	-webkit-transform: translate3d(0, 0, 0) scale(1);
+	      transform: translate3d(0, 0, 0) scale(1);
+}
+.aui-dialog.aui-dialog-out {
+	opacity: 0;
+	-webkit-transition-duration: 300ms;
+	      transition-duration: 300ms;
+	-webkit-transform: translate3d(0, 0, 0) scale(0.815);
+	      transform: translate3d(0, 0, 0) scale(0.815);
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5) {
+    .aui-dialog-footer {
+		border: none;
+        background-size: 100% 1px;
+		background-repeat: no-repeat;
+		background-position: top;
+        background-image: linear-gradient(0,#dddddd,#dddddd 50%,transparent 50%);
+        background-image: -webkit-linear-gradient(90deg,#dddddd,#dddddd 50%,transparent 50%);
+	}
+	.aui-dialog-btn {
+		border: none;
+        background-image: -webkit-linear-gradient(0deg, #dddddd, #dddddd 50%, transparent 50%);
+        background-image: linear-gradient(270deg, #dddddd, #dddddd 50%, transparent 50%);
+        background-size: 1px 100%;
+        background-repeat: no-repeat;
+        background-position: right;
+	}
+	.aui-dialog-btn:last-child {
+		border: none;
+        background-size: 0 100%;
+	}
+	.aui-dialog-body input {
+        border: none;
+        background-image: -webkit-linear-gradient(270deg, #dddddd, #dddddd 50%, transparent 50%), -webkit-linear-gradient(180deg, #dddddd, #dddddd 50%, transparent 50%), -webkit-linear-gradient(90deg, #dddddd, #dddddd 50%, transparent 50%), -webkit-linear-gradient(0, #dddddd, #dddddd 50%, transparent 50%);
+        background-image: linear-gradient(180deg, #dddddd, #dddddd 50%, transparent 50%), linear-gradient(270deg, #dddddd, #dddddd 50%, transparent 50%), linear-gradient(0deg, #dddddd, #dddddd 50%, transparent 50%), linear-gradient(90deg, #dddddd, #dddddd 50%, transparent 50%);
+        background-size: 100% 1px, 1px 100%, 100% 1px, 1px 100%;
+        background-repeat: no-repeat;
+        background-position: top, right top, bottom, left top;
+    }
+}
+</style>
+{/block} {block name="body"}
+<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<div class="panel panel-default">
+				<div class="media" style="background-color: #ebebeb;">
+					<div class="media-left">
+						<img class="media-object" src="{$student.avatar}" style="width: 100px;height: 100px;">
+					</div>
+					<div class="media-body" style="padding: 10px;">
+						<h3 class="media-heading">
+								{$student.nickName}
+							</h3>
+						<h5>ID: {$student.account}</h5>
+					</div>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-6" style="border-right-style:solid;border-color: #ebebeb;border-width: 1px;text-align: center;">
+							<img src="__STATIC__/img/logo.jpeg" style="width: 80%;">
+						</div>
+						<div class="col-md-6" style="text-align: center;">
+							<b>
+								<h4>{$Think.lang.my_index_5}</h4>
+							<span><font style="color: #9981b4;font-size: 45px;">{$student.alltime}</font> {$Think.lang.my_index_6}</span>
+							</b>
+						</div>
+					</div>
+					<hr />
+					<button type="button" class="btn btn-purple btn-lg btn-block" onclick="location.href='{:url('teacher/index')}'">{$Think.lang.my_index_14}</button>
+				</div>
+			</div>
+			<div class="panel panel-default" onclick="location.href='{:url('my/edit')}'" style="cursor:pointer">
+				<div class="panel-body">
+					<span class="glyphicon glyphicon-user" aria-hidden="true" style="color: #9981b4;"></span> {$Think.lang.my_index_15}
+				</div>
+			</div>
+			<div class="panel panel-default" onclick="location.href='{:url('my/order')}'" style="cursor:pointer">
+				<div class="panel-body">
+					<span class="glyphicon glyphicon-calendar" aria-hidden="true" style="color: #9981b4;"></span> {$Think.lang.my_index_16} 
+				</div>
+			</div>
+			<div class="panel panel-default" onclick="location.href='{:url('my/price_order')}'" style="cursor:pointer">
+				<div class="panel-body">
+					<span class="glyphicon glyphicon-credit-card" aria-hidden="true" style="color: #9981b4;"></span> {$Think.lang.my_index_17}
+				</div>
+			</div>
+			<div class="panel panel-default" onclick="location.href='http://jiaocai.panpanchinese.cn/FAQ/guide.html'" style="cursor:pointer">
+				<div class="panel-body">
+					<span class="glyphicon glyphicon-question-sign" aria-hidden="true" style="color: #9981b4;"></span> {$Think.lang.my_index_10}
+				</div>
+			</div>
+		</div>
+		<div class="col-md-8">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title" style="text-align: right;">{$Think.lang.my_index_1}</h3>
+				</div>
+				<div class="panel-body">
+					<div class="col-md-3" onclick="location.href='{:url('my/order',['state'=>0])}'" style="border-right-style:solid;border-color: #ebebeb;border-width: 1px;text-align: center;cursor:pointer">
+						<h1>{$order.orderNum0}</h1> {$Think.lang.my_index_2}
+					</div>
+					<div class="col-md-3" onclick="location.href='{:url('my/order',['state'=>3])}'" style="border-right-style:solid;border-color: #ebebeb;border-width: 1px;text-align: center;cursor:pointer">
+						<h1>{$order.orderNum3}</h1> {$Think.lang.my_index_3}
+					</div>
+					<div class="col-md-3" onclick="location.href='{:url('my/order',['state'=>1])}'" style="border-right-style:solid;border-color: #ebebeb;border-width: 1px;text-align: center;cursor:pointer">
+						<h1>{$order.orderNum1}</h1> {$Think.lang.my_index_4}
+					</div>
+					<div class="col-md-3" onclick="location.href='{:url('my/price_order')}'" style="text-align: center;cursor:pointer">
+						<h1>{$student.balance}</h1> {$Think.lang.my_index_18}
+					</div>
+				</div>
+			</div>
+			{volist name="list" id="vo"}
+			<div class="panel panel-default" style="border-left:7px solid #9981b4;">
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-3" style="text-align: center;">
+							<img src="{$vo.avatar}" style="width: 80%;">
+						</div>
+						<div class="col-md-2">
+							<h4>
+							{switch name="vo.state" } {case value="0"} {$Think.lang.my_index_24} {/case} {case value="3"} {$Think.lang.my_index_3} {/case} {case value="2"} {$Think.lang.my_index_25} {/case} {default /} {$Think.lang.my_index_26} {/switch}
+							</h4>
+							<h3 style="margin-top: 0px;">{$vo.start_hour}</h3>
+							<h5>{$vo.start_week}</h5>
+							<h5>{$vo.start_day}</h5>
+						</div>
+						<div class="col-md-5">
+							<h6>{$Think.lang.my_index_31}：{$vo.course_type}</h6>
+							<h6>{$Think.lang.my_index_32}：{$vo.course}</h6>
+							<h6>{$Think.lang.my_index_33}：Lesson{$vo.class}</h6>
+							<h6>{$Think.lang.my_index_34}：{$vo.course_period}</h6>
+							<h6 style="color: #03A9F4;">{$Think.lang.my_index_35}：{$vo.nickName} （{$vo.wx}）</h6>
+						</div>
+						<div class="col-md-2">
+						{if $vo.state != 2}
+							<button type="button" class="btn btn-purple" onclick="window.open('{$vo.course_period_url}')" style="margin-bottom: 5px;width: 91px;">{$Think.lang.my_index_65}</button>
+						{/if}
+							<button type="button" class="btn btn-purple" onclick="cancel({$vo.id});">{$Think.lang.my_index_28}</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			{/volist}
+		</div>
+	</div>
+</div><div class="modal fade" id="faq" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">{$Think.lang.my_index_44}</h4>
+      </div>
+      <div class="modal-body">
+        <h4>{$Think.lang.my_index_50} <br/><br/><b>{$Think.lang.my_index_51}</b>{$Think.lang.my_index_52}<br />{$Think.lang.my_index_53}</h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.my_index_55}</button>
+        <button type="button" class="btn btn-purple" onclick="location.href='http://jiaocai.panpanchinese.cn/FAQ/guide.html'">{$Think.lang.my_index_54}</button>
+      </div>
+    </div>
+  </div>
+</div>
+{/block} {block name="script"}
+	<!-- Global site tag (gtag.js) - Google Ads: 789908941 -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=AW-789908941"></script>
+	<!-- Event snippet for 판판 전환 conversion page -->
+	<script>
+  		gtag('event', 'conversion', {'send_to': 'AW-789908941/hfF-CPH22I8BEM2b1PgC'});
+	</script>
+<script src="__STATIC__/js/aui-dialog.js"></script>
+<script>
+	var dialog = new auiDialog();
+	var newuser = {$new};
+		$(function() {
+			if(newuser == 1){
+				$('#faq').modal('show');
+			}
+		});
+	function cancel(id) {
+		dialog.alert({
+			title: "{$Think.lang.my_index_57}",
+			msg: '{$Think.lang.my_index_64}',
+			buttons: ['{$Think.lang.my_index_55}', '{$Think.lang.my_index_54}']
+		}, function(ret) {
+			if(ret.buttonIndex == 2) {
+				$.ajax({
+					type: "POST",
+					url: "{:url('timetable/cancel')}",
+					data: {
+						id: id,
+						reason: ''
+					},
+					success: function(result) {
+						if(result.data == 1) {
+							window.location.reload();
+						} else {
+							alert('发生错误');
+						}
+					}
+				});
+			}
+		})
+	}
+</script>{/block}

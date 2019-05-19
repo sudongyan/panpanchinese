@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>{$Think.lang.timetable_1}</title>
+		<link href="__STATIC__/css/aui.css" rel="stylesheet" />
+		<link href="__STATIC__/css/style.css" rel="stylesheet" /> {block name="css"}{/block}
+	</head>
+
+	<body>
+		<div class="aui-tab" id="tab">
+    			<div class="aui-tab-item" onclick="location.href='{:url('timetable/index')}'">{$Think.lang.my_index_2}</div>
+    			<div class="aui-tab-item aui-active">{$Think.lang.my_index_3}</div>
+		</div>
+		<div class="aui-content aui-margin-b-15" id="list">
+			{empty name="list"}
+			<div class="aui-content" align="center" style="margin-top: 4rem;">
+				<img style="width: 40%;" src="__STATIC__/img/panpan.png" />
+				<br />
+				<h3>{$Think.lang.timetable_2}</h3>
+				<h3>{$Think.lang.timetable_3}</h3>
+			</div>
+			{/empty}
+			{volist name="list" id="vo"}
+			<ul class="aui-list aui-media-list aui-margin-b-15 clipboard" data-clipboard-text="{$vo.wx}">
+				<li class="aui-list-item">
+					<div class="aui-info">
+						<div class="aui-info-item">
+							<span>{$vo.start_time}</span>
+						</div>
+						<div class="aui-info-item" style="margin-right: 0.8rem;">
+							{$Think.lang.my_index_3}
+						</div>
+					</div>
+					<div class="aui-hr"></div>
+					<div class="aui-media-list-item-inner">
+						<div class="aui-list-item-inner">
+							<div class="aui-list-item-text">
+								分类：{$vo.course_type}
+							</div>
+							<div class="aui-list-item-text">
+								教材：{$vo.course}，第{$vo.class}课
+							</div>
+							<div class="aui-list-item-text">
+								老师：{$vo.nickName}
+							</div>
+							<div class="aui-list-item-text">
+								微信：{$vo.wx}
+							</div>
+						</div>
+						<div class="aui-list-item-media">
+							<img src="{$vo.avatar}">
+						</div>
+					</div>
+					<div class="aui-hr"></div>
+					<div class="aui-info">
+						<div class="aui-info-item">
+							<div class="aui-btn aui-btn-purple" onclick="location.href='{:url('teacher/info',['tid'=>$vo.tid])}'">{$Think.lang.my_index_27}</div>
+						</div>
+						<div class="aui-info-item" style="margin-right: 0.8rem;">
+							<div class="aui-btn aui-btn-purple" onclick="location.href='{:url('timetable/evaluate_add',['order_id'=>$vo.id])}'">{$Think.lang.my_index_29}</div>
+						</div>
+					</div>
+				</li>
+			</ul>
+			{/volist}
+		</div>
+		<script src="__STATIC__/js/jquery-1.10.2.js"></script>
+		<script src="__STATIC__/js/aui-scroll.js"></script>
+		<script src="__STATIC__/js/clipboard.min.js"></script>
+		<script>
+			new ClipboardJS('.clipboard');
+			var p = 1;
+			var s = 1;
+			var st = {$s};
+			var scroll = new auiScroll({
+				listen: true, //是否监听滚动高度，开启后将实时返回滚动高度
+				distance: 200 //判断到达底部的距离，isToBottom为true
+			}, function(ret) {
+				if(ret.isToBottom == true && s == 1) {
+					p++;
+					$.getJSON("{:url('my/order_list')}" + "?p=" + p + "&state=" + st, function(result) {
+						data = result.data;
+						if(data.length < 20) {
+							s = 0;
+						}
+						for(var n = 0; n < data.length; n++) {
+							document.getElementById("list").innerHTML +=
+								'<ul class="aui-list aui-media-list aui-margin-b-15 clipboard" data-clipboard-text="' + data[n].wx + '"><li class="aui-list-item"><div class="aui-info"><div class="aui-info-item">' +
+								'<span>' + data[n].start_time + '</span>' +
+								'</div><div class="aui-info-item" style="margin-right: 0.8rem;">{$Think.lang.my_index_3}</div></div><div class="aui-hr"></div><div class="aui-media-list-item-inner"><div class="aui-list-item-inner"><div class="aui-list-item-text">' +
+								'教材：' + data[n].course + '，' + data[n].course_type + '，第' + data[n].class + '课' +
+								'</div><div class="aui-list-item-text">' +
+								'学生：' + data[n].nickName +
+								'</div><div class="aui-list-item-text">' +
+								'微信：' + data[n].wx +
+								'</div></div><div class="aui-list-item-media">' +
+								'<img src="' + data[n].avatar + '">' +
+								'</div></div><div class="aui-hr"></div><div class="aui-info"><div class="aui-info-item"><div class="aui-btn aui-btn-purple" onclick="location.href=\'{:url('teacher/info')}?tid='+ data[n].tid +'\'">{$Think.lang.my_index_27}</div></div><div class="aui-info-item" style="margin-right: 0.8rem;"><div class="aui-btn aui-btn-purple" onclick="location.href=\'{:url('timetable/evaluate_add')}?order_id='+ data[n].id +'\'">{$Think.lang.my_index_29}</div></div></div></li></ul>';
+						}
+					});
+				}
+			});
+		</script>		<!-- Global site tag (gtag.js) - Google Ads: 789908941 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-789908941"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-789908941');
+</script>
+<script>
+  gtag('event', 'page_view', {
+    'send_to': 'AW-789908941',
+    'user_id': 'replace with value'
+  });
+</script>
+	</body>
+
+</html>

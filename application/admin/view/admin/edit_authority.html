@@ -1,0 +1,171 @@
+﻿{extend name="Base:common" /} {block name="body"}
+
+<div class="header">
+	<h1 class="page-header">
+		管理员
+    			<small>修改权限</small>
+                       </h1>
+	<ol class="breadcrumb">
+		<li>
+			<a href="{:url('index/index')}">首页</a>
+		</li>
+		<li>
+			<a href="{:url('admin/index')}">管理员</a>
+		</li>
+		<li class="active">修改权限</li>
+	</ol>
+
+</div>
+<div id="page-inner">
+	<div class="row">
+		<form class="col-md-12" method="post">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<div class="card-title">
+						<div class="title">修改权限(ID:{$admin.id})</div>
+					</div>
+				</div>
+				<input type="hidden" name="id" value="{$admin.id}" />
+				<div class="panel-body">
+					<div class="form-horizontal">
+						<div class="form-group">
+							<label class="col-sm-2 control-label">入驻管理</label>
+							<div class="col-sm-4">
+								<select name="authentication" class="form-control">
+									{if condition="$admin.authentication == 1"}
+									<option value="0">无权限</option>
+									<option value="1" selected="selected">管理权限</option>
+									<option value="2">浏览权限</option>
+									{elseif condition="$admin.authentication == 2"  /}
+									<option value="0">无权限</option>
+									<option value="1">管理权限</option>
+									<option value="2" selected="selected">浏览权限</option>
+									{elseif condition="$admin.authentication == 0"  /}
+									<option value="0" selected="selected">无权限</option>
+									<option value="1">管理权限</option>
+									<option value="2">浏览权限</option>
+									{/if}
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="form-horizontal">
+						<div class="form-group">
+							<label class="col-sm-2 control-label">预约管理</label>
+							<div class="col-sm-4">
+								<select name="order" class="form-control">
+									{if condition="$admin.order == 1"}
+									<option value="0">无权限</option>
+									<option value="1" selected="selected">管理权限</option>
+									<option value="2">浏览权限</option>
+									{elseif condition="$admin.order == 2"  /}
+									<option value="0">无权限</option>
+									<option value="1">管理权限</option>
+									<option value="2" selected="selected">浏览权限</option>
+									{elseif condition="$admin.order == 0"  /}
+									<option value="0" selected="selected">无权限</option>
+									<option value="1">管理权限</option>
+									<option value="2">浏览权限</option>
+									{/if}
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="form-horizontal">
+						<div class="form-group">
+							<label class="col-sm-2 control-label">老师管理</label>
+							<div class="col-sm-4">
+								<select name="teacher" class="form-control">
+									{if condition="$admin.teacher == 1"}
+									<option value="0">无权限</option>
+									<option value="1" selected="selected">管理权限</option>
+									<option value="2">浏览权限</option>
+									{elseif condition="$admin.teacher == 2"  /}
+									<option value="0">无权限</option>
+									<option value="1">管理权限</option>
+									<option value="2" selected="selected">浏览权限</option>
+									{elseif condition="$admin.teacher == 0"  /}
+									<option value="0" selected="selected">无权限</option>
+									<option value="1">管理权限</option>
+									<option value="2">浏览权限</option>
+									{/if}
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="form-horizontal">
+						<div class="form-group">
+							<label class="col-sm-2 control-label">学生管理</label>
+							<div class="col-sm-4">
+								<select name="student" class="form-control">
+									{if condition="$admin.student == 1"}
+									<option value="0">无权限</option>
+									<option value="1" selected="selected">管理权限</option>
+									<option value="2">浏览权限</option>
+									{elseif condition="$admin.student == 2"  /}
+									<option value="0">无权限</option>
+									<option value="1">管理权限</option>
+									<option value="2" selected="selected">浏览权限</option>
+									{elseif condition="$admin.student == 0"  /}
+									<option value="0" selected="selected">无权限</option>
+									<option value="1">管理权限</option>
+									<option value="2">浏览权限</option>
+									{/if}
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="form-horizontal">
+						<div class="form-group">
+							<label class="col-sm-2 control-label">教材管理</label>
+							<div class="col-sm-4">
+								<select name="course" class="form-control">
+									{if condition="$admin.course == 1"}
+									<option value="0">无权限</option>
+									<option value="1" selected="selected">管理权限</option>
+									<option value="2">浏览权限</option>
+									{elseif condition="$admin.course == 2"  /}
+									<option value="0">无权限</option>
+									<option value="1">管理权限</option>
+									<option value="2" selected="selected">浏览权限</option>
+									{elseif condition="$admin.course == 0"  /}
+									<option value="0" selected="selected">无权限</option>
+									<option value="1">管理权限</option>
+									<option value="2">浏览权限</option>
+									{/if}
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="form-horizontal">
+						<div class="form-group">
+							<label class="col-sm-2 control-label">时区管理</label>
+							<div class="col-sm-4">
+								<select name="timezone" class="form-control">
+									{if condition="$admin.timezone == 1"}
+									<option value="0">无权限</option>
+									<option value="1" selected="selected">管理权限</option>
+									<option value="2">浏览权限</option>
+									{elseif condition="$admin.timezone == 2"  /}
+									<option value="0">无权限</option>
+									<option value="1">管理权限</option>
+									<option value="2" selected="selected">浏览权限</option>
+									{elseif condition="$admin.timezone == 0"  /}
+									<option value="0" selected="selected">无权限</option>
+									<option value="1">管理权限</option>
+									<option value="2">浏览权限</option>
+									{/if}
+								</select>
+							</div>
+						</div>
+					</div>
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<button type="submit" class="btn btn-danger pull-right">确认修改</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+{/block} {block name="script"}
+{/block}
