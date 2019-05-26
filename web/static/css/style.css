@@ -1,0 +1,40 @@
+
+.aui-btn-purple {
+	color: #ffffff !important;
+	background-color: #9981b4 !important;
+}
+.aui-btn-purple.aui-active, .aui-btn-purple:active {
+	color: #fff !important;
+	background-color: #9981b4 !important;
+}
+.aui-btn-purple.aui-btn-outlined {
+	color: #9981b4 !important;
+	border: 1px solid #9981b4 !important;
+}
+.aui-btn-gray {
+	color: #ffffff !important;
+	background-color: #adadad !important;
+}
+.aui-btn-gray.aui-active, .aui-btn-gray:active {
+	color: #fff !important;
+	background-color: #adadad !important;
+}
+.aui-btn-gray.aui-btn-outlined {
+	color: #9981b4 !important;
+	border: 1px solid #adadad !important;
+}
+.aui-text-purple {
+	color: #9981b4 !important;
+}
+.aui-bar-nav {
+	background-color: #9981b4;
+}
+.btn-purple {
+	color: #fff;
+	background-color: #9981b4;
+	border-color: #9981b4
+}
+
+.aui-bar-tab .aui-active {
+	color: #9981b4;
+}
