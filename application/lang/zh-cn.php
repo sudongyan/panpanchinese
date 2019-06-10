@@ -80,11 +80,9 @@ return [
     'teacher_index_51'                                           => '(语音通话/慢慢/仔细改正/自我介绍有)',
     'teacher_index_52'                                           => '预约申请',
     'teacher_index_53'                                           => '注意事项',
-    'teacher_index_54'                                           => '只有标有“视频通话”的老师才可进行视频通话
-    授课。.',
+    'teacher_index_54'                                           => '只有标有“视频通话”的老师才可进行视频通话授课。.',
     'teacher_index_55'                                           => '选择自由授课时,授课前请提前向老师传达教材或想要的方向.',
-    'teacher_index_56'                                           => '为了接到预约课程成功，取消等课程等通知,请务必添加微信公众号
-    正式账户.',
+    'teacher_index_56'                                           => '为了接到预约课程成功，取消等课程等通知,请务必添加微信公众号正式账户.',
     'teacher_index_57'                                           => '*手机方面请确认"我"-"使用方法"',
     'teacher_index_58'                                           => '请选择教材.',
     'teacher_index_59'                                           => '请选择科目.',
@@ -102,6 +100,8 @@ return [
     'teacher_index_71'                                           => '深夜',
     'teacher_index_72'                                           => '列表模式',
     'teacher_index_73'                                           => '日历模式',
+    'teacher_index_74'                                           => '有用的评价',
+    'teacher_index_75'                                           => '最新',
     
     'week_0'                                           => '星期日',
     'week_1'                                           => '星期一',

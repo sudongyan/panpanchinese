@@ -132,11 +132,12 @@
 			<div class="aui-card-list">
 				<div class="aui-card-list-header">
 					<span>{$Think.lang.teacher_index_22}&nbsp;&nbsp;&nbsp;&nbsp;<em style="font-size: 0.5rem;color: #737373;">{$Think.lang.teacher_index_12} {$teacher.score} {$Think.lang.teacher_index_23} {$teacher.evaluate_num}{$Think.lang.teacher_index_24}</em></span>
+					<div id="thenew" class="aui-btn" style="border-radius:50px" onclick="thenewbtn()"><i class="iconfont icon-paixu" style="font-size: 12px;"></i> {$Think.lang.teacher_index_74}</div>
 				</div>
 			</div>
 		</section>
 		<div class="aui-content" style="margin-top: -0.8rem;">
-			<ul id="list" class="aui-list aui-media-list">
+			<ul id="list" class="aui-list aui-media-list" style="min-height: 500px;">
 				{volist name="evaluatelist" id="vo"}
 				<li class="aui-list-item">
 					<div class="aui-media-list-item-inner">
@@ -146,6 +147,7 @@
 						<div class="aui-list-item-inner">
 							<div class="aui-list-item-text">
 								<div class="aui-list-item-title" style="color: #000000;">{$vo.nickName}</div>
+							<div class="aui-label aui-ellipsis-1" style="background-color: #ffffff;max-width: 150px;">{$vo.course}</div>
 							</div>
 							<div class="aui-list-item-text" style="width: 3rem;margin-top: -5px;">
 								{for start="0" end="5"}
@@ -344,40 +346,96 @@
 						}
 					});
 			}
-		</script>
-		<script>
+			var newurl;
 			var p = 1;
 			var s = 1;
+			var thenew = 0;
+			function thenewbtn(){
+				console.log(s);
+				if(thenew == 1){
+					thenew = 0;
+					newurl = "{:url('teacher/evaluate_list')}" + "?p=1&teacher_id={$teacher.id}&new=0";
+					document.getElementById("thenew").innerHTML = '<i class="iconfont icon-paixu" style="font-size: 12px;"></i> {$Think.lang.teacher_index_74}'; 
+				}else{
+					thenew = 1;
+					newurl = "{:url('teacher/evaluate_list')}" + "?p=1&teacher_id={$teacher.id}";
+					document.getElementById("thenew").innerHTML = '<i class="iconfont icon-paixu" style="font-size: 12px;"></i> {$Think.lang.teacher_index_75}'; 
+				}
+				updatenew();
+			}
+			
+			function updatenew(){
+				s = 1;
+				document.getElementById("list").innerHTML = '';
+					$.getJSON(newurl, function(result) {
+						data = result.data;
+						var thehtml = '';
+						for(var n = 0; n < data.length; n++) {
+							thehtml +=
+							'<li class="aui-list-item"><div class="aui-media-list-item-inner"><div class="aui-list-item-media" style="width: 3.5rem;">'+
+							'<img src="' + data[n].avatar + '">'+
+							'</div><div class="aui-list-item-inner"><div class="aui-list-item-text">'+
+							'<div class="aui-list-item-title" style="color: #000000;">' + data[n].nickName + '</div>'+
+							'<div class="aui-label aui-ellipsis-1" style="background-color: #ffffff;max-width: 150px;">' + data[n].course + '</div></div>'+
+							'<div class="aui-list-item-text" style="width: 3rem;margin-top: -5px;">';
+							for(var i = 0; i < 5; i++) {
+								if(data[n].score > i){
+									thehtml +='<i class="aui-iconfont iconfont icon-iconfontxingxing" style="color: #ffba00;"></i>';
+								}else{
+									thehtml +='<i class="aui-iconfont iconfont icon-iconfontxingxing" style="color: #cbcbcb;"></i>';
+								}
+							}
+							thehtml +='</div>'+
+							'<div class="aui-list-item-text">'+
+							data[n].information +
+							'</div></div></div></li>';
+						}
+						$('#list').html(thehtml);
+						s = 1;
+						p = 1;
+					});
+			}
+			
+		</script>
+		<script>
+			
 			var scroll = new auiScroll({
 				listen: true, //是否监听滚动高度，开启后将实时返回滚动高度
 				distance: 200 //判断到达底部的距离，isToBottom为true
 			}, function(ret) {
 				if(ret.isToBottom == true && s == 1) {
 					p++;
-					$.getJSON("{:url('teacher/evaluate_list')}" + "?p=" + p + "&teacher_id={$teacher.id}", function(result) {
+				if(thenew == 1){
+					newurl = "{:url('teacher/evaluate_list')}" + "?p=" + p + "&teacher_id={$teacher.id}";;
+				}else{
+					newurl = "{:url('teacher/evaluate_list')}" + "?p=" + p + "&teacher_id={$teacher.id}&new=0";;
+				}
+					$.getJSON(newurl, function(result) {
 						data = result.data;
 						if(data.length < 20){
 							s = 0;
 						}
 						for(var n = 0; n < data.length; n++) {
-							document.getElementById("list").innerHTML +=
+							var thehtml = '';
+							thehtml +=
 							'<li class="aui-list-item"><div class="aui-media-list-item-inner"><div class="aui-list-item-media" style="width: 3.5rem;">'+
 							'<img src="' + data[n].avatar + '">'+
 							'</div><div class="aui-list-item-inner"><div class="aui-list-item-text">'+
 							'<div class="aui-list-item-title" style="color: #000000;">' + data[n].nickName + '</div>'+
-							'</div>'+
-							'<div class="aui-list-item-text" style="width: 3rem;margin-top: -5px;">'+
+							'<div class="aui-label aui-ellipsis-1" style="background-color: #ffffff;max-width: 150px;">' + data[n].course + '</div></div>'+
+							'<div class="aui-list-item-text" style="width: 3rem;margin-top: -5px;">';
 							for(var i = 0; i < 5; i++) {
 								if(data[n].score > i){
-									'<i class="aui-iconfont iconfont icon-iconfontxingxing" style="color: #ffba00;"></i>'+
+									thehtml +='<i class="aui-iconfont iconfont icon-iconfontxingxing" style="color: #ffba00;"></i>';
 								}else{
-									'<i class="aui-iconfont iconfont icon-iconfontxingxing" style="color: #cbcbcb;"></i>'+
+									thehtml +='<i class="aui-iconfont iconfont icon-iconfontxingxing" style="color: #cbcbcb;"></i>';
 								}
 							}
-							'</div>'+
+							thehtml +='</div>'+
 							'<div class="aui-list-item-text">'+
-							+ data[n].information +
+							data[n].information +
 							'</div></div></div></li>';
+							$('#list').append(thehtml);
 						}
 					});
 				}

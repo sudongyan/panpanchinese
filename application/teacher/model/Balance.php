@@ -31,4 +31,17 @@ class Balance extends Model {
 		return $Count;
 	}
 	
+	
+	//获取结算数量
+	public static function getSettlementCount($tid, $stime, $etime, $type) {
+		$data['user_id'] = $tid;
+		$data['user_type'] = 1;
+		$data['admin_id'] = array('neq',0);
+		$data['type'] = $type;
+		$etime = intval($etime) - 1;
+		$time = $stime . ',' . $etime;
+		$Count = Balance::where($data) -> whereBetween('create_time',$time) -> sum('num');
+		return $Count;
+	}
+	
 }

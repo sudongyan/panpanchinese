@@ -18,7 +18,20 @@ class Evaluate extends Model {
 		if (!isset($order)) {
 			$order = 'desc';
 		}
-		$list = Evaluate::where($data) -> page($p, 20) -> order('create_time', $order) -> select();
+		$list = Evaluate::where($data) -> page($p, 40) -> order('create_time', $order) -> select();
+		return $list;
+	}
+	
+	//获取非空列表
+	public static function getNotNullList($tid, $p, $order) {
+		$data['teacher_id'] = $tid;
+		if (!isset($p)) {
+			$p = 1;
+		}
+		if (!isset($order)) {
+			$order = 'desc';
+		}
+		$list = Evaluate::where($data) -> page($p, 40) -> order('LENGTH(information)', $order) -> select();
 		return $list;
 	}
 	

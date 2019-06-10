@@ -30,20 +30,42 @@
 		<div class="aui-content-padded">
 			<div class="aui-row-padded">
 				<div class="aui-col-xs-12">
-					<h3>已累计赚取课程券<span class="aui-pull-right">{$Teacher.balance - $Teacher.balanceTY}张</span></h3>
+					<h3>课程券<span class="aui-pull-right">{$Teacher.order_num}张</span></h3>
 				</div>
 				<div class="aui-col-xs-12">
-					<h3>已累计赚取试听券<span class="aui-pull-right">{$Teacher.balanceTY}张</span></h3>
+					<h3>试听券<span class="aui-pull-right">{$Teacher.ty_num}张</span></h3>
 				</div>
 				<div class="aui-col-xs-12">
-					<h3>上次结算 {$Teacher.oldday}<span class="aui-pull-right">{$Teacher.oldsettlement}张</span></h3>
+					<h3>充值<span class="aui-pull-right" style="color: blue;">{$Teacher.recharge_num1}张</span></h3>
 				</div>
 				<div class="aui-col-xs-12">
-					<h3>本次结算 {$Teacher.day}<span class="aui-pull-right">{$Teacher.settlement}张</span></h3>
+					<h3>扣除<span class="aui-pull-right" style="color: red;">-{$Teacher.recharge_num0}张</span></h3>
+				</div>
+				<div class="aui-col-xs-12">
+					<h3><b>总结算金额<span class="aui-pull-right">{$Teacher.num}张</span></b></h3>
 				</div>
 				<div class="aui-hr" style="margin-top: 0.5rem;margin-bottom: 0.5rem;"></div>
 				<div class="aui-col-xs-12">
-					<h3>提现方式<span class="aui-pull-right">每月21号和次月6号</span></h3>
+					<div class="aui-col-xs-4"><h3>结算周期</h3></div>
+					<div class="aui-col-xs-8 aui-list aui-form-list">
+						<li class="aui-list-item" style="margin-top: -10px;">
+            					<div class="aui-list-item-inner">
+                					<div class="aui-list-item-input">
+                    					<select style="direction: rtl;" onchange="location.href='{:url('my/account')}?day=' + this.value">
+									{volist name="SettlementLogList" id="vo"}
+									{if condition="$vo.day == $day"}
+									<option value="{$vo.endday}" selected="selected">{$vo.theday} - {$vo.endday}</option>
+									{else/}
+									<option value="{$vo.endday}">{$vo.theday} - {$vo.endday}</option>
+									{/if}
+									{/volist}
+                    					</select>
+                					</div>
+            					</div>
+        					</li>
+					</div>
+					<div><h3>结算时间<span class="aui-pull-right" style="margin-right: 20px;">{$day3}</span></h3></div>
+					
 				</div>
 			</div>
 		</div>
@@ -53,10 +75,10 @@
 				<br />
 				<h4 align="left">
 					<ul style="list-style-position: outside;">
-						<li style="list-style-type:disc;margin-left: 1rem;">1张课程券代表1节课，即30分钟/11元的课程。</li>
-						<li style="list-style-type:disc;margin-left: 1rem;">老师取消已经被预约的时扣除1张课程券，不取消无故缺席时扣除5张课程券。</li>
-						<li style="list-style-type:disc;margin-left: 1rem;">学生在上课前2小时不能取消课程，学生缺席时课程券归老师所有。</li>
-						<li style="list-style-type:disc;margin-left: 1rem;">每月21号和次月6号将薪资打入老师驻入申请时留下的账号中</li>
+						<li style="list-style-type:disc;margin-left: 1rem;">1张课程券代表1节课，即30分钟/10~15元的课程。</li>
+						<li style="list-style-type:disc;margin-left: 1rem;">正常薪资为10元/课，一个月上满64节课时薪资为15元/课(每天一小时即可达标)。</li>
+						<li style="list-style-type:disc;margin-left: 1rem;">老师取消已被预约的课程时扣除1~2个课程券，不取消无故缺席时扣除5个课程券。</li>
+						<li style="list-style-type:disc;margin-left: 1rem;">学生上课前2个小时不能取消课程，学生缺席时课程券归老师所有。</li>
 					</ul>
 				</h4>
 			</div>

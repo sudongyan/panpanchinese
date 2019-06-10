@@ -28,6 +28,7 @@
 						<div class="col-lg-6">
 							<form class="input-group" method="get">
 								<select class="form-control" onchange="location.href='{:url('settlement/index')}?day=' + this.value">
+									<option value="0">本月</option>
 									{volist name="SettlementLogList" id="vo"}
 									{if condition="$vo.day == $day"}
 									<option value="{$vo.theday}" selected="selected">{$vo.day} - {$vo.endday}</option>
@@ -110,9 +111,9 @@
 		callback: function(page) { // 回调函数
 			if(page != p) {
 				if(GetQueryString('search')!=null){
-					window.location.replace("{:url('settlement/index')}" + '?p=' + page + '&day={$day3}&search=' + GetQueryString('search'));
+					window.location.replace("{:url('settlement/index')}" + '?p=' + page + '&day={$day}&search=' + GetQueryString('search'));
 				}else{
-					window.location.replace("{:url('settlement/index')}" + '?p=' + page + '&day={$day3}');
+					window.location.replace("{:url('settlement/index')}" + '?p=' + page + '&day={$day}');
 				}
 			}
 		}

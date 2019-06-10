@@ -495,7 +495,7 @@ class Base extends Controller {
 		$kakao_add4 = "";
 		$kakao_add5 = "";
 		$kakao_add6 = "";
-		$kakao_add7 = $order['class'];
+		$kakao_add7 = $order['name'];
 		$kakao_add8 = $order['day']."day";
 		$kakao_add9 = $order['discount_money']."원";
 		$kakao_add10 = $student['account'];

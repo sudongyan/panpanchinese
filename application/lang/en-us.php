@@ -100,6 +100,8 @@ return [
     'teacher_index_71'                                           => 'a.m.',
     'teacher_index_72'                                           => 'teacher',
     'teacher_index_73'                                           => 'Timetable',
+    'teacher_index_74'                                           => 'useful',
+    'teacher_index_75'                                           => 'recent',
     
     'week_0'                                           => 'Sun.',
     'week_1'                                           => 'Mon.',

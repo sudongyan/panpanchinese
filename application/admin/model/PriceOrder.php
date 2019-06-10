@@ -68,7 +68,7 @@ class PriceOrder extends Model {
 		if (!isset($p)) {
 			$p = 1;
 		}
-		$list = PriceOrder::where($data) -> where('type', '<>', 3) -> page($p, 20) -> order('create_time', $order) -> select();
+		$list = PriceOrder::where($data) -> where('type', '<>', 4) -> page($p, 20) -> order('create_time', $order) -> select();
 		return $list;
 	}
 
@@ -97,7 +97,7 @@ class PriceOrder extends Model {
 	// 查询一条优惠券
 	public static function getDiscount($id) {
 		$data['student_id'] = $id;
-		$data['type'] = 3;
+		$data['type'] = 4;
 		$PriceOrder = PriceOrder::where($data) -> find();
 		if (!$PriceOrder || $PriceOrder['used_class'] > 0) {
 			return 0;
@@ -117,7 +117,7 @@ class PriceOrder extends Model {
 	public static function getStudentNewOrder($sid) {
 		$data['student_id'] = $sid;
 		$data['state'] = 1;
-		$Order = PriceOrder::where($data) -> where('type', 'neq', 3) -> order('create_time', 'desc') -> find();
+		$Order = PriceOrder::where($data) -> where('type', 'neq', 4) -> order('create_time', 'desc') -> find();
 		return $Order;
 	}
 	

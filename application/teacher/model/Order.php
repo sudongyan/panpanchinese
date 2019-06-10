@@ -62,4 +62,21 @@ class Order extends Model {
 		return $Order;
 	}
 
+	//获取结算数量
+	public static function getSettlementCount($tid, $stime, $etime) {
+		$data['teacher_id'] = $tid;
+		$etime = intval($etime) - 1;
+		$time = $stime . ',' . $etime;
+		$Count = Order::where($data) -> where('state',['=',3],['=',1],'or') -> whereBetween('time',$time) -> count();
+		return $Count;
+	}
+
+	//获取结算列表
+	public static function getSettlementList($tid, $stime, $etime) {
+		$data['teacher_id'] = $tid;
+		$etime = intval($etime) - 1;
+		$time = $stime . ',' . $etime;
+		$list = Order::where($data) -> where('state',['=',3],['=',1],'or') -> whereBetween('time',$time) -> select();
+		return $list;
+	}
 }

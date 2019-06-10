@@ -644,15 +644,28 @@ class Teacher extends Controller {
 						}
 					}
 					$teacher['evaluate_num'] = model('Evaluate') -> getCount($data['tid']);
-					$evaluatelist = model('Evaluate') -> getList($data['tid'], 1, 'desc');
+					$evaluatelist = model('Evaluate') -> getNotNullList($data['tid'], 1, 'desc');
 					for ($i = 0; $i < count($evaluatelist); $i++) {
 						if ($evaluatelist[$i]['student_id'] != 0) {
 							$Student = model('Student') -> getOne($evaluatelist[$i]['student_id']);
 							$evaluatelist[$i]['avatar'] = $Student['avatar'];
 							$evaluatelist[$i]['nickName'] = $Student['nickName'];
+							$order = model('Order') -> getOne($evaluatelist[$i]['order_id']);
+							$Course = model('Course') -> getOne($order['course']);
+							if (cookie('think_var') == 'en-us') {
+								$evaluatelist[$i]['course'] = $Course['name_en'];
+							} else if (cookie('think_var') == 'zh-cn') {
+								$evaluatelist[$i]['course'] = $Course['name_cn'];
+							} else {
+								$evaluatelist[$i]['course'] = $Course['name_ko'];
+							}
+							if ($evaluatelist[$i]['course'] == null) {
+								$evaluatelist[$i]['course'] = ' ';
+							}
 						} else {
 							$evaluatelist[$i]['avatar'] = $evaluatelist[$i]['student_avatar'];
 							$evaluatelist[$i]['nickName'] = $evaluatelist[$i]['student_nickName'];
+							$evaluatelist[$i]['course'] = ' ';
 						}
 					}
 					date_default_timezone_set('UTC');
@@ -707,15 +720,28 @@ class Teacher extends Controller {
 					}
 				}
 				$teacher['evaluate_num'] = model('Evaluate') -> getCount($data['tid']);
-				$evaluatelist = model('Evaluate') -> getList($data['tid'], 1, 'desc');
+				$evaluatelist = model('Evaluate') -> getNotNullList($data['tid'], 1, 'desc');
 				for ($i = 0; $i < count($evaluatelist); $i++) {
 					if ($evaluatelist[$i]['student_id'] != 0) {
 						$Student = model('Student') -> getOne($evaluatelist[$i]['student_id']);
 						$evaluatelist[$i]['avatar'] = $Student['avatar'];
 						$evaluatelist[$i]['nickName'] = $Student['nickName'];
+						$order = model('Order') -> getOne($evaluatelist[$i]['order_id']);
+						$Course = model('Course') -> getOne($order['course']);
+						if (cookie('think_var') == 'en-us') {
+							$evaluatelist[$i]['course'] = $Course['name_en'];
+						} else if (cookie('think_var') == 'zh-cn') {
+							$evaluatelist[$i]['course'] = $Course['name_cn'];
+						} else {
+							$evaluatelist[$i]['course'] = $Course['name_ko'];
+						}
+						if ($evaluatelist[$i]['course'] == null) {
+							$evaluatelist[$i]['course'] = ' ';
+						}
 					} else {
 						$evaluatelist[$i]['avatar'] = $evaluatelist[$i]['student_avatar'];
 						$evaluatelist[$i]['nickName'] = $evaluatelist[$i]['student_nickName'];
+						$evaluatelist[$i]['course'] = ' ';
 					}
 				}
 				date_default_timezone_set('UTC');
@@ -834,15 +860,37 @@ class Teacher extends Controller {
 			if (!isset($data['p'])) {
 				$data['p'] = 1;
 			}
-			$list = model('Evaluate') -> getList($data['teacher_id'], $data['p'], 'desc');
+			if (!isset($data['new'])) {
+				$data['new'] = 1;
+			} else {
+				$data['new'] = 0;
+			}
+			if ($data['new'] == 1) {
+				$list = model('Evaluate') -> getList($data['teacher_id'], $data['p'], 'desc');
+			} else {
+				$list = model('Evaluate') -> getNotNullList($data['teacher_id'], $data['p'], 'desc');
+			}
 			for ($i = 0; $i < count($list); $i++) {
 				if ($list[$i]['student_id'] != 0) {
 					$student = model('Student') -> getOne($list[$i]['student_id']);
 					$list[$i]['avatar'] = $student['avatar'];
 					$list[$i]['nickName'] = $student['nickName'];
+					$order = model('Order') -> getOne($list[$i]['order_id']);
+					$Course = model('Course') -> getOne($order['course']);
+					if (cookie('think_var') == 'en-us') {
+						$list[$i]['course'] = $Course['name_en'];
+					} else if (cookie('think_var') == 'zh-cn') {
+						$list[$i]['course'] = $Course['name_cn'];
+					} else {
+						$list[$i]['course'] = $Course['name_ko'];
+					}
+					if ($list[$i]['course'] == null) {
+						$list[$i]['course'] = ' ';
+					}
 				} else {
 					$list[$i]['avatar'] = $list[$i]['student_avatar'];
 					$list[$i]['nickName'] = $list[$i]['student_nickName'];
+					$list[$i]['course'] = ' ';
 				}
 			}
 			$return['result'] = TRUE;

@@ -97,7 +97,7 @@
 										剩余课程：{$vo.all_class - $vo.used_class}
 									</td>
 									<td>
-										支付方式：{if condition="$vo.type == 0"}PAYPAL{elseif  condition="$vo.type == 3"/}体验券{else /}转账{/if}<br />
+										支付方式：{if condition="$vo.type == 0"}PAYPAL{elseif  condition="$vo.type == 3"/}韩币支付{elseif  condition="$vo.type == 4"/}体验券{else /}转账{/if}<br />
 										下单时间：{$vo.create_time}<br />
 										支付时间：{$vo.payment_time}
 									</td>

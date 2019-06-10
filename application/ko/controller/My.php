@@ -222,7 +222,7 @@ class My extends Controller {
 					$order['class'] = 1;
 					$order['money'] = 0;
 					$order['discount'] = 0;
-					$order['type'] = 3;
+					$order['type'] = 4;
 					$order['discount_money'] = 0;
 					$order['USD'] = 0;
 					$order['payment_time'] = time();
@@ -290,7 +290,7 @@ class My extends Controller {
 					$order['class'] = 1;
 					$order['money'] = 0;
 					$order['discount'] = 0;
-					$order['type'] = 3;
+					$order['type'] = 4;
 					$order['discount_money'] = 0;
 					$order['USD'] = 0;
 					$order['payment_time'] = time();

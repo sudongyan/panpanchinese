@@ -12,11 +12,22 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
+.icon-bofang:before {
+	content: "\e6ad";
+}
 
-.icon-bofang:before { content: "\e6ad"; }
+.icon-iconfontxingxing:before {
+	content: "\e6b0";
+}
 
-.icon-iconfontxingxing:before { content: "\e6b0"; }
+.icon-shaixuan:before {
+	content: "\e654";
+}
 
-.icon-shaixuan:before { content: "\e654"; }
+.icon-paixu:before {
+	content: "\e634";
+}
 
-.icon-bofang1:before { content: "\e602"; }
+.icon-bofang1:before {
+	content: "\e602";
+}

@@ -119,6 +119,7 @@
 </style>
 {/block} {block name="body"}
 <div class="container">
+<div id="theie" class="alert alert-danger" style="display: none;" role="alert">원할한 서비스 이용을 위해서 chrome 브라우저를 이용해주세요.</div>
 	<div class="row">
 		<div class="col-md-4">
 			<div class="panel panel-default">
@@ -250,6 +251,13 @@
 	</script>
 <script src="__STATIC__/js/aui-dialog.js"></script>
 <script>
+	function isIe(){
+ 		return ("ActiveXObject" in window);
+ 	}
+	var ie = isIe();
+	if(ie == true){
+		$("#theie").css("display","block");
+	}
 	var dialog = new auiDialog();
 	var newuser = {$new};
 		$(function() {

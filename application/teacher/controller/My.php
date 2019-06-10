@@ -255,7 +255,6 @@ class My extends Controller {
 		}
 	}
 
-
 	//订单详情
 	public function orderinfo() {
 		if (session('t_id') == null) {
@@ -287,13 +286,13 @@ class My extends Controller {
 				$order['score'] = $Evaluate['score'];
 				$order['score_info'] = $Evaluate['information'];
 			}
-				if ($order['reason_type'] == 0) {
-					$order['reason_type'] = '学生取消';
-				} else if ($order['reason_type'] == 1) {
-					$order['reason_type'] = '老师取消';
-				} else {
-					$order['reason_type'] = '管理员取消';
-				}
+			if ($order['reason_type'] == 0) {
+				$order['reason_type'] = '学生取消';
+			} else if ($order['reason_type'] == 1) {
+				$order['reason_type'] = '老师取消';
+			} else {
+				$order['reason_type'] = '管理员取消';
+			}
 			if ($order['time'] < time()) {
 				$order['cancel'] = 0;
 			} else {
@@ -351,46 +350,54 @@ class My extends Controller {
 			$this -> redirect('my/login');
 		}
 		if ( request() -> isGET()) {
-			$Teacher = model('Teacher') -> getOne(session('t_id'));
-			$Teacher['balance'] = model('Balance') -> getBalanceCount(session('t_id'));
-			$Teacher['oldbalance'] = model('Order') -> getOldCount(session('t_id'));
-			$Teacher['balanceTY'] = 0;
-			$oldlist = model('Order') -> getOldList(session('t_id'));
-			for ($i = 0; $i < count($oldlist); $i++) {
-				$priceorder = model('PriceOrder') -> getOne($oldlist[$i]['payid']);
-				if($priceorder['type'] == 3){
-					$Teacher['balanceTY'] = $Teacher['balanceTY'] + 1;
-				}
+			$data = input('param.');
+			$teacher = model('Teacher') -> getOne(session('t_id'));
+			if (!isset($data['day']) || strtotime($data['day']) > time()) {
+				$theday = date("Y-m-1", time());
+			} else {
+				$theday = date("Y-m-1", strtotime($data['day']));
 			}
-			$settlementLog = model('SettlementLog') -> getList();
-			$Teacher['settlement'] = 0;
-			$Teacher['oldsettlement'] = 0;
-			for ($i = 0; $i < count($settlementLog); $i++) {
-				if ($i == 0) {
-					$the = model('Settlement') -> getNum(session('t_id'), $settlementLog[$i]['time']);
-					$Teacher['settlement'] = $the;
-					if (strtotime($settlementLog[$i]['day']) == strtotime(date("Y-m-1", strtotime($settlementLog[$i]['day'])))) {
-						$Teacher['day'] = date('Y-m-21', strtotime($settlementLog[$i]['day']));
-					} else {
-						$Teacher['day'] = date('Y-m-06', strtotime($settlementLog[$i]['day'] . ' +1 month'));
-					}
-				} else if ($i == 1) {
-					$the = model('Settlement') -> getNum(session('t_id'), $settlementLog[$i]['time']);
-					$Teacher['oldsettlement'] = $the;
-					if (strtotime($settlementLog[$i]['day']) == strtotime(date("Y-m-1", strtotime($settlementLog[$i]['day'])))) {
-						$Teacher['oldday'] = date('Y-m-21', strtotime($settlementLog[$i]['day']));
-					} else {
-						$Teacher['oldday'] = date('Y-m-06', strtotime($settlementLog[$i]['day'] . ' +1 month'));
+			$day = date("Y-m-d", strtotime(date('Y-m-01', strtotime($theday))));
+			$day2 = date("Y-m-d", strtotime(date('Y-m-01', strtotime($theday)) . ' +1 month') - 1);
+			$day3 = date("Y-m-d", strtotime(date('Y-m-06', strtotime($theday)) . ' +1 month'));
+			$thedata['order_num'] = model('Order') -> getSettlementCount(session('t_id'), strtotime($day), strtotime($day2) + 86400 - 1);
+			$thedata['recharge_num1'] = model('Balance') -> getSettlementCount(session('t_id'), strtotime($day), strtotime($day2) + 86400 - 1, 1);
+			$thedata['recharge_num0'] = model('Balance') -> getSettlementCount(session('t_id'), strtotime($day), strtotime($day2) + 86400 - 1, 0);
+			$thedata['recharge_num'] = $thedata['recharge_num1'] - $thedata['recharge_num0'];
+			$thedata['num'] = $thedata['order_num'] + $thedata['recharge_num'];
+			$thedata['time'] = strtotime($day);
+			$thedata['ty_num'] = 0;
+			if ($thedata['order_num'] != 0 || $thedata['recharge_num'] != 0) {
+				$oldlist = model('Order') -> getSettlementList(session('t_id'), strtotime($day), strtotime($day2) + 86400 - 1);
+				for ($s = 0; $s < count($oldlist); $s++) {
+					$priceorder = model('PriceOrder') -> getOne($oldlist[$s]['payid']);
+					if ($priceorder['type'] == 4) {
+						$thedata['ty_num'] = $thedata['ty_num'] + 1;
 					}
 				}
 			}
-			if ($Teacher['settlement'] == null) {
-				$Teacher['settlement'] = 0;
+			$thedata['order_num'] = $thedata['order_num'] - $thedata['ty_num'];
+
+			for ($i = 0; $i < 12; $i++) {
+				$listendday = date("Y-m-d", strtotime(date('Y-m-1', time()) . ' -' . $i . ' month'));
+				$listtheday = date("Y-m-d", strtotime(date('Y-m-1', time()) . ' -' . ($i - 1) . ' month') - 1);
+				if(strtotime($teacher['create_time']) < strtotime($listtheday)&&strtotime($teacher['create_time']) > strtotime($listendday)){
+					$SettlementLogList[$i]['endday'] = date("Y-m-d", strtotime($teacher['create_time']));
+					$SettlementLogList[$i]['theday'] = $listtheday;
+					$SettlementLogList[$i]['day'] = $listendday;
+				}elseif(strtotime($teacher['create_time']) < strtotime($listendday)) {
+					$SettlementLogList[$i]['endday'] = $listendday;
+					$SettlementLogList[$i]['theday'] = $listtheday;
+					$SettlementLogList[$i]['day'] = $listendday;
+				}else{
+					break;
+				}
 			}
-			if ($Teacher['oldsettlement'] == null) {
-				$Teacher['oldsettlement'] = 0;
-			}
-			$this -> assign('Teacher', $Teacher);
+			$this -> assign('Teacher', $thedata);
+			$this -> assign('SettlementLogList', $SettlementLogList);
+			$this -> assign('day', $day);
+			$this -> assign('day2', $day2);
+			$this -> assign('day3', $day3);
 			return $this -> fetch();
 		}
 	}

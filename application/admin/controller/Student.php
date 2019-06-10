@@ -31,10 +31,10 @@ class Student extends Controller {
 			for ($i = 0; $i < count($list); $i++) {
 				$timezone = model('Timezone') -> getOne($list[$i]['time_zone']);
 				$list[$i]['time_zone_name'] = $timezone['name_cn'];
-				$list[$i]['order_0'] = model('Order') -> getStateCount('t', $list[$i]['id'], 0);
-				$list[$i]['order_1'] = model('Order') -> getStateCount('t', $list[$i]['id'], 1);
-				$list[$i]['order_2'] = model('Order') -> getStateCount('t', $list[$i]['id'], 2);
-				$list[$i]['order_3'] = model('Order') -> getStateCount('t', $list[$i]['id'], 3);
+				$list[$i]['order_0'] = model('Order') -> getStateCount('s', $list[$i]['id'], 0);
+				$list[$i]['order_1'] = model('Order') -> getStateCount('s', $list[$i]['id'], 1);
+				$list[$i]['order_2'] = model('Order') -> getStateCount('s', $list[$i]['id'], 2);
+				$list[$i]['order_3'] = model('Order') -> getStateCount('s', $list[$i]['id'], 3);
 				$list[$i]['BalanceCount'] = 0;
 				$list[$i]['overdue_BalanceCount'] = 0;
 				$list[$i]['discount_BalanceCount'] = model('PriceOrder') -> getDiscount($list[$i]['id']);
@@ -56,6 +56,7 @@ class Student extends Controller {
 						$list[$i]['overdue_BalanceCount'] = $list[$i]['overdue_BalanceCount'] + $plist[$s]['class'] - $plist[$s]['used_class'];
 					}
 				}
+				/**
 				$list[$i]['validity_start'] = date('Y-m-d',$list[$i]['validity_start']);
 				if($list[$i]['validity_end'] < time() && $list[$i]['BalanceCount'] > 0){
 					$balance['user_id'] = $list[$i]['id'];	
@@ -67,6 +68,7 @@ class Student extends Controller {
 					$list[$i]['BalanceCount'] = 0;
 				}
 				$list[$i]['validity_end'] = date('Y-m-d',$list[$i]['validity_end']);
+				 **/
 			}
 			if(isset($data['search'])){
 				$total = model('Student') -> getSearchCount($data['search']);
