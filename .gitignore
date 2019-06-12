@@ -1,0 +1,6 @@
+/web
+/runtime
+/application/database.php
+.htaccess
+404.html
+index.html

@@ -17,9 +17,9 @@ return [
     // 数据库名
     'database'        => 'm2_panpanchines',
     // 用户名
-    'username'        => 'm2_panpanchines',
+    'username'        => 'root',
     // 密码
-    'password'        => 'Chinabiz8890',
+    'password'        => 'root',
     // 端口
     'hostport'        => '',
     // 连接dsn
