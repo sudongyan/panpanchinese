@@ -1,6 +1,7 @@
 /web
 /runtime
 /application/database.php
+/vendor
 .htaccess
 404.html
 index.html

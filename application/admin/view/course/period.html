@@ -62,7 +62,12 @@
 									<td class="center">
 										{if condition="($Think.session.course eq 1) OR ($Think.session.id eq 1)"}
 										<div class="btn-group-vertical" role="group" aria-label="...">
-											<button type="button" onclick="del({$vo.id})" class="btn btn-danger">删除</button>
+											{if condition="$vo.has_video === true"}
+											<a href="{:url('/admin/video/'.$vo.id.'/edit','', false)}?course={$vo.course_id}" type="button" class="btn btn-warning pull-right">修改视频</a>
+											{else /}
+											<a href="{:url('/admin/video/create','', false)}?course={$vo.course_id}&period={$vo.id}" type="button" class="btn btn-info pull-right">添加视频</a>
+											{/if}
+											<button type="button" onclick="del({$vo.id})" class="btn btn-danger">删除课程</button>
 										</div>
 										{/if}
 									</td>
@@ -87,7 +92,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h5 class="modal-title">新增课程</h4>
+		  <h5 class="modal-title">新增课程</h5>
       </div>
       <div class="modal-body">
       	<div class="form-group">

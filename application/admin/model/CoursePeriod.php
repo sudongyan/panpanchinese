@@ -41,6 +41,13 @@ class CoursePeriod extends Model {
 		}
 		$data['course_id'] = $course_id;
 		$list = CoursePeriod::where($data) -> page($p, 20) -> order('number', $order) -> select();
+		$videos = Video::where('period_id', 'IN', array_column($list, 'id'))->column('id', 'period_id');
+		foreach ($list as &$item) {
+            $item['has_video'] = false;
+		    if (isset($videos[$item['id']])) {
+		        $item['has_video'] = true;
+            }
+        }
 		return $list;
 	}
 
