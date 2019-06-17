@@ -807,7 +807,7 @@ class My extends Controller {
                     $return['msg'] = '非韩文端账号';//非韩文端账号
                     return $return;
                 }
-                $res = sendEmail('panpanChinese중국어 수업', $emailer, 'www.panpan.com/ko/my/find_password_mailer_notify/id/'.$user['id'].'/time/'.time());//汉语教学
+                $res = sendEmail('panpanChinese중국어 수업', $emailer, 'http://m.panpanchinese.cn/ko/my/find_password_mailer_notify/id/'.$user['id'].'/time/'.time());//汉语教学
                 if ($res == 1) {
                     $return['result'] = TRUE;
                     $return['msg'] = '전송에 성공했습니다.';//发送成功
@@ -823,7 +823,7 @@ class My extends Controller {
 
     //邮件测试
     public function emailer_test(){
-        $res = sendEmail('panpanChinese汉语教学', '1009623340@qq.com', 'http://m.panpanchinese.cn/ko/my/find_password_mailer_notify/id/1/time/'.time());
+        $res = sendEmail('panpanChinese汉语教学', '1009623340@qq.com', 'www.panpan.com/ko/my/find_password_mailer_notify/id/1/time/'.time());
         if($res == 1){
             return '邮件发送成功';
         }else{
