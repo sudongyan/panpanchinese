@@ -54,13 +54,13 @@ function sendEmail($desc_content, $toemail,  $desc_url){
     $mail->SMTPSecure = "ssl";// 使用ssl协议方式</span><span style="color:#333333;">
     $mail->Port = 994;// 163邮箱的ssl协议方式端口号是465/994
     $mail->setFrom("chinabizchinabiz@163.com","panpanChinese");// 设置发件人信息，如邮件格式说明中的发件人，这里会显示为Mailer(xxxx@163.com），Mailer是当做名字显示
-    $mail->addAddress($toemail,'panpanChinese回复消息');// 设置收件人信息，如邮件格式说明中的收件人，这里会显示为Liang(yyyy@163.com)
+    $mail->addAddress($toemail,'panpanChinese답장 소식');// 设置收件人信息，如邮件格式说明中的收件人，这里会显示为Liang(yyyy@163.com)
     $mail->addReplyTo("","Reply");// 设置回复人信息，指的是收件人收到邮件后，如果要回复，回复邮件将发送到的邮箱地址
     //$mail->addCC("xxx@163.com");// 设置邮件抄送人，可以只写地址，上述的设置也可以只写地址(这个人也能收到邮件)
     //$mail->addBCC("xxx@163.com");// 设置秘密抄送人(这个人也能收到邮件)
     //$mail->addAttachment("bug0.jpg");// 添加附件
     $mail->Subject = 'papanChinese';// 邮件标题
-    $mail->Body = "panpanChinese密码找回:".$desc_content."点击进入密码找回链接（请勿将该链接转发送给其他人）:".$desc_url;// 邮件正文
+    $mail->Body = "panpanChinese암호 찾기:".$desc_content."암호로 돌아가려면 링크를 되찾으십시오 (이 링크를 다른 사람에게 보내지 마십시오):".$desc_url;// 邮件正文
     //$mail->AltBody = "This is the plain text纯文本";// 这个是设置纯文本方式显示的正文内容，如果不支持Html方式，就会用到这个，基本无用
 
     if(!$mail->send()){// 发送邮件
