@@ -232,7 +232,7 @@ footer ul {
 								<p class="help-block pull-right">{$Think.lang.my_index_40}</p>
 							</div>
 							<div class="form-group">
-								<input id="signup_phone" type="number" name="phone" class="form-control" placeholder="{$Think.lang.my_index_41}" required="required">
+								<input id="signup_phone" type="number" name="phone" oninput="if(value.length>11)value=value.slice(0,11)" class="form-control" placeholder="{$Think.lang.my_index_41}" required="required">
 							</div>
 							<div class="form-group">
 								<!--<input id="signup_account" type="text" name="account" class="form-control" placeholder="{$Think.lang.my_index_42}" required="required">-->
@@ -240,6 +240,9 @@ footer ul {
 							</div>
 							<div class="form-group">
 								<input id="signup_password" type="password" name="password" class="form-control" placeholder="{$Think.lang.my_index_43}" required="required">
+							</div>
+							<div class="form-group">
+								<input id="signup_password2" type="password" name="password2" class="form-control" placeholder="{$Think.lang.my_index_67}" required="required">
 							</div>
 							<button type="button" class="btn btn-purple btn-lg btn-block" onclick="signup()">{$Think.lang.web_common_6}</button>
 							<div style="margin-top: 10px;margin-bottom: 40px;">
@@ -344,8 +347,13 @@ footer ul {
 				var phone = $('#signup_phone').val();
 				var account = $('#signup_account').val();
 				var thepassword = $('#signup_password').val();
+				var thepassword2 = $('#signup_password2').val();
 				if(nickName == ""||wx == "" ||phone == "" ||account == ""||thepassword == ""){
 					alert('{$Think.lang.web_common_15}');
+					return false;
+				}
+				if(thepassword2 !== thepassword){
+					alert('{$Think.lang.web_common_26}');
 					return false;
 				}
 				$.ajax({

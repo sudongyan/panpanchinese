@@ -70,7 +70,7 @@
 				<li class="aui-list-item">
 					<div class="aui-list-item-inner">
 						<div class="aui-list-item-input">
-							<input type="text" name="phone" placeholder="{$Think.lang.my_index_41}" required="required">
+							<input type="number" oninput="if(value.length>11)value=value.slice(0,11)"  name="phone" placeholder="{$Think.lang.my_index_41}" required="required">
 						</div>
 					</div>
 				</li>
@@ -78,14 +78,14 @@
 				<li class="aui-list-item">
 					<div class="aui-list-item-inner">
 						<div class="aui-list-item-input">
-							<input type="text" name="password" placeholder="{$Think.lang.my_index_43}" required="required">
+							<input type="password" name="password" placeholder="{$Think.lang.my_index_43}" required="required">
 						</div>
 					</div>
 				</li>
 				<li class="aui-list-item">
 					<div class="aui-list-item-inner">
 						<div class="aui-list-item-input">
-							<input type="text" name="password" placeholder="{$Think.lang.my_index_67}" required="required">
+							<input type="password" name="password2" placeholder="{$Think.lang.my_index_67}" required="required">
 						</div>
 					</div>
 				</li>

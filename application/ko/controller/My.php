@@ -217,12 +217,25 @@ class My extends Controller {
 				$info['info'] =  '이미 등록된 회원 아이디입니다.';
 				$this -> redirect('base/close', $info);
 			}
+
+            $preg_wx='/^[a-zA-Z][a-zA-Z0-9_-]{5,19}$/ims';
+            if(!preg_match($preg_wx,$postdata['wx'])){
+                $info['info'] = '미세 신호는 요구에 부합되지 않는다'; //微信号不符合要求
+                $this -> redirect('base/close', $info);
+            }
+
 			$Student = model('Student') -> getWx($postdata['wx']);
 			if ($Student) {
 				$info['info'] = '위챗 아이디가 중복되었습니다.'; //微信号重复
 				$this -> redirect('base/close', $info);
 			}
 
+            if ($postdata['password'] != $postdata['password2']) {
+                $info['info'] = '비밀번호가 동일하지 않습니다.'; //两次输入密码不一致
+                $this -> redirect('base/close', $info);
+            }
+
+            unset($postdata['password2']);
 			$postdata['time_zone'] = 1;
 			$postdata['language'] = 1;
 
@@ -308,6 +321,12 @@ class My extends Controller {
 				$return['msg'] = '이미 등록된 회원 아이디입니다.';
 				return $return;
 			}
+            $preg_wx='/^[a-zA-Z][a-zA-Z0-9_-]{5,19}$/ims';
+            if(!preg_match($preg_wx,$postdata['wx'])){
+                $return['result'] = FALSE;
+                $return['msg'] = '미세 신호는 요구에 부합되지 않는다';//微信号不符合要求
+                return $return;
+            }
 			$Student = model('Student') -> getWx($postdata['wx']);
 			if ($Student) {
 				$return['result'] = FALSE;
