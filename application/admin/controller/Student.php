@@ -135,6 +135,11 @@ class Student extends Controller {
 			if ($student || $Authentication) {
 				$this -> error('账号重复');
 			}
+            $where['emailer'] = $postdata['emailer'];
+            $Student = model('Student') ->where($where)->find();
+            if ($Student) {
+                $this -> error('邮箱重复');
+            }
 			$new = model('Student') -> addData($postdata);
 			if ($new) {
 				$this -> success('新增成功', 'student/index');
