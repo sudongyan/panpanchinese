@@ -70,4 +70,5 @@ function sendEmail($desc_content, $toemail,  $desc_url){
     }else{
         return 1;
     }
+
 }
