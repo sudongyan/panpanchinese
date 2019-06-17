@@ -146,7 +146,7 @@
 					<a  href="" data-toggle="modal" data-target="#login" style="color: #a4a4a4;">{if $Think.cookie.think_var == 'ko-kr'}{$vo.name_ko}{elseif $Think.cookie.think_var == 'zh-cn' /}{$vo.name_cn}{elseif $Think.cookie.think_var == 'en-us' /}{$vo.name_en}{/if}</a>
 					{/if}
 					{else /}
-					<a href="{$vo.url}" target="_blank" style="color: #000000;">{if $Think.cookie.think_var == 'ko-kr'}{$vo.name_ko}{elseif $Think.cookie.think_var == 'zh-cn' /}{$vo.name_cn}{elseif $Think.cookie.think_var == 'en-us' /}{$vo.name_en}{/if}</a>
+					<a href="{$vo.url}?period={$vo.id}&course={$course.id}" target="_blank" style="color: #000000;">{if $Think.cookie.think_var == 'ko-kr'}{$vo.name_ko}{elseif $Think.cookie.think_var == 'zh-cn' /}{$vo.name_cn}{elseif $Think.cookie.think_var == 'en-us' /}{$vo.name_en}{/if}</a>
 					{/if}
 				</td>
 			</tr>

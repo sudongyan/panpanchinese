@@ -1,5 +1,6 @@
 <?php
 namespace app\ko\controller;
+use app\admin\model\Video;
 use think\Controller;
 use Gaoming13\HttpCurl\HttpCurl;
 class Course extends Controller {
@@ -107,5 +108,26 @@ class Course extends Controller {
 			}
 		}
 	}
+
+    public function video() {
+	    $input = input('get.');
+	    if (empty($input['course']) || empty($input['period'])) {
+            return json([
+                'code' => 1000,
+                'msg'  => '需要的参数未传入',
+            ]);
+        }
+
+	    $video = Video::where('course_id', $input['course'])
+            ->where('period_id', $input['period'])
+            ->field(['id', 'create_time', 'update_time', 'delete_time', ], true)
+            ->find();
+
+        return json([
+            'code' => 0,
+            'msg'  => '',
+            'result' => $video,
+        ]);
+    }
 
 }
