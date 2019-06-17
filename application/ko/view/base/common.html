@@ -133,8 +133,7 @@ footer ul {
 						</li>
 						<li id="price-menu">
 							<a href="https://panpanchinese.com/order">{$Think.lang.web_common_4}</a>
-						</li>
-						<!--
+
         					<li class="dropdown">
           					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="__STATIC__/img/lang_{if $Think.cookie.think_var == 'ko-kr'}ko{elseif $Think.cookie.think_var == 'zh-cn'}cn{elseif $Think.cookie.think_var == 'en-us'/}en{else/}ko{/if}.png" height="15" width="15" style="margin-top: -3px;"> {$Think.lang.web_common_24} <span class="caret"></span></a>
          					<ul class="dropdown-menu">
@@ -143,7 +142,7 @@ footer ul {
             						<li><a onclick="langtype(2)"><img src="__STATIC__/img/lang_ko.png" height="15" width="15" style="margin-top: -3px;"> 한국어</a></li>
           					</ul>
         					</li>
-                        -->
+
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						{if $Think.session.ko_id != null }
@@ -207,7 +206,8 @@ footer ul {
 								</div>
 								<br />
 								<div style="text-align: center;margin-top: 3rem;">
-									{$Think.lang.web_common_11_1} {$Think.lang.web_common_11_2}
+									{$Think.lang.web_common_11_1} {$Think.lang.web_common_11_2}<br>
+									<a id="" href="{:url('ko/my/find_password_mailer')}">{$Think.lang.find_password}»</a>
 								</div>
 							</div>
 						</div>
@@ -224,7 +224,7 @@ footer ul {
 							<h1>{$Think.lang.web_common_6}</h1>
 							<hr />
 							<div class="form-group">
-								<input id="signup_nickName" type="text" name="nickName" class="form-control" placeholder="{$Think.lang.my_index_36}" required="required">
+								<input id="signup_account" type="email" name="account" class="form-control" placeholder="{$Think.lang.my_index_66}" required="required">
 							</div>
 							<div class="form-group">
 								<input id="signup_wx" type="text" name="wx" class="form-control" placeholder="{$Think.lang.my_index_37}" required="required">
@@ -235,7 +235,8 @@ footer ul {
 								<input id="signup_phone" type="number" name="phone" class="form-control" placeholder="{$Think.lang.my_index_41}" required="required">
 							</div>
 							<div class="form-group">
-								<input id="signup_account" type="text" name="account" class="form-control" placeholder="{$Think.lang.my_index_42}" required="required">
+								<!--<input id="signup_account" type="text" name="account" class="form-control" placeholder="{$Think.lang.my_index_42}" required="required">-->
+								<input id="signup_nickName" type="text" name="nickName" class="form-control" placeholder="{$Think.lang.my_index_42}" required="required">
 							</div>
 							<div class="form-group">
 								<input id="signup_password" type="password" name="password" class="form-control" placeholder="{$Think.lang.my_index_43}" required="required">

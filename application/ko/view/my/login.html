@@ -1,26 +1,23 @@
-<!DOCTYPE html>
-<html>
-
-	<head>
+<html><head>
 		<meta charset="utf-8">
-		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0">
 		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
 		<title>{$Think.lang.web_common_7}</title>
-		<link href="__STATIC__/css/aui.css" rel="stylesheet" />
-		<link href="__STATIC__/css/style.css" rel="stylesheet" />
+		<link href="../../static/css/aui.css" rel="stylesheet">
+		<link href="../../static/css/style.css" rel="stylesheet">
 		<style>
 			html,
 			body {
 				background-color: #ffffff;
 			}
 		</style>
-		{block name="css"}{/block}
+		
 	</head>
 
 	<body>
 		<form class="aui-content-padded aui-margin-b-15" method="post">
 			<div align="center">
-				<img src="__STATIC__/img/logo.jpeg" style="width: 55%;" />
+				<img src="../../static/img/logo.jpeg" style="width: 55%;">
 			</div>
 			<ul class="aui-list aui-form-list">
 				<li class="aui-list-item" style="border:1px solid #cbcbcb;border-radius:5px;">
@@ -42,27 +39,9 @@
 				<button type="submit" class="aui-btn aui-btn-purple aui-btn-block" style="margin-top: 2rem;">{$Think.lang.web_common_7}</button>
 			</p>
 			<div style="text-align: center;margin-top: 1.5rem;">
-				{$Think.lang.web_common_10} <a href="{:url('my/enter')}" class="aui-text-purple" style="margin-left: 2rem;">{$Think.lang.web_common_6}</a>
+				{$Think.lang.web_common_10}<a href="enter.html" class="aui-text-purple" style="margin-left: 2rem;">{$Think.lang.web_common_6}</a>
 			</div>
 			<div style="text-align: center;margin-top: 3rem;">
-				{$Think.lang.web_common_11_1}<br />
-				{$Think.lang.web_common_11_2}
-			</div>
-		</form>		<!-- Global site tag (gtag.js) - Google Ads: 789908941 -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-789908941"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'AW-789908941');
-</script>
-<script>
-  gtag('event', 'page_view', {
-    'send_to': 'AW-789908941',
-    'user_id': 'replace with value'
-  });
-</script>
-	</body>
-
-</html>
+				{$Think.lang.web_common_11_1}<br>
+				{$Think.lang.web_common_11_2}<br><a href="{:url('ko/my/find_password_mailer')}" class="aui-text-purple">{$Think.lang.find_password}»</a></div>
+		</form>	

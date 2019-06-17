@@ -1,7 +1,12 @@
 <?php
 namespace app\ko\controller;
+use app\ko\model\Student;
+use app\ko\validate\email;
 use think\Controller;
 use Gaoming13\HttpCurl\HttpCurl;
+use think\Exception;
+use think\Loader;
+
 class My extends Controller {
 	public function index() {
 		if (session('ko_id') == null) {
@@ -127,7 +132,10 @@ class My extends Controller {
 				}
 			}
 			$Student = model('Student') -> getAccount($postdata['account']);
-			if ($Student) {
+            //兼容旧账号中的账号和邮箱不一致的问题
+            $where_emailer['emailer'] = $postdata['account'];
+            $Student_emailer = model('Student') -> where($where_emailer)->find();
+			if ($Student || $Student_emailer) {
 				if ($Student['password'] == $postdata['password']) {
 					if ($Student['language'] != 1) {
 						$info['info'] = '非韩文端账号';
@@ -157,7 +165,11 @@ class My extends Controller {
 		if ( request() -> isPost()) {
 			$postdata = input('post.');
 			$Student = model('Student') -> getAccount($postdata['account']);
-			if ($Student) {
+
+			//兼容旧账号中的账号和邮箱不一致的问题
+            $where_emailer['emailer'] = $postdata['account'];
+            $Student_emailer = model('Student') -> where($where_emailer)->find();
+			if ($Student || $Student_emailer) {
 				if ($Student['password'] == $postdata['password']) {
 					if ($Student['language'] != 1) {
 						$return['result'] = FALSE;
@@ -188,19 +200,43 @@ class My extends Controller {
 			return $this -> fetch();
 		} else if ( request() -> isPost()) {
 			$postdata = input('post.');
+
+            //接受用户提交的邮箱数据并校验
+            $data['email'] = $postdata['account'];
+            $validate = Loader::validate('BaseValidate');
+            if(!$validate->check($data)){
+                $return['result'] = false;
+                //$return['msg'] = $validate->getError();
+                $return['msg'] = '이메일이 유효하지 않습니다.';//邮件不有效
+                return $return;
+            }
+
 			$Authentication = model('Authentication') -> getAccount($postdata['account'], 0);
 			$Student = model('Student') -> getAccount($postdata['account']);
 			if ($Student || $Authentication) {
-				$info['info'] = '账号重复';
+				$info['info'] =  '이미 등록된 회원 아이디입니다.';
 				$this -> redirect('base/close', $info);
 			}
 			$Student = model('Student') -> getWx($postdata['wx']);
 			if ($Student) {
-				$info['info'] = '微信号重复';
+				$info['info'] = '위챗 아이디가 중복되었습니다.'; //微信号重复
 				$this -> redirect('base/close', $info);
 			}
+
 			$postdata['time_zone'] = 1;
 			$postdata['language'] = 1;
+
+			//新注册的用户账号和邮箱保持一致
+            $postdata['emailer'] = $postdata['account'];
+
+
+            $where['emailer'] = $postdata['emailer'];
+            $Student = model('Student') ->where($where)->find();
+            if ($Student) {
+                $info['info'] = '메일박스 반복';//邮箱重复
+                $this -> redirect('base/close', $info);
+            }
+
 			$postdata['create_time'] = time();
 			$new = model('Student') -> addData($postdata);
 			if ($new) {
@@ -249,6 +285,17 @@ class My extends Controller {
 	public function web_signup() {
 		if ( request() -> isPost()) {
 			$postdata = input('post.');
+
+                //接受用户提交的邮箱数据并校验
+                $data['email'] = $postdata['account'];
+                $validate = Loader::validate('BaseValidate');
+                if(!$validate->check($data)){
+                    $return['result'] = false;
+                    //$return['msg'] = $validate->getError();
+                    $return['msg'] = '이메일이 유효하지 않습니다.';//邮件不有效
+                    return $return;
+                }
+
 				if (!isset($postdata['nickName'])||!isset($postdata['wx'])||!isset($postdata['phone'])||!isset($postdata['account'])||!isset($postdata['password'])) {
 					$return['result'] = FALSE;
 					$return['msg'] = '필수 등록 정보를 모두 기입해주세요.';
@@ -269,6 +316,17 @@ class My extends Controller {
 			}
 			$postdata['time_zone'] = 1;
 			$postdata['language'] = 1;
+
+            //新注册的用户账号和邮箱保持一致
+            $postdata['emailer'] = $postdata['account'];
+
+            $where['emailer'] = $postdata['emailer'];
+            $Student = model('Student') ->where($where)->find();
+            if ($Student) {
+                $return['msg'] = '메일박스 반복';//邮箱重复
+                return $return;
+            }
+
 			$postdata['create_time'] = time();
 			$new = model('Student') -> addData($postdata);
 			if ($new) {
@@ -711,6 +769,107 @@ class My extends Controller {
 			return json($return);
 		}
 	}
+
+    //发送找回密码连接到用户邮箱
+    public function find_password_mailer()
+    {
+
+        if (request()->isGET()) {
+            if (action('Base/isMobile') == true) {
+                return $this -> fetch('forgot_pwd');
+            } else {
+                return $this -> fetch('webforgot_pwd');
+            }
+        } else if (request()->isPost()) {
+
+            //接受用户提交的邮箱数据并校验
+            $postdata = input('post.');
+            $data['email'] = $postdata['emailer'];
+            $validate = Loader::validate('BaseValidate');
+            if(!$validate->check($data)){
+                $return['result'] = false;
+                //$return['msg'] = $validate->getError();
+                $return['msg'] = '잘못 쓰셨습니다';//您填写的邮箱有误
+                return $return;
+            }
+
+            //查询数据库中是否存在当前用户邮箱
+            $student = new Student();
+            $emailer = $postdata['emailer'];
+            $where['emailer'] = $emailer;
+            $user =  model('Student')->where($where)-> find();
+            if (!$user) {
+                $return['result'] = false;
+                $return['msg'] = '메일함이 존재하지 않음';//邮箱不存在
+                return $return;
+            } else {
+                if ($user['language'] != 1) {
+                    $return['msg'] = '非韩文端账号';//非韩文端账号
+                    return $return;
+                }
+                $res = sendEmail('panpanChinese중국어 수업', $emailer, 'www.panpan.com/ko/my/find_password_mailer_notify/id/'.$user['id'].'/time/'.time());//汉语教学
+                if ($res == 1) {
+                    $return['result'] = TRUE;
+                    $return['msg'] = '전송에 성공했습니다.';//发送成功
+                    return $return;
+                } else {
+                    $return['result'] = false;
+                    $return['msg'] = '보내기 실패';//发送失败
+                    return $return;
+                }
+            }
+        }
+    }
+
+    //邮件测试
+    public function emailer_test(){
+        $res = sendEmail('panpanChinese汉语教学', '1009623340@qq.com', 'http://m.panpanchinese.cn/ko/my/find_password_mailer_notify/id/1/time/'.time());
+        if($res == 1){
+            return '邮件发送成功';
+        }else{
+            return '邮件发送异常';
+        }
+    }
+
+    //用户点击链接回调页面
+    public function find_password_mailer_notify($id,$time){
+	    $return = "/ko/my/change_password/id/".$id."/time/".$time;
+         $this->assign('url',$return);
+        return $this->fetch();
+    }
+
+    //用户通过邮箱修改密码
+    public function change_password(){
+        if (request()->isGET()) {
+            $getdata = input();
+            $timediff =time() - $getdata['time'];
+            $remain = $timediff%86400;
+            $hours = intval($remain/3600);
+            if($hours > 3){
+                return '링크가 유효하지 않음';//链接已超时失效
+            }
+//            $student = model('Student') -> getOne($getdata['id']);
+            $this->assign('student_id',$getdata['id']);
+            if (action('Base/isMobile') == true) {
+                return $this -> fetch('password');
+            } else {
+                return $this -> fetch('webpassword');
+            }
+
+        } else if (request()->isPost()) {
+            $postdata = input('post.');
+            $data['password'] = $postdata['password'];
+            $Student = model('Student') -> updateData($postdata['id'], $data);
+            if ($Student) {
+                $return['result'] = TRUE;
+                $return['data'] = 1;
+            } else {
+                $return['result'] = FALSE;
+                $return['data'] = 0;
+            }
+            return json($return);
+        }
+    }
 
 	//退出登录
 	public function out() {
