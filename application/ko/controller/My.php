@@ -202,13 +202,10 @@ class My extends Controller {
 			$postdata = input('post.');
 
             //接受用户提交的邮箱数据并校验
-            $data['email'] = $postdata['account'];
             $validate = Loader::validate('BaseValidate');
-            if(!$validate->check($data)){
-                $return['result'] = false;
-                //$return['msg'] = $validate->getError();
-                $return['msg'] = '이메일이 유효하지 않습니다.';//邮件不有效
-                return $return;
+            if(!$validate->check($postdata)){
+                $info['info'] = $validate->getError();
+                $this -> redirect('base/close', $info);
             }
 
 			$Authentication = model('Authentication') -> getAccount($postdata['account'], 0);
@@ -218,17 +215,21 @@ class My extends Controller {
 				$this -> redirect('base/close', $info);
 			}
 
-            $preg_wx='/^[a-zA-Z][a-zA-Z0-9_-]{5,19}$/ims';
-            if(!preg_match($preg_wx,$postdata['wx'])){
-                $info['info'] = '미세 신호는 요구에 부합되지 않는다'; //微信号不符合要求
-                $this -> redirect('base/close', $info);
-            }
-
 			$Student = model('Student') -> getWx($postdata['wx']);
 			if ($Student) {
 				$info['info'] = '위챗 아이디가 중복되었습니다.'; //微信号重复
 				$this -> redirect('base/close', $info);
 			}
+
+            //新注册的用户账号和邮箱保持一致
+            $postdata['emailer'] = $postdata['account'];
+
+            $Student = model('Student') -> getmail($postdata['emailer']);
+            if ($Student) {
+                $return['result'] = FALSE;
+                $return['msg'] = '메일함이 이미 존재함';//邮箱已经被注册
+                return $return;
+            }
 
             if ($postdata['password'] != $postdata['password2']) {
                 $info['info'] = '비밀번호가 동일하지 않습니다.'; //两次输入密码不一致
@@ -239,16 +240,6 @@ class My extends Controller {
 			$postdata['time_zone'] = 1;
 			$postdata['language'] = 1;
 
-			//新注册的用户账号和邮箱保持一致
-            $postdata['emailer'] = $postdata['account'];
-
-
-            $where['emailer'] = $postdata['emailer'];
-            $Student = model('Student') ->where($where)->find();
-            if ($Student) {
-                $info['info'] = '메일박스 반복';//邮箱重复
-                $this -> redirect('base/close', $info);
-            }
 
 			$postdata['create_time'] = time();
 			$new = model('Student') -> addData($postdata);
@@ -299,21 +290,21 @@ class My extends Controller {
 		if ( request() -> isPost()) {
 			$postdata = input('post.');
 
-                //接受用户提交的邮箱数据并校验
-                $data['email'] = $postdata['account'];
-                $validate = Loader::validate('BaseValidate');
-                if(!$validate->check($data)){
-                    $return['result'] = false;
-                    //$return['msg'] = $validate->getError();
-                    $return['msg'] = '이메일이 유효하지 않습니다.';//邮件不有效
-                    return $return;
-                }
+            //确定数据完整性
+            if (!isset($postdata['nickName'])||!isset($postdata['wx'])||!isset($postdata['phone'])||!isset($postdata['account'])||!isset($postdata['password'])) {
+                $return['result'] = FALSE;
+                $return['msg'] = '필수 등록 정보를 모두 기입해주세요.';
+                return json($return);
+            }
 
-				if (!isset($postdata['nickName'])||!isset($postdata['wx'])||!isset($postdata['phone'])||!isset($postdata['account'])||!isset($postdata['password'])) {
-					$return['result'] = FALSE;
-					$return['msg'] = '필수 등록 정보를 모두 기입해주세요.';
-					return json($return);
-				}
+            //接受用户提交的邮箱数据并校验
+            $validate = Loader::validate('BaseValidate');
+            if(!$validate->check($postdata)){
+                $return['result'] = false;
+                $return['msg'] = $validate->getError();
+                return $return;
+            }
+
 			$Authentication = model('Authentication') -> getAccount($postdata['account'], 0);
 			$Student = model('Student') -> getAccount($postdata['account']);
 			if ($Student || $Authentication) {
@@ -321,30 +312,26 @@ class My extends Controller {
 				$return['msg'] = '이미 등록된 회원 아이디입니다.';
 				return $return;
 			}
-            $preg_wx='/^[a-zA-Z][a-zA-Z0-9_-]{5,19}$/ims';
-            if(!preg_match($preg_wx,$postdata['wx'])){
-                $return['result'] = FALSE;
-                $return['msg'] = '미세 신호는 요구에 부합되지 않는다';//微信号不符合要求
-                return $return;
-            }
+
 			$Student = model('Student') -> getWx($postdata['wx']);
 			if ($Student) {
 				$return['result'] = FALSE;
 				$return['msg'] = '위챗 아이디가 중복되었습니다.';
 				return $return;
 			}
-			$postdata['time_zone'] = 1;
-			$postdata['language'] = 1;
 
             //新注册的用户账号和邮箱保持一致
             $postdata['emailer'] = $postdata['account'];
 
-            $where['emailer'] = $postdata['emailer'];
-            $Student = model('Student') ->where($where)->find();
+            $Student = model('Student') -> getmail($postdata['emailer']);
             if ($Student) {
-                $return['msg'] = '메일박스 반복';//邮箱重复
+                $return['result'] = FALSE;
+                $return['msg'] = '메일함이 이미 존재함';//邮箱已经被注册
                 return $return;
             }
+
+			$postdata['time_zone'] = 1;
+			$postdata['language'] = 1;
 
 			$postdata['create_time'] = time();
 			$new = model('Student') -> addData($postdata);
