@@ -47,6 +47,7 @@ function sendEmail($desc_content, $toemail,  $desc_url){
     $mail = new \mailer\PHPMailer();
     $mail->isSMTP();// 使用SMTP服务
     $mail->CharSet = "utf8";// 编码格式为utf8，不设置编码的话，中文会出现乱码
+    $mail->isHtml(true);// 支持HTML格式
     $mail->Host = "smtp.163.com";// 发送方的SMTP服务器地址
     $mail->SMTPAuth = true;// 是否使用身份验证
     $mail->Username = "chinabizchinabiz@163.com";// 发送方的163邮箱用户名，就是你申请163的SMTP服务使用的163邮箱</span><span style="color:#333333;">
@@ -60,7 +61,8 @@ function sendEmail($desc_content, $toemail,  $desc_url){
     //$mail->addBCC("xxx@163.com");// 设置秘密抄送人(这个人也能收到邮件)
     //$mail->addAttachment("bug0.jpg");// 添加附件
     $mail->Subject = 'papanChinese';// 邮件标题
-    $mail->Body = "panpanChinese암호 찾기:".$desc_content."암호로 돌아가려면 링크를 되찾으십시오 (이 링크를 다른 사람에게 보내지 마십시오):".$desc_url;// 邮件正文
+//    $mail->Body = "panpanChinese암호 찾기:".$desc_content."암호로 돌아가려면 링크를 되찾으십시오 (이 링크를 다른 사람에게 보내지 마십시오):".$desc_url;// 邮件正文
+    $mail->MsgHTML($desc_content);// html邮件正文
     //$mail->AltBody = "This is the plain text纯文本";// 这个是设置纯文本方式显示的正文内容，如果不支持Html方式，就会用到这个，基本无用
 
     if(!$mail->send()){// 发送邮件
