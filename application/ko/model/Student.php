@@ -29,6 +29,13 @@ class Student extends Model {
 		$Student = Student::where($data) -> find();
 		return $Student;
 	}
+
+    // 	emaier查询一条数据
+    public static function getmail($emailer) {
+        $data['emailer'] = $emailer;
+        $Student = Student::where($data) -> find();
+        return $Student;
+    }
 	
 	// 按账号查询一条数据
 	public static function getAccount($account) {

@@ -25,73 +25,28 @@
 			<a class="aui-pull-left aui-btn" onclick="javascript:history.back(-1);">
 				<span class="aui-iconfont aui-icon-left"></span>
 			</a>
-			<div class="aui-title">{$Think.lang.web_common_6}</div>
+			<div class="aui-title">{$Think.lang.find_password}</div>
 		</header>
-		<form class="aui-content-padded aui-margin-b-15" method="post">
+		<form class="aui-content-padded aui-margin-b-15" >
 			<ul class="aui-list aui-form-list aui-media-list">
-				<li class="aui-list-item" id="container">
-					<div class="aui-media-list-item-inner" id="pickfiles" style="position: relative; z-index: 1;">
-						<div class="aui-list-item-inner">
-							<div class="aui-list-item-title">{$Think.lang.web_common_6}</div>
-						</div>
-						<div class="aui-list-item-media">
-							<img id="img" src="/static/img/avatar.jpg">
-							<input id="avatar" name="avatar" value="/static/img/avatar.jpg" type="hidden">
-						</div>
-					</div>
-				<div id="html5_1dd9ub0u82uc1ttldai1mblslh4_container" class="moxie-shim moxie-shim-html5" style="position: absolute; top: 0px; left: 16px; width: 361px; height: 96px; overflow: hidden; z-index: 0;"><input id="html5_1dd9ub0u82uc1ttldai1mblslh4" type="file" style="font-size: 999px; opacity: 0; position: absolute; top: 0px; left: 0px; width: 100%; height: 100%;" accept="" tabindex="-1"></div></li>
+			
 				
 				<li class="aui-list-item">
 					<div class="aui-list-item-inner">
 						<div class="aui-list-item-input">
-							<input type="email" name="account" placeholder="{$Think.lang.my_index_66}" required="required">
+							<input id="email" type="text" name="account" placeholder="{$Think.lang.web_common_32}" required="required">
 						</div>
 					</div>
 				</li>
-				<li class="aui-list-item">
-					<div class="aui-list-item-inner">
-						<div class="aui-list-item-input">
-							<input type="text" name="wx" placeholder="{$Think.lang.my_index_37}" required="required">
-						</div>
-					</div>
-				</li>
+				
 				<li style="margin-top: 1rem;">
-					<p style="float:right"><a class="aui-text-purple" style="float:right" href="http://panpanchinese.com/wechat" target="_blank"></a></p><p class="aui-text-purple"><a class="aui-text-purple" style="float:right" href="http://panpanchinese.com/wechat" target="_blank">{$Think.lang.my_index_38}</a></p><p style="float:right">/</p><a style="float:right" href="/ko/my/wxid.html" target="_blank"><p class="aui-text-purple">{$Think.lang.my_index_39}</p></a><p></p>
-					<br>
-					<p style="text-align: right;">*{$Think.lang.my_index_40}.</p>
-				</li>
-				<li class="aui-list-item">
-					<div class="aui-list-item-inner">
-						<div class="aui-list-item-input">
-							<input type="text" name="nickName" placeholder="{$Think.lang.my_index_42}" required="required">
-						</div>
-					</div>
-				</li>
-				<li class="aui-list-item">
-					<div class="aui-list-item-inner">
-						<div class="aui-list-item-input">
-							<input type="number" oninput="if(value.length>11)value=value.slice(0,11)"  name="phone" placeholder="{$Think.lang.my_index_41}" required="required">
-						</div>
-					</div>
-				</li>
 				
-				<li class="aui-list-item">
-					<div class="aui-list-item-inner">
-						<div class="aui-list-item-input">
-							<input type="password" min="6"  name="password" placeholder="{$Think.lang.my_index_43}" required="required">
-						</div>
-					</div>
+					<p style="text-align: right;">*{$Think.lang.web_common_33}。</p>
 				</li>
-				<li class="aui-list-item">
-					<div class="aui-list-item-inner">
-						<div class="aui-list-item-input">
-							<input type="password" min="6" name="password2" placeholder="{$Think.lang.my_index_67}" required="required">
-						</div>
-					</div>
-				</li>
+			
 			</ul>
 			<p>
-				<button type="submit" class="aui-btn aui-btn-purple aui-btn-block" style="margin-top: 1rem;">{$Think.lang.web_common_6}</button>
+				<button type="button" class="aui-btn aui-btn-purple aui-btn-block" style="margin-top: 1rem;" onclick="find_password()">{$Think.lang.find_password}</button>
 			</p>
 		</form>
 		<script type="text/javascript" async="" src="https://www.googleadservices.com/pagead/conversion_async.js"></script><script src="/static/js/jquery-1.10.2.js"></script>
@@ -175,5 +130,28 @@
 					}
 				}
 			});
-		</script>	
-	
+		</script>
+		<script>
+			function find_password(){
+				var account = $('#email').val();
+				if(account == ""){
+					alert('{$Think.lang.web_common_15}');
+					return false;
+				}
+				$.ajax({
+					type: "POST",
+					url: "{:url('my/find_password_mailer')}", //路径
+					data: {
+						"emailer": $('#email').val(),
+					},
+					success: function(res) { //返回数据根据结果进行相应的处理
+						if(res.result) {
+							alert('{$Think.lang.web_common_25}');
+							// location.href='{:url('my/index')}?new=1';
+						} else {
+							alert(res.msg);
+						}
+					}
+				});
+			}
+		</script>
