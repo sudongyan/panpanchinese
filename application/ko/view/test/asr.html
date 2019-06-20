@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>测试</title>
+		<link href="__STATIC__/css/aui.css" rel="stylesheet" />
+		<link href="__STATIC__/css/style.css" rel="stylesheet" /> {block name="css"}{/block}
+	</head>
+
+	<body>
+	<h3>
+		操作
+	</h3>
+	<p>
+		<input type="button" value="录音开启" id="startRecord" class="aui-btn aui-btn-success" />
+		<input type="button" value="暂停" id="pauseRecord" class="aui-btn aui-btn-success" />
+		<input type="button" value="恢复" id="resumeRecord" class="aui-btn aui-btn-success" />
+		<input type="button" value="录音停止" id="endRecord" class="aui-btn aui-btn-success" />
+		<input type="button" value="播放录音" id="playRecord" class="aui-btn aui-btn-success" />
+		<input type="button" value="语音识别" id="transRecord" class="aui-btn aui-btn-success" />
+	</p>
+    <h3>转译结果</h3>
+	<p id="text" style="color: red; font-size: 30px"></p>
+	<br>
+
+	<h3>
+		下载
+	</h3>
+    <p>
+		<input type="button" value="下载pcm" id="downloadPCM" class="aui-btn aui-btn-success" />
+		<input type="button" value="下载wav" id="downloadWAV" class="aui-btn aui-btn-success" />
+	</p>
+	<br>
+
+	<h3>
+		录音时长：<span id="time">0</span>s
+	</h3>
+    <br>
+	<h3>
+		声音波形图如下：
+	</h3>
+	<canvas id="canvas"></canvas>
+	<br>
+	<h3>
+		加载播放：
+	</h3>
+    <p>
+		<input type="file" value="加载文件播放" id="uploadAudio" />
+	</p>
+		<script src="__STATIC__/js/jquery-3.3.1.min.js"></script>
+		<script src="__STATIC__/js/recorder.js"></script>
+		<script>
+			var oDiv = document.getElementById('box'),
+                    text = document.getElementById('text'),
+					audio = document.getElementById('audio'),
+					oTime = document.getElementById('time'),
+					recorder = null,
+					oCanvas = document.getElementById("canvas"),        // 显示波形的canvas
+					ctx = oCanvas.getContext("2d"),
+					drawRecordId = null;
+			// 按钮事件绑定
+			document.getElementById('startRecord').addEventListener('click', startRecord);
+			document.getElementById('pauseRecord').addEventListener('click', pauseRecord);
+			document.getElementById('resumeRecord').addEventListener('click', resumeRecord);
+			document.getElementById('endRecord').addEventListener('click', endRecord);
+			document.getElementById('playRecord').addEventListener('click', playRecord);
+			document.getElementById('transRecord').addEventListener('click', transRecord);
+			document.getElementById('downloadPCM').addEventListener('click', downloadPCM);
+			document.getElementById('downloadWAV').addEventListener('click', downloadWAV);
+			document.getElementById('uploadAudio').addEventListener('change', uploadAudio);
+
+			// canvas背景初始化
+			initCanvasBg()
+
+			function transRecord() {
+				console.log('transRecord');
+				var bin = recorder.getWAVBlob();
+				console.log(bin);
+				console.log(bin.size);
+				var formdata = new FormData();
+				formdata.append('file', bin, 'rsa.wav');
+				fetch('sendvoice', {
+					method: 'POST',
+					credentials: 'include',
+					body: formdata
+				}).then(function(response) {
+					return response.json();
+				}, function() {
+					alert('请添加id和key');
+				}).then(function(data) {
+				    text.innerHTML = data.result;
+				});
+			}
+
+			// 开始录音
+			function startRecord() {
+				if (!recorder) {
+					recorder = new Recorder({
+						// 以下是默认配置
+						sampleBits: 16,
+						// sampleRate: 浏览器默认的输入采样率,
+						numChannels: 1,
+					});
+					recorder.onprocess = function(duration) {
+						oTime.innerText = duration;
+					}
+				}
+				recorder.start();
+				// 开始绘制canvas
+				drawRecord();
+			}
+			// 暂停录音
+			function pauseRecord() {
+				recorder && recorder.pause();
+			}
+			// 恢复录音
+			function resumeRecord() {
+				recorder && recorder.resume();
+			}
+			// 结束录音
+			function endRecord (e) {
+				recorder && recorder.stop();
+				drawRecordId && cancelAnimationFrame(drawRecordId);
+				drawRecordId = null;
+			}
+			// 播放录音
+			function playRecord() {
+				recorder && recorder.play();
+				drawRecordId && cancelAnimationFrame(drawRecordId);
+				drawRecordId = null;
+			}
+			// 下载pcm
+			function downloadPCM() {
+				recorder && recorder.downloadPCM();
+			}
+			// 下载wav
+			function downloadWAV() {
+				recorder && recorder.downloadWAV();
+			}
+			// canvas波形绘制函数
+			function drawRecord() {
+				// 用requestAnimationFrame稳定60fps绘制
+				drawRecordId = requestAnimationFrame(drawRecord);
+				// 实时获取音频大小数据
+				var dataArray = recorder.getRecordAnalyseData(),
+						bufferLength = dataArray.length;
+				// 填充背景色
+				ctx.fillStyle = 'rgb(200, 200, 200)';
+				ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+				// 设定波形绘制颜色
+				ctx.lineWidth = 2;
+				ctx.strokeStyle = 'rgb(0, 0, 0)';
+
+				ctx.beginPath();
+
+				var sliceWidth = canvas.width * 1.0 / bufferLength, // 一个点占多少位置，共有bufferLength个点要绘制
+						x = 0;          // 绘制点的x轴位置
+				for (var i = 0; i < bufferLength; i++) {
+					var v = dataArray[i] / 128.0;
+					var y = v * canvas.height / 2;
+
+					if (i === 0) {
+						// 第一个点
+						ctx.moveTo(x, y);
+					} else {
+						// 剩余的点
+						ctx.lineTo(x, y);
+					}
+					// 依次平移，绘制所有点
+					x += sliceWidth;
+				}
+
+				ctx.lineTo(canvas.width, canvas.height / 2);
+				ctx.stroke();
+			}
+			// canvas背景初始化
+			function initCanvasBg() {
+				ctx.fillStyle = 'rgb(200, 200, 200)';
+				ctx.fillRect(0, 0, canvas.width, canvas.height);
+			}
+			// 加载音频文件并播放
+			function uploadAudio(e) {
+				Recorder.playAudio(this.files[0]);
+			}
+		</script>
+	</body>
+
+</html>
