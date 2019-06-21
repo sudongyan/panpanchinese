@@ -23,7 +23,7 @@
 		<input type="button" value="语音识别" id="transRecord" class="aui-btn aui-btn-success" />
 	</p>
     <h3>转译结果</h3>
-	<p id="text" style="color: red; font-size: 30px"></p>
+	<pre id="text" style="color: red; font-size: 30px"></pre>
 	<br>
 
 	<h3>
@@ -82,7 +82,7 @@
 				console.log(bin.size);
 				var formdata = new FormData();
 				formdata.append('file', bin, 'rsa.wav');
-				fetch('sendvoice', {
+				fetch('baiduvoice', {
 					method: 'POST',
 					credentials: 'include',
 					body: formdata
@@ -91,7 +91,7 @@
 				}, function() {
 					alert('请添加id和key');
 				}).then(function(data) {
-				    text.innerHTML = data.result;
+				    text.innerHTML = JSON.stringify(data.result,  null, '\t');
 				});
 			}
 
@@ -103,6 +103,7 @@
 						sampleBits: 16,
 						// sampleRate: 浏览器默认的输入采样率,
 						numChannels: 1,
+						sampleRate: 16000,
 					});
 					recorder.onprocess = function(duration) {
 						oTime.innerText = duration;
