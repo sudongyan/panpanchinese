@@ -88,6 +88,11 @@
 							<a id="course-menu" href="{:url('course/index')}"><i class="fa fa-list"></i> 教材管理</a>
 						</li>
 						{/if}
+						{if condition="($Think.session.course eq 1) OR ($Think.session.id eq 1)"}
+						<li>
+							<a id="recognition-menu" href="{:url('/admin/recognition')}"><i class="fa fa-list"></i> 语音识别题</a>
+						</li>
+						{/if}
 						{if condition="($Think.session.timezone eq 1) OR ($Think.session.id eq 1)"}
 						<li>
 							<a id="timezone-menu" href="{:url('timezone/index')}"><i class="fa fa-list"></i> 时区管理</a>
@@ -155,8 +160,10 @@
 					$('#timezone-menu').addClass('active-menu');
 				}else if(url.indexOf('/admin/course') != -1){
 					$('#course-menu').addClass('active-menu');
-				}else if(url.indexOf('/admin/video') != -1){
+				}else if(url.indexOf('/admin/video') != -1) {
 					$('#course-menu').addClass('active-menu');
+				}else if(url.indexOf('/admin/recognition') != -1){
+					$('#recognition-menu').addClass('active-menu');
 				}else if(url.indexOf('/admin/curriculum') != -1){
 					$('#curriculum-menu').addClass('active-menu');
 				}else if(url.indexOf('/admin/order') != -1){

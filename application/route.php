@@ -11,6 +11,6 @@
 
 use think\Route;
 
-
 Route::resource('admin/video','admin/Video');
+Route::resource('admin/recognition','admin/Recognition');
 

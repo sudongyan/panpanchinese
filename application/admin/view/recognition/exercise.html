@@ -1,0 +1,81 @@
+﻿{extend name="Base:common" /}{block name="body"}
+<div class="header">
+	<h1 class="page-header">
+		语音识别练习题
+    		<small>全部</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li>
+			<a href="{:url('index/index')}">首页</a>
+		</li>
+		<li class="active">语音识别练习题</li>
+	</ol>
+
+</div>
+<div id="page-inner">
+	<div class="row">
+		<div class="col-md-12">
+			<!-- Advanced Tables -->
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-lg-12"> 
+							<a href="{:url('/admin/recognition/create', '', false)}" class="btn btn-danger pull-right">新增练习题</a>
+						</div>
+					</div>
+					<!-- /input-group -->
+				</div>
+				<div class="panel-body">
+					<div class="table-responsive">
+					</div>
+					<div id="exercise_list" class="row">
+						<div class="exercise_item col-lg-12">
+							{volist name="list" id="vo"}
+								<ul class="list-group">
+									<li class="list-group-item"><audio  width="320" controls="controls"><source type="audio/mpeg" src="{$vo.audio_url}"></audio></li>
+									<li class="list-group-item">{$vo.sentence_cn}</li>
+									<li class="list-group-item">{$vo.sentence_py}</li>
+									<li class="list-group-item">{$vo.sentence_ko}</li>
+									<li class="list-group-item">{$vo.sentence_en}</li>
+									<li class="list-group-item">
+										<div class="btn-group float-right" role="group" aria-label="Basic example">
+											<a type="button" class="btn btn-warning" href="{:url('/admin/recognition/'.$vo.id.'/edit', '', false)}">修改</a>
+											<button type="button" class="btn btn-danger del-exercise" data-href="{:url('/admin/recognition/'.$vo.id, '', false)}">删除</button>
+										</div>
+									</li>
+								</ul>
+							{/volist}
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--End Advanced Tables -->
+		</div>
+	</div>
+</div>
+
+{/block} {block name="script"}
+<script src="__STATIC__/js/bootstrap-datetimepicker.min.js"></script>
+<script src="__STATIC__/js/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="__STATIC__/Plupload/moxie.js"></script>
+<script src="__STATIC__/Plupload/plupload.dev.js"></script>
+<script src="__STATIC__/Plupload/i18n/zh_CN.js"></script>
+<script src="__STATIC__/js/qiniu.min.js"></script>
+<script>
+    $('#exercise_list').on('click', '.del-exercise', function (e) {
+    	if (confirm('确定要删除这道练习题吗？')) {
+			$.ajax($(this).data('href'), {
+				"type": "DELETE",
+				"success": function (data) {
+					if (data.code === 0) {
+						$(e.currentTarget).parentsUntil('.exercise_item').remove();
+					}
+				},
+				"error": function () {
+					alert('出错了, 请重试或呼叫技术支持');
+				}
+			});
+		}
+	});
+</script>
+{/block}
