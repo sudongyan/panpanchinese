@@ -1,7 +1,7 @@
 ![panpan](https://wx1.sinaimg.cn/mw690/006EPfmQgy1fpsjzcfnbxj30ei0b0dg5.jpg "panpan")
 
 ## panpan汉语招聘中文导师啦！
-**【岗位职责及内容】 **
+***【岗位职责及内容】 ***
 1. 根据我们提供的课件通过微信语音每天给外国人授课27-55分钟。 
 2. 在议定的范围内，保证授课进度。 
 
